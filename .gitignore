@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+*.ipynb
+
+chem_mcp_toolkit/property_prediction/checkpoints
+chem_mcp_toolkit/property_prediction/tmp_data
+
