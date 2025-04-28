@@ -1,11 +1,6 @@
 # ChemMTK - Chemistry MCP ToolKit
 
-<div style="display: flex; justify-content: center; align-items: center; height: 100px;">
-    <img src="static/img/icon.png" alt="ChemMTK Icon" style="height: 80px; margin-right: 20px;" />
-    <span style="font-size: 64px; font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif;">
-        <span style="color: #6C8C74;">Chem</span><span style="color: #4A708B;">M</span><span style="color: #A67B5B;">TK</span>
-    </span>
-</div>
+<img src="static/img/banner.png" alt="ChemMTK Banner" style="zoom:20%;" />
 
 ## What is this?
 
