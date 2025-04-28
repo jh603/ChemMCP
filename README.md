@@ -34,9 +34,9 @@ TODO: Git clone, environment setup.
 
 TODO: API use.
 
-### Use Case 2: Integration with Anthropic Claude Desktop
+### Use Case 2: Integration with LLM GUI Client (Claude Desktop)
 
-Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure Claude Desktop client for ChemMTK. For the JSON configuration, please refer to the following.
+Anthropic's Claude Desktop is the best client for MCP until know. Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure it for ChemMTK. For the JSON configuration, please refer to the following.
 
 ```json
 {
