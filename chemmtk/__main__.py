@@ -1,5 +1,10 @@
 import argparse
+import logging
 
+logger = logging.getLogger(__name__)
+
+
+# Import all the modules to register them with the MCP server
 from . import general_search
 from . import molecule_ops
 from . import molecule_info
@@ -11,13 +16,7 @@ from . import rxn4chem
 
 from .mcp_app import mcp
 
-
-# if __name__ == "__main__":
-#     # Initialize and run the server
-#     mcp.run(transport='stdio')
-
-
-
+logger.info("ChemMTK tools initialized.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the MCP server.")

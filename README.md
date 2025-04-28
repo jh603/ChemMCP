@@ -163,9 +163,8 @@ Based on the functions, the tools can be divided into general tools, molecule to
 ## To-Dos
 
 - [ ] [Feature] Support Python calling.
-- [ ] [Tool] Add Wikipedia search tool.
-- [ ] [Tool] Add auto downloading checkpoints for property prediction models.
-- [ ] [Tool] Add neural network methods for name conversion.
+- [ ] [NewTool] Add Wikipedia search tool.
+- [ ] [NewTool] Add neural network methods for name conversion.
 
 
 
