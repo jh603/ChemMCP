@@ -98,18 +98,6 @@ async def generate_molecule_caption(smiles: str) -> str:
         molecule_captioner = MoleculeCaptioner()
     return molecule_captioner(smiles)
 
-# @mcp.tool()
-# async def generate_molecule_caption(smiles: str) -> str:
-#     logging.debug(f"🖋️  generate_molecule_caption start: {smiles}")
-#     try:
-#         # your actual call
-#         text = molecule_captioner(smiles)
-#         logging.debug("🖋️  caption done")
-#         return text
-#     except Exception as e:
-#         logging.exception("💥 captioner raised")
-#         return f"ERROR: {e}"
-
 
 @mcp.tool()
 async def generate_molecule_from_description(description: str) -> str:
