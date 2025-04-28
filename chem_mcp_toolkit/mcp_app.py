@@ -1,8 +1,9 @@
 
 from mcp.server.fastmcp import FastMCP
-from utils.errors import catch_errors
 
-mcp = FastMCP("ChemMcpToolkit")
+from .utils.errors import catch_errors
+
+mcp = FastMCP("ChemMcpToolkit", request_timeout=300)
 
 
 original_tool = mcp.tool

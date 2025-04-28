@@ -1,10 +1,13 @@
+import asyncio
+import logging
+
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-from utils.base_tool import BaseTool
-from utils.smiles import is_smiles
-from utils.errors import ChemMTKInputError
+from .utils.base_tool import BaseTool
+from .utils.smiles import is_smiles
+from .utils.errors import ChemMTKInputError
 
-from mcp_app import mcp
+from .mcp_app import mcp
 
 
 class MoleculeCaptioner(BaseTool):
@@ -76,11 +79,10 @@ class MoleculeGenerator(BaseTool):
     
     def _run_base(self, description, *args, **kwargs):
         return self._run_molt5(description) + "\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result."
-    
 
-molecule_generator = None
-molecule_captioner = None
 
+molecule_captioner = MoleculeCaptioner()
+molecule_generator = MoleculeGenerator()
 
 @mcp.tool()
 async def generate_molecule_caption(smiles: str) -> str:
@@ -95,6 +97,18 @@ async def generate_molecule_caption(smiles: str) -> str:
     if molecule_captioner is None:
         molecule_captioner = MoleculeCaptioner()
     return molecule_captioner(smiles)
+
+# @mcp.tool()
+# async def generate_molecule_caption(smiles: str) -> str:
+#     logging.debug(f"🖋️  generate_molecule_caption start: {smiles}")
+#     try:
+#         # your actual call
+#         text = molecule_captioner(smiles)
+#         logging.debug("🖋️  caption done")
+#         return text
+#     except Exception as e:
+#         logging.exception("💥 captioner raised")
+#         return f"ERROR: {e}"
 
 
 @mcp.tool()
@@ -112,7 +126,10 @@ async def generate_molecule_from_description(description: str) -> str:
     return molecule_generator(description)
 
 
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
 

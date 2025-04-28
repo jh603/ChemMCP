@@ -2,9 +2,9 @@ from rdkit import Chem
 import os
 
 import molbloom
-from utils.chemspace import ChemSpace
 
-from mcp_app import mcp
+from .utils.chemspace import ChemSpace
+from .mcp_app import mcp
 
 
 @mcp.tool()
@@ -51,6 +51,9 @@ async def check_molecule_if_patented(smiles: str) -> str:
     return output
 
 
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")

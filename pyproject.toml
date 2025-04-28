@@ -3,10 +3,11 @@ name = "chem-mcp-toolkit"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "jupyter>=1.1.1",
-    "litellm>=1.67.4",
+    "litellm==1.65.8",
+    "lmdb>=1.6.2",
     "mcp[cli]>=1.6.0",
     "molbloom>=2.3.4",
     "pandas>=2.2.3",
@@ -15,7 +16,14 @@ dependencies = [
     "rdkit>=2024.9.6",
     "requests>=2.32.3",
     "rxn4chemistry>=1.14.0",
+    "scikit-learn>=1.6.1",
     "selfies>=2.2.0",
+    "sentencepiece>=0.2.0",
     "tavily-python>=0.7.0",
+    "torch==2.5",
     "transformers>=4.51.3",
+    "unicore",
 ]
+
+[tool.uv.sources]
+unicore = { git = "https://github.com/dptech-corp/Uni-Core.git" }

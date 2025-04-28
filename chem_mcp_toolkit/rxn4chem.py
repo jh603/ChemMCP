@@ -1,16 +1,14 @@
-"""Wrapper for RXN4Chem functionalities."""
-from abc import ABC, abstractmethod
 import logging
 from time import sleep
 import os
 
 from rxn4chemistry import RXN4ChemistryWrapper  # type: ignore
 
-from utils.base_tool import BaseTool
-from utils.errors import ChemMTKToolProcessError, ChemMTKToolInitError, ChemMTKInputError, ChemMTKApiNotFoundError
-from utils.smiles import is_smiles
+from .utils.base_tool import BaseTool
+from .utils.errors import ChemMTKToolProcessError, ChemMTKToolInitError, ChemMTKInputError, ChemMTKApiNotFoundError
+from .utils.smiles import is_smiles
 
-from mcp_app import mcp
+from .mcp_app import mcp
 
 
 logger = logging.getLogger(__name__)
@@ -248,3 +246,11 @@ def do_retrosynthesis(product_smiles: str) -> str:
     if retrosynthesis is None:
         retrosynthesis = Retrosynthesis(rxn4chem_api_key=rxn4chem_api_key, init=True)
     return retrosynthesis(product_smiles)
+
+
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")

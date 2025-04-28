@@ -3,11 +3,10 @@ from typing import Any
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
 
-from utils.errors import ChemMTKInputError
-from utils.smiles import tanimoto, is_smiles
-from utils.canonicalization import canonicalize_molecule_smiles
-
-from mcp_app import mcp
+from .utils.errors import ChemMTKInputError
+from .utils.smiles import tanimoto, is_smiles
+from .utils.canonicalization import canonicalize_molecule_smiles
+from .mcp_app import mcp
 
 
 # Constants
@@ -188,6 +187,9 @@ def count_molecule_atoms(smiles: str) -> str:
     return text
 
 
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")

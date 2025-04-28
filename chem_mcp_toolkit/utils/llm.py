@@ -5,7 +5,7 @@ from litellm import completion
 from .errors import ChemMTKToolInitError
 
 
-def llm_completion(*args, **kwargs, llm_model=None):
+def llm_completion(*args, llm_model=None, **kwargs):
     if llm_model is None:
         llm_model = os.getenv("LLM_MODEL_NAME", None)
     if llm_model is None:

@@ -2,10 +2,9 @@ import os
 import logging
 from tavily import TavilyClient
 
-from utils.base_tool import BaseTool
-from utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
-
-from mcp_app import mcp
+from .utils.base_tool import BaseTool
+from .utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
+from .mcp_app import mcp
 
 
 logger = logging.getLogger(__name__)
@@ -54,36 +53,9 @@ async def search_web(query: str):
         raise ChemMTKSearchFailError(f"Error searching the web: {e}") from e
 
 
-wikipedia_wrapper = None
-
-
-@mcp.tool()
-async def search_wikipedia(query: str):
-    """Search Wikipedia for a given query.
-    
-    Args:
-        query: The search query.
-    Returns:
-        str: The summaries of related content.
-    """
-    try:
-        if wikipedia_wrapper is None:
-            import wikipedia
-            global wikipedia_wrapper
-            wikipedia_wrapper = wikipedia
-
-        search_results = wikipedia_wrapper.search(query)
-        if search_results:
-            page = wikipedia_wrapper.page(search_results[0])
-            return page.url
-        else:
-            raise ChemMTKSearchFailError("No search results found.")
-    except Exception as e:
-        raise ChemMTKSearchFailError(f"Error searching Wikipedia: {e}")
-
-    
-
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
 
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")

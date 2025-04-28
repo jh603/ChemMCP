@@ -1,16 +1,16 @@
 import requests
 from copy import deepcopy
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Literal
 
 import pubchempy as pcp
 
-from utils.base_tool import BaseTool
-from utils.errors import *
-from utils.smiles import is_smiles
-from utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
-from utils.llm import llm_completion
-from mcp_app import mcp
+from .utils.base_tool import BaseTool
+from .utils.errors import *
+from .utils.smiles import is_smiles
+from .utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
+from .utils.llm import llm_completion
+from .mcp_app import mcp
 
 
 QA_SYSTEM_PROMPT = "You are an expert chemist. You will be given the PubChem page about a molecule/compound, and your task is to answer the question based on the information of the page. Your answer should be accurate and concise, and contain all the information necessary to answer the question."
@@ -361,19 +361,30 @@ class PubchemSearchQA(BaseTool):
         return r
 
 
-pubchem_search_qa = None
+pubchem_search_qa = PubchemSearchQA()
 
 
 @mcp.tool()
-def search_pubchem_qa(query: str):
-    """Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. Input \"representation name: representation\" (e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\", one at a time), followed by \"Question: <your question about the molecule/compound>\", returns the related information.
+def search_pubchem_qa(namespace: Literal["smiles", "iupac", "name"], identifier: str, question: str) -> str:
+    """Ask questions about a molecule/compound based on its PubChem page.
     
     Args:
-        query: The search query.
+        namespace: The representation name, can be "smiles", "iupac", or "name".
+        identifier: The identifier of the molecule/compound, corresponding to the namespace used.
+        question: The question about the molecule/compound.
     Returns:
-        str: The summaries of related content.
+        str: The answer to the question based on the PubChem page.
     """
     global pubchem_search_qa
     if pubchem_search_qa is None:
         pubchem_search_qa = PubchemSearchQA()
-    return pubchem_search_qa(query)
+    return pubchem_search_qa.run_code(namespace, identifier, question)
+
+
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+

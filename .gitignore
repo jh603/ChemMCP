@@ -178,3 +178,5 @@ cython_debug/
 chem_mcp_toolkit/property_prediction/checkpoints
 chem_mcp_toolkit/property_prediction/tmp_data
 
+**/.DS_Store
+

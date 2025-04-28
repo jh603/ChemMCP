@@ -10,10 +10,10 @@ from . import utils as pp_utils
 from ..utils.smiles import is_smiles
 from ..utils.errors import ChemMTKInputError, ChemMTKToolInitError
 
-from mcp_app import mcp
+from ..mcp_app import mcp
 
 
-file_path = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.abspath(__file__)
 workdir = os.getcwd()
 rel_path = os.path.relpath(file_path, workdir)
 dir_path = os.path.dirname(rel_path)
@@ -237,12 +237,12 @@ class PropertyPredictorSIDER(PropertyPredictor):
         return text
     
 
-solubility_predictor = None
-logd_predictor = None
-bbbp_predictor = None
-toxicity_predictor = None
-hiv_predictor = None
-sider_predictor = None
+solubility_predictor = PropertyPredictorESOL()
+logd_predictor = PropertyPredictorLIPO()
+bbbp_predictor = PropertyPredictorBBBP()
+toxicity_predictor = PropertyPredictorClinTox()
+hiv_predictor = PropertyPredictorHIV()
+sider_predictor = PropertyPredictorSIDER()
 
 
 @mcp.tool()
@@ -339,3 +339,11 @@ def predict_side_effect(smiles: str) -> str:
     if sider_predictor is None:
         sider_predictor = PropertyPredictorSIDER()
     return sider_predictor(smiles)
+
+
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")

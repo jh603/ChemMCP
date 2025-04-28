@@ -5,12 +5,12 @@ import rdkit.Chem.rdMolDescriptors as molD
 import pubchempy as pcp
 import selfies as sf
 
-from utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
-from utils.smiles import is_smiles
-from utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
-from utils.chemspace import ChemSpace
+from .utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
+from .utils.smiles import is_smiles
+from .utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
+from .utils.chemspace import ChemSpace
 
-from mcp_app import mcp
+from .mcp_app import mcp
 
 
 logger = logging.getLogger(__name__)
@@ -241,6 +241,9 @@ def convert_smiles_to_selfies(smiles: str) -> str:
     return selfies
 
 
+# build a Starlette/uvicorn app
+app = mcp.sse_app()
+
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
