@@ -23,6 +23,8 @@ from unicore import checkpoint_utils, distributed_utils, options, utils
 from unicore.logging import progress_bar
 from unicore import tasks
 
+from ..utils.download import download_and_extract_zenodo_zip
+
 
 logger = logging.getLogger(__name__)
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -194,6 +196,15 @@ def load_model(args):
 
     if use_cuda:
         torch.cuda.set_device(args.device_id)
+    
+    attempt = 0
+    while True:
+        if os.path.exists(args.path):
+            break
+        if attempt > 3:
+            raise FileNotFoundError("Cannot find checkpoint at {}".format(args.path))
+        download_and_extract_zenodo_zip('https://zenodo.org/records/15299461/files/checkpoints.zip?download=1', os.path.dirname(__file__))
+        attempt += 1
 
     # Load model
     logger.info("loading model(s) from {}".format(args.path))
