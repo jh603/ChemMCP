@@ -31,7 +31,7 @@ class WebSearch(BaseTool):
         return answer
     
 
-search_web = None
+web_search_instance = None
 
 @mcp.tool()
 async def search_web(query: str):
@@ -45,10 +45,11 @@ async def search_web(query: str):
     tavily_api_key = os.getenv("TAVILY_API_KEY", None)
     if tavily_api_key is None:
         raise ChemMTKApiNotFoundError("Cannot find the API key for Tavily. Please set the TAVILY_API_KEY environment variable.")
+    global web_search_instance
     try:
-        if search_web is None:
-            search_web = WebSearch(tavily_api_key=tavily_api_key)
-        return await search_web.run(query)
+        if web_search_instance is None:
+            web_search_instance = WebSearch(tavily_api_key=tavily_api_key)
+        return web_search_instance.run_code(query)
     except Exception as e:
         raise ChemMTKSearchFailError(f"Error searching the web: {e}") from e
 
