@@ -26,40 +26,81 @@ We will continue to add and maintain tools in ChemMTK. **You are more than welco
 
 ChemMTK follows standard MCP integration patterns, making it straightforward to incorporate into your AI workflows.
 
+**Note**: Tested only on Linux and macOS. Windows support depends on whether the dependent packages are compatible.
+
 ### Setup
 
-TODO: Git clone, environment setup. 
+**Install uv**
+
+We recommend using [uv](https://github.com/astral-sh/uv) to manage the environment. Install uv:
+
+```bash
+# On macOS and Linux.
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Download ChemMTK**
+
+```bash
+git clone https://github.com/OSU-NLP-Group/ChemMTK.git
+```
+
+**Install Environment and Run**
+
+```bash
+cd ChemMTK
+uv run -m chemmtk
+```
+
+The server should run without error. If that is the case, you can kill it and check the following sections to integrate with your AI assistants.
+
+**Environment Variables**
+
+To make tools work properly, some variables containing API keys and configurations should be correctly set. Please get them before applying ChemMTK.
+
+```python
+{
+  "CHEMSPACE_API_KEY": "YOUR_CHEMSPACE_API",  # https://chem-space.com/
+  "RXN4CHEM_API_KEY": "YOUR_IBM_RXN4CHEM_API",  # https://rxn.res.ibm.com
+  "TAVILY_API_KEY": "YOUR_TAVILY_API",  # https://tavily.com/
+  # For tools using LLMs, set an LLM name in the LiteLLM way
+  # https://docs.litellm.ai/docs/#litellm-python-sdk
+  "LLM_MODEL_NAME": "YOUR_LLM_MODEL_NAME_IN_LITELLM",  # E.g., "openai/gpt-4o", "azure/gpt-4o"
+  # Then set necessary credentials for the LLM, such as OPENAI_API_KEY, AZURE_API_KEY, AZURE_API_BASE, etc.
+  # ...
+}
+```
+
+
 
 ### Use Case 1: Integration with LLM APIs
 
-TODO: API use.
+LLM providers provide their SDKs to support MCP servers. Take OpenAI Agents SDK as an example, you can connect to ChemMTK using the following lines. See [this page](https://openai.github.io/openai-agents-python/mcp/) for details.
+
+```python
+async with MCPServerStdio(
+    params={
+        "command": "uv",
+        "args": ["--directory", "/PATH/TO/ChemMTK", "run", "-m", "chemmtk"],
+        "toolCallTimeoutMillis": 300000,
+        "env": envs,  # See the above "Environment Variables" section
+    }
+) as server:
+    tools = await server.list_tools()
+```
 
 ### Use Case 2: Integration with LLM GUI Client (Claude Desktop)
 
-Anthropic's Claude Desktop is the best client for MCP until know. Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure it for ChemMTK. For the JSON configuration, please refer to the following.
+Anthropic's Claude Desktop is the best client for MCP until know. Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure the client for ChemMTK. Specifically, you can see the JSON file like the following, pretty much the same as in OpenAI's API.
 
 ```json
 {
     "mcpServers": {
         "ChemMTK": {
             "command": "uv",
-            "args": [
-                "--directory",
-                "/PATH/TO/ChemMTK",
-                "run",
-                "-m",
-                "chemmtk"
-            ],
+            "args": ["--directory", "/PATH/TO/ChemMTK", "run", "-m", "chemmtk"],
             "toolCallTimeoutMillis": 300000,
-            "env": {  // Set necessary variables to make tools work correctly.
-                "CHEMSPACE_API_KEY": "YOUR_CHEMSPACE_API",
-                "RXN4CHEM_API_KEY": "YOUR_IBM_RXN4CHEM_API",
-                "TAVILY_API_KEY": "YOUR_TAVILY_API",
-                // For tools using LLMs, set an LLM name in the LiteLLM way
-                // https://docs.litellm.ai/docs/#litellm-python-sdk
-                "LLM_MODEL_NAME": "YOUR_LLM_MODEL_NAME_IN_LITELLM", 
-                // Then set necessary credentials for the LLM, such as OPENAI_API_KEY
-            }
+            "env": envs,  # See the above "Environment Variables" section
         }
     }
 }
@@ -69,12 +110,9 @@ Anthropic's Claude Desktop is the best client for MCP until know. Follow [this t
   <summary>An example of Claude using ChemMTK to do chemistry tasks.</summary>
   <img src="static/img/claude_example.png" alt="Using ChemMTK in Claude Desktop." style="zoom:40%;" />
 </details>
+### Use Case 3: More Applications Supporting MCP
 
-### Use Case 3: Calling from Your PLs (Python and More)
-
-TODO: How to call it from Python and other programming languages.
-
-
+Check [here](https://modelcontextprotocol.io/clients) for more information.
 
 ## Tool List
 
@@ -143,13 +181,12 @@ If ChemMTK is valuable to your research or development, please kindly cite our w
     year={2024}
 }
 
-@misc{ChemMTK,
+@misc{yu2025chemmtk,
   author       = {Botao Yu and Huan Sun},
   title        = {ChemMTK: A Chemistry MCP Toolkit},
   year         = {2025},
   url          = {https://github.com/OSU-NLP-Group/ChemMTK},
   note         = {2025-04-28-01},
-  howpublished = {\url{https://github.com/OSU-NLP-Group/ChemMTK}}
 }
 ```
 

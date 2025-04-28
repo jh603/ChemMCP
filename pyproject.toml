@@ -1,7 +1,7 @@
 [project]
-name = "chem-mcp-toolkit"
+name = "ChemMTK"
 version = "0.1.0"
-description = "Add your description here"
+description = "Chemistry MCP ToolKit"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
