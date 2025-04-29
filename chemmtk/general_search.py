@@ -17,11 +17,11 @@ class WebSearch(BaseTool):
     name = "WebSearch"
     func_name = 'search_web'
     description = "Search the web for any questions and knowledge (including both general ones and domain-specific ones) and obtain a concise answer of the search results."
-    text_input = [("query", "str", "The search query.")]
-    code_input = [("query", "str", "The search query.")]
-    tool_output = [("result", "str", "The summaries of related content.")]
+    text_input_sig = [("query", "str", "The search query.")]
+    code_input_sig = [("query", "str", "The search query.")]
+    output_sig = [("result", "str", "The summaries of related content.")]
     examples = [
-        {'input': 'What is the boiling point of water?', 'output': 'The boiling point of water at sea level is 100°C (212°F).'},
+        {'text_input': 'What is the boiling point of water?', 'code_input': 'What is the boiling point of water?', 'output': 'The boiling point of water at sea level is 100°C (212°F).'},
     ]
 
     def __init__(self, tavily_api_key: str = None, init=True, interface='text'):

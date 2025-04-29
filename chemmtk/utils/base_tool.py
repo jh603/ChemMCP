@@ -12,12 +12,12 @@ class BaseTool(ABC):
     name: str
     func_name: str
     description: str
-    text_input: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
-    code_input: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
-    tool_output: List[Tuple]  # [("output_name", "output_type", "output_description"), ...]
+    text_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
+    code_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
+    output_sig: List[Tuple]  # [("output_name", "output_type", "output_description"), ...]
     examples: list
     
-    _required_class_attrs = ['name', 'func_name', 'description', 'text_input', 'code_input', 'tool_output']
+    _required_class_attrs = ['name', 'func_name', 'description', 'text_input_sig', 'code_input_sig', 'output_sig', 'examples']
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -31,10 +31,10 @@ class BaseTool(ABC):
     def get_doc(cls, interface='code'):
         assert interface in ('text', 'code'), "Interface '%s' is not supported. Please use 'text' or 'code'." % interface
         inputs = ""
-        for name, type_, description in (cls.code_input if interface == 'code' else cls.text_input):
+        for name, type_, description in (cls.code_input_sig if interface == 'code' else cls.text_input_sig):
             inputs += f"    {name} ({type_}): {description}\n"
         outputs = ""
-        for name, type_, description in cls.tool_output:
+        for name, type_, description in cls.output_sig:
             outputs += f"    {name} ({type_}): {description}\n"
         
         doc = f"""{cls.description}
@@ -68,9 +68,15 @@ Returns:
         return r
 
     def run_text(self, query, *args, **kwargs):
+        return self._run_text(query, *args, **kwargs)
+    
+    def _run_text(self, query, *args, **kwargs):
         return self._run_base(query, *args, **kwargs)
     
     def run_code(self, *args, **kwargs):
+        return self._run_code(*args, **kwargs)
+    
+    def _run_code(self, *args, **kwargs):
         return self._run_base(*args, **kwargs)
     
     @abstractmethod
