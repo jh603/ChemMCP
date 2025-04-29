@@ -1,3 +1,4 @@
+import argparse
 import requests
 from copy import deepcopy
 from dataclasses import dataclass
@@ -5,7 +6,7 @@ from typing import Optional, Literal
 
 import pubchempy as pcp
 
-from .utils.base_tool import BaseTool
+from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import *
 from .utils.smiles import is_smiles
 from .utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
@@ -192,20 +193,23 @@ class PubchemStructuredDoc:
 class PubchemSearch(BaseTool):
     name = "PubchemSearch"
     func_name = 'search_pubchem'
-    description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. Input \"representation name: representation\" (e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\", one at a time), returns the information of the molecule."
-    func_doc = ("namespace: str", "identifier: str", "str")
-    func_description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. namespace can be \"SMILES\", \"IUPAC\", or \"Name\". identifier is the SMILES, IUPAC name, or the common name of the molecule/compound, corresponding to the namespace used."
+    description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities."
+    text_input_sig = [("representation_name_and_representation", "str", "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\".")]
+    code_input_sig = [("representation_name", "str", "The representation name, can be \"SMILES\", \"IUPAC\", or \"Name\" (chemical's common name)."), ("representation", "str", "The representation of the molecule/compound, corresponding to the representation_name used.")]
+    output_sig = [("compound_doc", "str", "The document of the molecule/compound in a markdown format.")]
     examples = [
-        {'input': 'SMILES: CCO', 'output': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'},
-        {'input': 'IUPAC: ethanol', 'output': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'},
-        {'input': 'Name: alcohol', 'output': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'},
+        {'code_input': {'representation_name': 'SMILES', 'representation': 'CCO'}, 'text_input': {'representation_name_and_representation': 'SMILES: CCO'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},
+        
+        {'code_input': {'representation_name': 'IUPAC', 'representation': 'ethanol'}, 'text_input': {'representation_name_and_representation': 'IUPAC: ethanol'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},
+
+        {'code_input': {'representation_name': 'Name', 'representation': 'alcohol'}, 'text_input': {'representation_name_and_representation': 'Name: alcohol'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},
     ]
     
     url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{}/JSON/'
 
-    def _run_text(self, query):
+    def _run_text(self, representation_name_and_representation: str) -> str:
         try:
-            namespace, identifier = query.split(':')
+            namespace, identifier = representation_name_and_representation.split(':')
             namespace = namespace.strip()
             identifier = identifier.strip()
             if namespace.lower() in ('smiles',):
@@ -223,8 +227,8 @@ class PubchemSearch(BaseTool):
         r = self._run_base(namespace, identifier)
         return r
     
-    def _run_base(self, namespace, identifier):
-        cid = self._search_cid(namespace, identifier)
+    def _run_base(self, representation_name: Literal["smiles", 'iupac', 'name'], representation: str) -> str:
+        cid = self._search_cid(representation_name, representation)
         return self.get_cid_doc_text(cid)
         
     def get_cid_doc_text(self, cid):
@@ -307,16 +311,20 @@ class PubchemSearch(BaseTool):
         return new_sections
     
 
+@register_mcp_tool(mcp)
 class PubchemSearchQA(BaseTool):
     name = "PubchemSearchQA"
     func_name = 'search_pubchem_qa'
-    description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. Input \"representation name: representation\" (e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\", one at a time), followed by \"Question: <your question about the molecule/compound>\", returns the related information."
-    func_doc = ("namespace: str", "identifier: str", "question: str", "str")
-    func_description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. namespace can be \"SMILES\", \"IUPAC\", or \"Name\". identifier is the SMILES, IUPAC name, or the common name of the molecule/compound, corresponding to the namespace used. question is the question about the molecule/compound."
-    examples = [  # TODO
-        {'input': 'SMILES: CCO', 'output': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'},
-        {'input': 'IUPAC: ethanol', 'output': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'},
-        {'input': 'Name: alcohol', 'output': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'},
+    description = "Answer questions about molecules/compounds based on the information from PubChem, one of the most comprehensive database of chemical molecules and their activities. Input \"representation name: representation\" (e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\", one at a time), followed by \"Question: <your question about the molecule/compound>\", returns the related information."
+    text_input_sig = [("representation_name_and_representation", "str", "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\". Followed by \"Question: <your question about the molecule/compound>\".")]
+    code_input_sig = [("representation_name", "str", "The representation name, can be \"smiles\", \"iupac\", or \"name\" (chemical's common name)."), ("representation", "str", "The representation of the molecule/compound, corresponding to the representation_name used."), ("question", "str", "The question about the molecule/compound.")]
+    output_sig = [("answer", "str", "The answer to the question based on the PubChem page.")]
+    examples = [  # TODO: This example is not correct.
+        {'code_input': {'representation_name': 'SMILES', 'representation': 'CCO', "question": ""}, 'text_input': {'representation_name_and_representation': 'SMILES: CCO'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},
+        
+        {'code_input': {'representation_name': 'IUPAC', 'representation': 'ethanol'}, 'text_input': {'representation_name_and_representation': 'IUPAC: ethanol'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},
+
+        {'code_input': {'representation_name': 'Name', 'representation': 'alcohol'}, 'text_input': {'representation_name_and_representation': 'Name: alcohol'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},
     ]
 
     def __init__(self, llm_model=None, init=True, interface='text') -> None:
@@ -324,15 +332,15 @@ class PubchemSearchQA(BaseTool):
         self.llm_model = llm_model
         self.pubchem_search = PubchemSearch(init=init, interface='code')
 
-    def _run_text(self, query):
-        if 'Question:' not in query:
-            raise ChemMTKInputError("The input is not in a correct format. Please input the molecule/compound representation followed by the question about the molecule/compound. An example: \"SMILES: <SMILES of the molecule/compound> Question: <your question about the molecule/compound>\".")  # TODO
-        query, question = query.split('Question:')
-        query = query.strip()
+    def _run_text(self, representation_name_and_representation_and_question: str) -> str:
+        if 'Question:' not in representation_name_and_representation_and_question:
+            raise ChemMTKInputError("The input is not in a correct format. Please input the molecule/compound representation followed by the question about the molecule/compound. An example: \"SMILES: <SMILES of the molecule/compound> Question: <your question about the molecule/compound>\".")
+        representation_name_and_representation_and_question, question = representation_name_and_representation_and_question.split('Question:')
+        representation_name_and_representation_and_question = representation_name_and_representation_and_question.strip()
         question = question.strip()
 
         try:
-            namespace, identifier = query.split(':')
+            namespace, identifier = representation_name_and_representation_and_question.split(':')
             namespace = namespace.strip()
             identifier = identifier.strip()
             if namespace.lower() in ('smiles',):
@@ -350,8 +358,8 @@ class PubchemSearchQA(BaseTool):
         r = self._run_base(namespace, identifier, question)
         return r
     
-    def _run_base(self, namespace, identifier, question):
-        doc = self.pubchem_search.run_code(namespace, identifier)
+    def _run_base(self, representation_name: Literal["SMILES", "IUPAC", "Name"], representation: str, question: str):
+        doc = self.pubchem_search.run_code(representation_name, representation)
         conversation = [
             {'role': 'system', 'content': QA_SYSTEM_PROMPT},
             {'role': 'user', 'content': doc + '\n\n\n\nQuestion: ' + question},
@@ -361,30 +369,16 @@ class PubchemSearchQA(BaseTool):
         return r
 
 
-pubchem_search_qa = PubchemSearchQA()
-
-
-@mcp.tool()
-def search_pubchem_qa(namespace: Literal["smiles", "iupac", "name"], identifier: str, question: str) -> str:
-    """Ask questions about a molecule/compound based on its PubChem page.
-    
-    Args:
-        namespace: The representation name, can be "smiles", "iupac", or "name".
-        identifier: The identifier of the molecule/compound, corresponding to the namespace used.
-        question: The question about the molecule/compound.
-    Returns:
-        str: The answer to the question based on the PubChem page.
-    """
-    global pubchem_search_qa
-    if pubchem_search_qa is None:
-        pubchem_search_qa = PubchemSearchQA()
-    return pubchem_search_qa.run_code(namespace, identifier, question)
-
-
-# build a Starlette/uvicorn app
-app = mcp.sse_app()
-
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+    parser = argparse.ArgumentParser(description="Run the MCP server.")
+    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
+    args = parser.parse_args()
 
+    if args.sse:
+        # build a Starlette/uvicorn app
+        app = mcp.sse_app()
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8001)
+    else:
+        # Run the MCP server with standard input/output
+        mcp.run(transport='stdio')

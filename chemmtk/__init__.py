@@ -3,6 +3,10 @@ import importlib
 
 _tool_module_map = {
     "WebSearch":    "general_search",
+    "MoleculeCaptioner": "molecule_description",
+    "MoleculeGenerator": "molecule_description",
+    "PubchemSearchQA": "pubchem_search",
+    "PubchemSearch": "pubchem_search",  # Not registerred as an MCP tool
 }
 
 __all__ = list(_tool_module_map.keys())

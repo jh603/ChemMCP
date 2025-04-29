@@ -51,7 +51,7 @@ class MoleculeCaptioner(BaseTool):
 class MoleculeGenerator(BaseTool):
     name = "MoleculeGenerator"
     func_name = "generate_molecule_from_description"
-    description = "Input a description of a molecule/compound, returns the SMILES representation of the molecule/compound. This tool uses neural networks to generate molecules, which may not be accurate or correct."
+    description = "Generate a molecule represented in SMILES with MolT5 that matches the given textual description."
     text_input_sig = [('description', 'str', 'Textual description of the molecule.')]
     code_input_sig = [('description', 'str', 'Textual description of the molecule.')]
     output_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
