@@ -21,7 +21,7 @@ class WebSearch(BaseTool):
     code_input_sig = [("query", "str", "The search query.")]
     output_sig = [("result", "str", "The summaries of related content.")]
     examples = [
-        {'text_input': 'What is the boiling point of water?', 'code_input': 'What is the boiling point of water?', 'output': 'The boiling point of water at sea level is 100°C (212°F).'},
+        {'text_input': {'query': 'What is the boiling point of water?'}, 'code_input': {'query': 'What is the boiling point of water?'}, 'output': {'result': 'The boiling point of water at sea level is 100°C (212°F).'}},
     ]
 
     def __init__(self, tavily_api_key: str = None, init=True, interface='text'):

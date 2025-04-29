@@ -17,7 +17,7 @@ class MoleculeCaptioner(BaseTool):
     code_input_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
     output_sig = [('description', 'str', 'Textual description of the molecule.')]
     examples = [
-        {'code_input': {'smiles': 'CCO'}, 'text_input': 'CCO', 'output': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.\n\nNote: This is a generated description and may not be accurate. Please double check the result.'},
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.\n\nNote: This is a generated description and may not be accurate. Please double check the result.'}},
     ]
 
     def __init__(self, init=True, interface='text') -> None:
@@ -56,7 +56,7 @@ class MoleculeGenerator(BaseTool):
     code_input_sig = [('description', 'str', 'Textual description of the molecule.')]
     output_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
     examples = [
-        {'code_text': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'text_input': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.', 'output': 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'},
+        {'code_text': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'text_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'output': {'smiles': 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'}},
     ]
 
     def __init__(self, init=True, interface='text') -> None:
