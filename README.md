@@ -28,6 +28,8 @@ ChemMTK follows standard MCP integration patterns, making it straightforward to 
 
 **Note**: Tested only on Linux and macOS. Windows support depends on whether the dependent packages are compatible.
 
+
+
 ### Setup
 
 **Install uv**
@@ -89,6 +91,8 @@ async with MCPServerStdio(
     tools = await server.list_tools()
 ```
 
+
+
 ### Use Case 2: Integration with LLM GUI Client (Claude Desktop)
 
 Anthropic's Claude Desktop is the best client for MCP until know. Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure the client for ChemMTK. Specifically, you can see the JSON file like the following, pretty much the same as in OpenAI's API.
@@ -110,9 +114,13 @@ Anthropic's Claude Desktop is the best client for MCP until know. Follow [this t
   <summary>An example of Claude using ChemMTK to do chemistry tasks.</summary>
   <img src="static/img/claude_example.png" alt="Using ChemMTK in Claude Desktop." style="zoom:40%;" />
 </details>
+
+
 ### Use Case 3: More Applications Supporting MCP
 
 Check [here](https://modelcontextprotocol.io/clients) for more information.
+
+
 
 ## Tool List
 
