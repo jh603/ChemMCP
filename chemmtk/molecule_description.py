@@ -1,23 +1,23 @@
-import asyncio
-import logging
+import argparse
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-from .utils.base_tool import BaseTool
+from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.smiles import is_smiles
 from .utils.errors import ChemMTKInputError
-
 from .mcp_app import mcp
 
 
+@register_mcp_tool(mcp)
 class MoleculeCaptioner(BaseTool):
     name = "MoleculeCaptioner"
     func_name = "generate_molecule_caption"
-    description = "Input the SMILES of a molecule/compound, returns the textual description of the molecule/compound. This tool uses neural networks to generate descriptions, which may not be accurate or correct. You should try the PubchemSearch or WebSearch tool first, which provide accurate and authoritative information, and only use this one when other tools cannot provides useful information."
-    func_doc = ("smiles: str", "str")
-    func_description = description
+    description = "Generate a textual description of the molecule from its SMILES representation with MolT5. This tool uses neural networks to generate descriptions, which may not be accurate or correct. Please first try other tools that provide accurate and authoritative information, and only use this one as the last resort."
+    text_input_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
+    code_input_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
+    output_sig = [('description', 'str', 'Textual description of the molecule.')]
     examples = [
-        {'input': 'CCO', 'output': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'},
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.\n\nNote: This is a generated description and may not be accurate. Please double check the result.'}},
     ]
 
     def __init__(self, init=True, interface='text') -> None:
@@ -40,21 +40,23 @@ class MoleculeCaptioner(BaseTool):
         text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         return text
     
-    def _run_base(self, smiles, *args, **kwargs):
+    def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
             raise ChemMTKInputError("The input is not a valid SMILES string.")
         
         return self._run_molt5(smiles) + "\n\nNote: This is a generated description and may not be accurate. Please double check the result."
 
 
+@register_mcp_tool(mcp)
 class MoleculeGenerator(BaseTool):
     name = "MoleculeGenerator"
     func_name = "generate_molecule_from_description"
-    description = "Input a description of a molecule/compound, returns the SMILES representation of the molecule/compound. This tool uses neural networks to generate molecules, which may not be accurate or correct."
-    func_doc = ("description: str", "str")
-    func_description = description
+    description = "Generate a molecule represented in SMILES with MolT5 that matches the given textual description."
+    text_input_sig = [('description', 'str', 'Textual description of the molecule.')]
+    code_input_sig = [('description', 'str', 'Textual description of the molecule.')]
+    output_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
     examples = [
-        {'input': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.', 'output': 'CCO'},
+        {'code_text': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'text_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'output': {'smiles': 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'}},
     ]
 
     def __init__(self, init=True, interface='text') -> None:
@@ -77,47 +79,20 @@ class MoleculeGenerator(BaseTool):
         smiles = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         return smiles
     
-    def _run_base(self, description, *args, **kwargs):
+    def _run_base(self, description: str) -> str:
         return self._run_molt5(description) + "\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result."
 
 
-molecule_captioner = MoleculeCaptioner()
-molecule_generator = MoleculeGenerator()
-
-@mcp.tool()
-async def generate_molecule_caption(smiles: str) -> str:
-    """Generate a textual description of the molecule from its SMILES representation with MolT5.
-
-    Args:
-        smiles: SMILES representation of the molecule
-    Returns:
-        str: Textual description of the molecule
-    """
-    global molecule_captioner
-    if molecule_captioner is None:
-        molecule_captioner = MoleculeCaptioner()
-    return molecule_captioner(smiles)
-
-
-@mcp.tool()
-async def generate_molecule_from_description(description: str) -> str:
-    """Generate a SMILES representation of the molecule from its textual description with MolT5.
-
-    Args:
-        description: Textual description of the molecule
-    Returns:
-        str: SMILES representation of the molecule
-    """
-    global molecule_generator
-    if molecule_generator is None:
-        molecule_generator = MoleculeGenerator()
-    return molecule_generator(description)
-
-
-# build a Starlette/uvicorn app
-app = mcp.sse_app()
-
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+    parser = argparse.ArgumentParser(description="Run the MCP server.")
+    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
+    args = parser.parse_args()
 
+    if args.sse:
+        # build a Starlette/uvicorn app
+        app = mcp.sse_app()
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8001)
+    else:
+        # Run the MCP server with standard input/output
+        mcp.run(transport='stdio')

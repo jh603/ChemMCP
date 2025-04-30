@@ -1,59 +1,78 @@
-from rdkit import Chem
 import os
+import argparse
 
 import molbloom
 
+from .utils.base_tool import BaseTool, register_mcp_tool
+from .utils.errors import ChemMTKApiNotFoundError, ChemMTKInputError
 from .utils.chemspace import ChemSpace
+from .utils.smiles import is_smiles
 from .mcp_app import mcp
 
 
-@mcp.tool()
-async def get_molecule_price(smiles: str) -> str:
-    """Get the cheapest available price of a molecule.
+@register_mcp_tool(mcp)
+class GetMoleculePrice(BaseTool):
+    name = "GetMoleculePrice"
+    func_name = 'get_molecule_price'
+    description = "Get the cheapest available price of a molecule."
+    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    output_sig = [('price', 'str', 'Description of the cheapest available price of the molecule')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'price': '25g of this molecule cost 143 USD and can be purchased at A2B Chem.'}},
+    ]
 
-    Args:
-        smiles: SMILES string of the molecule
-    Returns:
-        str: Discription of the cheapest available price of the molecule
-    """
+    def __init__(self, chemspace_api_key: str = None, init=True, interface='code') -> None:
+        chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
+        if chemspace_api_key is None:
+            raise ChemMTKApiNotFoundError("CHEMSPACE_API_KEY environment variable not set.")
+        self.chemspace = ChemSpace(chemspace_api_key)
+        super().__init__(init=init, interface=interface)
 
-    chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
-    if chemspace_api_key is None:
-        return "Error: CHEMSPACE_API_KEY environment variable not set."
-    chemspace = ChemSpace(chemspace_api_key)
-    price = chemspace.buy_mol(smiles)
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError(f"smiles `{smiles}` is not a valid SMILES string.")
+        price = self.chemspace.buy_mol(smiles)
+        return price
+    
 
-    return price
+@register_mcp_tool(mcp)
+class PatentCheck(BaseTool):
+    name = "PatentCheck"
+    func_name = 'check_molecule_if_patented'
+    description = "Get whether a molecule is patented or not."
+    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    output_sig = [('patent_status', 'str', '"patented" or "not patented"')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'patent_status': 'not patented'}},
+    ]
 
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError(f"smiles `{smiles}` is not a valid SMILES string.")
 
-@mcp.tool()
-async def check_molecule_if_patented(smiles: str) -> str:
-    """Get whether a molecule is patented or not.
+        try:
+            r = molbloom.buy(smiles, canonicalize=True, catalog="surechembl")
+            if r:
+                output = "patented"
+            else:
+                output = "not patented"
+        except KeyboardInterrupt:
+            raise
+        return output
 
-    Args:
-        smiles: SMILES string of the molecule
-    Returns:
-        str: "patented" or "not patented"
-    """
-
-    mol = Chem.MolFromSmiles(smiles)
-    if mol is None:
-        return "Error: Invalid SMILES string."
-
-    try:
-        r = molbloom.buy(smiles, canonicalize=True, catalog="surechembl")
-        if r:
-            output = "patented"
-        else:
-            output = "not patented"
-    except KeyboardInterrupt:
-        raise
-    return output
-
-
-# build a Starlette/uvicorn app
-app = mcp.sse_app()
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+    parser = argparse.ArgumentParser(description="Run the MCP server.")
+    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
+    args = parser.parse_args()
+
+    if args.sse:
+        # build a Starlette/uvicorn app
+        app = mcp.sse_app()
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8001)
+    else:
+        # Run the MCP server with standard input/output
+        mcp.run(transport='stdio')

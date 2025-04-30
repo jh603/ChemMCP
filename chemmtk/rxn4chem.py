@@ -1,32 +1,43 @@
 import logging
 from time import sleep
 import os
+import argparse
+from typing import List, Tuple
 
 from rxn4chemistry import RXN4ChemistryWrapper  # type: ignore
 
-from .utils.base_tool import BaseTool
+from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import ChemMTKToolProcessError, ChemMTKToolInitError, ChemMTKInputError, ChemMTKApiNotFoundError
 from .utils.smiles import is_smiles
-
 from .mcp_app import mcp
 
 
 logger = logging.getLogger(__name__)
 
+
 class RXN4Chem(BaseTool):
     """Wrapper for RXN4Chem functionalities."""
 
-    name: str
-    description: str
+    name: str = None
+    func_name: str = None
+    description: str = None
+    text_input_sig: List[Tuple] = None  # [("arg_name", "arg_type", "arg_description"), ...]
+    code_input_sig: List[Tuple] = None  # [("arg_name", "arg_type", "arg_description"), ...]
+    output_sig: List[Tuple] = None  # [("output_name", "output_type", "output_description"), ...]
+    examples: list = None
 
     base_url: str = "https://rxn.res.ibm.com"
     sleep_time: int = 5
 
     rxn4chem_chemistry_wrapper = None
 
-    def __init__(self, rxn4chem_api_key, init=True, interface='text'):
+    def __init__(self, rxn4chem_api_key=None, init=True, interface='text'):
         """Init object."""
         super().__init__(init, interface=interface)
+
+        rxn4chem_api_key = os.environ.get("RXN4CHEM_API_KEY")
+        if rxn4chem_api_key is None:
+            raise ChemMTKApiNotFoundError("The RXN4Chem API key is not set. Please set the RXN4CHEM_API_KEY environment variable.")
 
         self.rxn4chem_api_key = rxn4chem_api_key
         if RXN4Chem.rxn4chem_chemistry_wrapper is None:
@@ -73,34 +84,33 @@ class RXN4Chem(BaseTool):
         return decorator
 
 
+@register_mcp_tool(mcp)
 class ForwardSynthesis(RXN4Chem):
     """Predict reaction."""
 
     name = "ForwardSynthesis"
     func_name = "do_forward_synthesis"
-    description = (
-        "Predict the product of a chemical reaction. "
-        "Input the SMILES of the reactants and reagents separated by a dot '.', returns SMILES of the products."
-    )
-    func_doc = ("reactants: str", "str")
-    func_description = description
+    description = "Given reactants and reagents, predict the product(s) of a chemical reaction."
+    text_input_sig = [("reactants_and_reagents_smiles", "str", "The SMILES of the reactants and reagents separated by a dot '.'.")]
+    code_input_sig = [("reactants_and_reagents_smiles", "str", "The SMILES of the reactants and reagents separated by a dot '.'.")]
+    output_sig = [("product_smiles", "str", "The SMILES of the product(s).")]
     examples = [
-        {'input': 'CCN.CN1C=CC=C1C=O', 'output': 'CCNCc1cccn1C'},
+        {'code_input': {'reactants_and_reagents_smiles': 'CCN.CN1C=CC=C1C=O'}, 'text_input': {'reactants_and_reagents_smiles': 'CCN.CN1C=CC=C1C=O'}, 'output': {'product_smiles': 'CCNCc1cccn1C'}},
     ]
 
-    def _run_text(self, reactants: str) -> str:
-        return self._run_base(reactants)
+    def _run_text(self, reactants_and_reagents_smiles: str) -> str:
+        return self._run_base(reactants_and_reagents_smiles)
 
-    def _run_base(self, reactants: str, *args, **kwargs) -> str:
+    def _run_base(self, reactants_and_reagents_smiles: str) -> str:
         """Run reaction prediction."""
         # Check that input is smiles
-        if not is_smiles(reactants):
+        if not is_smiles(reactants_and_reagents_smiles):
             raise ChemMTKInputError("The input contains invalid SMILES. Please double-check.")
-        if '.' not in reactants:
+        if '.' not in reactants_and_reagents_smiles:
             raise ChemMTKInputError("This tool only support inputs with at least two reactants and reagents separated by a dot '.'. Please double-check.")
 
         try:
-            prediction_id = self.predict_reaction(reactants)
+            prediction_id = self.predict_reaction(reactants_and_reagents_smiles)
             results = self.get_results(prediction_id)
             product = results["productMolecule"]["smiles"]
         except KeyboardInterrupt:
@@ -128,29 +138,28 @@ class ForwardSynthesis(RXN4Chem):
             raise ChemMTKToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES of reactants separated by dot '.' and try again.")
 
 
+@register_mcp_tool(mcp)
 class Retrosynthesis(RXN4Chem):
     """Predict single-step retrosynthesis."""
 
     name = "Retrosynthesis"
     func_name = "do_retrosynthesis"
-    description = (
-        "Conduct single-step retrosynthesis."
-        "Input SMILES of product, returns SMILES of potential reactants separated by a dot '.' as well as the confidence. Will output multiple sets of reactants if applicable."
-    )
-    func_doc = ("product: str", "str")
-    func_description = description
+    description = "Conduct single-step retrosynthesis. Given the product(s), predict multiple sets of potential reactants, along with their confidence."
+    code_input_sig = [("product_smiles", "str", "The SMILES of the product.")]
+    text_input_sig = [("product_smiles", "str", "The SMILES of the product.")]
+    output_sig = [("reactants_and_confidence", "str", "The SMILES of the reactants and the confidence.")]
     examples = [
-        {'input': 'CCO', 'output': 'There are 13 possible sets of reactants for the given product:\n1.\tReactants: C1CCOC1.CCNC(=O)c1cccn1C.[Li][AlH4]\tConfidence: 1.0\n2.\tReactants: CCN.CCO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n3.\tReactants: CCN.CO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n4.\tReactants: CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n5.\tReactants: CCN.CCO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n6.\tReactants: CCN.CO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n7.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n8.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.938\n9.\tReactants: CCN.Cn1cccc1C=O\tConfidence: 0.917\n10.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.841\n11.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O\tConfidence: 0.797\n12.\tReactants: C1CCOC1.CCN.CO.Cn1cccc1C=O\tConfidence: 0.647\n13.\tReactants: C1CCOC1.CC(=O)NCc1cccn1C.[Li][AlH4]\tConfidence: 1.0\n'},  
+        {'code_input': {'product_smiles: CCO'}, 'text_input': {'product_smiles: CCO'}, 'output': {'reactants_and_confidence': 'There are 13 possible sets of reactants for the given product:\n1.\tReactants: C1CCOC1.CCNC(=O)c1cccn1C.[Li][AlH4]\tConfidence: 1.0\n2.\tReactants: CCN.CCO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n3.\tReactants: CCN.CO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n4.\tReactants: CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n5.\tReactants: CCN.CCO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n6.\tReactants: CCN.CO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n7.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n8.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.938\n9.\tReactants: CCN.Cn1cccc1C=O\tConfidence: 0.917\n10.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.841\n11.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O\tConfidence: 0.797\n12.\tReactants: C1CCOC1.CCN.CO.Cn1cccc1C=O\tConfidence: 0.647\n13.\tReactants: C1CCOC1.CC(=O)NCc1cccn1C.[Li][AlH4]\tConfidence: 1.0\n'}},  
     ]
 
-    def _run_base(self, target: str, *args, **kwargs) -> str:
+    def _run_base(self, product_smiles: str) -> str:
         """Run retrosynthesis prediction."""
         # Check that input is smiles
-        if not is_smiles(target):
+        if not is_smiles(product_smiles):
             raise ChemMTKInputError("The input contains invalid SMILES. Please double-check.")
 
         try:
-            prediction_id = self.predict_retrosynthesis(target)
+            prediction_id = self.predict_retrosynthesis(product_smiles)
             paths = self.get_paths(prediction_id)
         except KeyboardInterrupt:
             raise
@@ -206,51 +215,16 @@ class Retrosynthesis(RXN4Chem):
         return '.'.join(children_smiles), path['confidence']
 
 
-forward_synthesis = None
-retrosynthesis = None
-
-
-@mcp.tool()
-def do_forward_synthesis(reactants_and_reagents_smiles: str) -> str:
-    """Predict the product of a chemical reaction. Input the SMILES of the reactants and reagents separated by a dot '.', returns SMILES of the products.
-    
-    Args:
-        reactants_and_reagents_smiles: The SMILES of the reactants and reagents separated by a dot '.'.
-    Returns:
-        str: The SMILES of the products.
-    """
-    rxn4chem_api_key = os.environ.get("RXN4CHEM_API_KEY")
-    if rxn4chem_api_key is None:
-        raise ChemMTKApiNotFoundError("The RXN4Chem API key is not set. Please set the RXN4CHEM_API_KEY environment variable.")
-
-    global forward_synthesis
-    if forward_synthesis is None:
-        forward_synthesis = ForwardSynthesis(rxn4chem_api_key=rxn4chem_api_key, init=True)
-    return forward_synthesis(reactants_and_reagents_smiles)
-
-
-@mcp.tool()
-def do_retrosynthesis(product_smiles: str) -> str:
-    """Conduct single-step retrosynthesis. Input SMILES of product, returns SMILES of potential reactants separated by a dot '.' as well as the confidence. Will output multiple sets of reactants if applicable.
-    
-    Args:
-        product_smiles: The SMILES of the product.
-    Returns:
-        str: The SMILES of the reactants and the confidence.
-    """
-    rxn4chem_api_key = os.environ.get("RXN4CHEM_API_KEY")
-    if rxn4chem_api_key is None:
-        raise ChemMTKApiNotFoundError("The RXN4Chem API key is not set. Please set the RXN4CHEM_API_KEY environment variable.")
-
-    global retrosynthesis
-    if retrosynthesis is None:
-        retrosynthesis = Retrosynthesis(rxn4chem_api_key=rxn4chem_api_key, init=True)
-    return retrosynthesis(product_smiles)
-
-
-# build a Starlette/uvicorn app
-app = mcp.sse_app()
-
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+    parser = argparse.ArgumentParser(description="Run the MCP server.")
+    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
+    args = parser.parse_args()
+
+    if args.sse:
+        # build a Starlette/uvicorn app
+        app = mcp.sse_app()
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8001)
+    else:
+        # Run the MCP server with standard input/output
+        mcp.run(transport='stdio')

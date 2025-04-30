@@ -1,15 +1,17 @@
 import os
 import logging
+import argparse
+
 from rdkit import Chem
 import rdkit.Chem.rdMolDescriptors as molD
 import pubchempy as pcp
 import selfies as sf
 
+from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
 from .utils.smiles import is_smiles
 from .utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
 from .utils.chemspace import ChemSpace
-
 from .mcp_app import mcp
 
 
@@ -91,159 +93,189 @@ def smiles2formula(smiles):
     return formula
 
 
-@mcp.tool()
-async def convert_iupac_to_smiles(iupac: str) -> str:
-    """Convert IUPAC name to SMILES string.
+@register_mcp_tool(mcp)
+class IUPAC2SMILES(BaseTool):
+    name = "IUPAC2SMILES"
+    func_name = 'convert_iupac_to_smiles'
+    description = "Convert IUPAC name to SMILES string."
+    code_input_sig = [('iupac', 'str', 'IUPAC name of the molecule')]
+    text_input_sig = [('iupac', 'str', 'IUPAC name of the molecule')]
+    output_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    examples = [
+        {'code_input': {'iupac': 'ethanol'}, 'text_input': {'iupac': 'ethanol'}, 'output': {'smiles': 'CCO'}},
+    ]
 
-    Args:
-        iupac: IUPAC name of the molecule
-    Returns:
-        str: SMILES string of the molecule
-    """
-
-    smi = None
-
-    try:
-        smi = pubchem_iupac2smiles(iupac, strict=True)
-        logger.debug("Looking up PubChem succeeded.")
-        return smi
-    except ChemMTKSearchFailError as e:
-        logger.debug("Looking up PubChem failed.")
-
-    # If PubChem fails, try ChemSpace
-    chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
-    if not chemspace_api_key:
-        logger.debug("Looking up ChemSpace failed, because ChemSpace API is not set.")
-        raise ChemMTKApiNotFoundError("Cannot find the API key for ChemSpace. Please set the CHEMSPACE_API_KEY environment variable.")
-    
-    chemspace = ChemSpace(chemspace_api_key)
-    tmp = chemspace.convert_mol_rep(iupac, "smiles")
-    try:
-        smi = tmp.split(":")[1].strip()
-        logger.debug("Looking up ChemSpace succeeded.")
-        return smi
-    except IndexError as e:
-        logger.debug("Looking up ChemSpace failed, due to IndexError.")
+    def _run_base(self, iupac: str) -> str:
         smi = None
 
-    if smi is None:
-        raise ChemMTKSearchFailError('Cannot find a matched molecule/compound for the input IUPAC name from PubChem or ChemSpace. This may be because the input IUPAC name is not valid or the molecule is not in the databases. Please double check the input or try other tool.') from e
-    
-    # If ChemSpace fails, try STOUT
-    # TODO: The STOUT package is not available anymore. Should be fixed later.
+        try:
+            smi = pubchem_iupac2smiles(iupac, strict=True)
+            logger.debug("Looking up PubChem succeeded.")
+            return smi
+        except ChemMTKSearchFailError as e:
+            logger.debug("Looking up PubChem failed.")
 
-    return smi
+        # If PubChem fails, try ChemSpace
+        chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
+        if not chemspace_api_key:
+            logger.debug("Looking up ChemSpace failed, because ChemSpace API is not set.")
+            raise ChemMTKApiNotFoundError("Cannot find the API key for ChemSpace. Please set the CHEMSPACE_API_KEY environment variable.")
+        
+        chemspace = ChemSpace(chemspace_api_key)
+        tmp = chemspace.convert_mol_rep(iupac, "smiles")
+        try:
+            smi = tmp.split(":")[1].strip()
+            logger.debug("Looking up ChemSpace succeeded.")
+            return smi
+        except IndexError as e:
+            logger.debug("Looking up ChemSpace failed, due to IndexError.")
+            smi = None
 
+        if smi is None:
+            raise ChemMTKSearchFailError('Cannot find a matched molecule/compound for the input IUPAC name from PubChem or ChemSpace. This may be because the input IUPAC name is not valid or the molecule is not in the databases. Please double check the input or try other tool.') from e
+        
+        # If ChemSpace fails, try STOUT
+        # TODO: The STOUT package is not available anymore. Should be fixed later.
 
-@mcp.tool()
-async def convert_smiles_to_iupac(smiles: str) -> str:
-    """Convert SMILES to IUPAC name.
-
-    Args:
-        smiles: SMILES string of the molecule
-    Returns:
-        str: IUPAC name of the molecule
-    """
-    if not is_smiles(smiles):
-        raise ChemMTKInputError("The input is not a valid SMILES string.")
-    
-    try:
-        name = pubchem_smiles2iupac(smiles)
-        logger.debug("Looking up PubChem succeeded.")
-    except KeyboardInterrupt:
-        raise
-    except ChemMTKSearchFailError as e:
-        logger.debug("Looking up PubChem failed.")
-        raise e
-    
-    # If PubChem fails, try STOUT
-    # TODO: The STOUT package is not available anymore. Should be fixed later.
-    
-    return name
+        return smi
 
 
-@mcp.tool()
-def convert_smiles_to_formula(smiles: str) -> str:
-    """Convert SMILES to molecular formula.
+@register_mcp_tool(mcp)
+class SMILES2IUPAC(BaseTool):
+    name = "SMILES2IUPAC"
+    func_name = 'convert_smiles_to_iupac'
+    description = "Convert SMILES to IUPAC name."
+    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    output_sig = [('iupac', 'str', 'IUPAC name of the molecule')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'iupac': 'ethanol'}},
+    ]
 
-    Args:
-        smiles: SMILES string of the molecule
-    Returns:
-        str: Molecular formula of the molecule
-    """
-    if not is_smiles(smiles):
-        raise ChemMTKInputError("The input is not a valid SMILES string.")
-    
-    try:
-        formula = smiles2formula(smiles)
-    except KeyboardInterrupt:
-        raise
-    except Exception as e:
-        raise ChemMTKToolProcessError("Failed to process the SMILES string.") from e
-    
-    return formula
-
-
-@mcp.tool()
-async def convert_chemical_name_to_smiles(name: str):
-    """Convert chemical name to SMILES string.
-
-    Args:
-        name: Chemical name of the molecule
-    Returns:
-        str: SMILES string of the molecule
-    """
-    try:
-        smi = pubchem_name2smiles(name)
-        logger.debug("Looking up PubChem succeeded.")
-    except ChemMTKSearchFailError as e:
-        logger.debug("Looking up PubChem failed.")
-        raise e
-    
-    return smi
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError("The input is not a valid SMILES string.")
+        
+        try:
+            name = pubchem_smiles2iupac(smiles)
+            logger.debug("Looking up PubChem succeeded.")
+        except KeyboardInterrupt:
+            raise
+        except ChemMTKSearchFailError as e:
+            logger.debug("Looking up PubChem failed.")
+            raise e
+        
+        # If PubChem fails, try STOUT
+        # TODO: The STOUT package is not available anymore. Should be fixed later.
+        
+        return name
 
 
-@mcp.tool()
-def convert_selfies_to_smiles(selfies: str) -> str:
-    """Convert SELFIES to SMILES string.
+@register_mcp_tool(mcp)
+class SMILES2Formula(BaseTool):
+    name = "SMILES2Formula"
+    func_name = 'convert_smiles_to_formula'
+    description = "Convert SMILES to molecular formula."
+    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    output_sig = [('formula', 'str', 'Molecular formula of the molecule')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'formula': 'C2H6O'}},
+    ]
 
-    Args:
-        selfies: SELFIES string of the molecule
-    Returns:
-        str: SMILES string of the molecule
-    """
-    try:
-        smiles = sf.decoder(selfies)
-    except KeyboardInterrupt:
-        raise
-    except:
-        raise ChemMTKToolProcessError("Cannot convert the SELFIES into SMILES, possibly because it is not a valid SELFIES string.")
-    return smiles
-
-
-@mcp.tool()
-def convert_smiles_to_selfies(smiles: str) -> str:
-    """Convert SMILES to SELFIES string.
-
-    Args:
-        smiles: SMILES string of the molecule
-    Returns:
-        str: SELFIES string of the molecule
-    """
-    if not is_smiles(smiles):
-        raise ChemMTKInputError("The input is not a valid SMILES string.")
-    try:
-        selfies = sf.encoder(smiles)
-    except KeyboardInterrupt:
-        raise
-    except:
-        raise ChemMTKToolProcessError("Cannot convert the SMILES into SELFIES, possibly because it is not a valid SMILES string.")
-    return selfies
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError("The input is not a valid SMILES string.")
+        
+        try:
+            formula = smiles2formula(smiles)
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            raise ChemMTKToolProcessError("Failed to process the SMILES string.") from e
+        
+        return formula
 
 
-# build a Starlette/uvicorn app
-app = mcp.sse_app()
+@register_mcp_tool(mcp)
+class Name2SMILES(BaseTool):
+    name = "Name2SMILES"
+    func_name = 'convert_chemical_name_to_smiles'
+    description = "Convert chemical name to SMILES string."
+    code_input_sig = [('name', 'str', 'Chemical name of the molecule')]
+    text_input_sig = [('name', 'str', 'Chemical name of the molecule')]
+    output_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    examples = [
+        {'code_input': {'name': 'aspirin'}, 'text_input': {'name': 'aspirin'}, 'output': {'smiles': 'CC(=O)OC1=CC=CC=C1C(=O)O'}},
+    ]
+
+    def _run_base(self, name: str) -> str:
+        try:
+            smi = pubchem_name2smiles(name)
+            logger.debug("Looking up PubChem succeeded.")
+        except ChemMTKSearchFailError as e:
+            logger.debug("Looking up PubChem failed.")
+            raise e
+        
+        return smi
+
+
+@register_mcp_tool(mcp)
+class SELFIES2SMILES(BaseTool):
+    name = "SELFIES2SMILES"
+    func_name = 'convert_selfies_to_smiles'
+    description = "Convert SELFIES to SMILES string."
+    code_input_sig = [('selfies', 'str', 'SELFIES string of the molecule')]
+    text_input_sig = [('selfies', 'str', 'SELFIES string of the molecule')]
+    output_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    examples = [
+        {'code_input': {'selfies': '[C][C][O]'}, 'text_input': {'selfies': '[C][C][O]'}, 'output': {'smiles': 'CCO'}},
+    ]
+
+    def _run_base(self, selfies: str) -> str:
+        try:
+            smiles = sf.decoder(selfies)
+        except KeyboardInterrupt:
+            raise
+        except:
+            raise ChemMTKToolProcessError("Cannot convert the SELFIES into SMILES, possibly because it is not a valid SELFIES string.")
+        return smiles
+
+
+@register_mcp_tool(mcp)
+class SMILES2SELFIES(BaseTool):
+    name = "SMILES2SELFIES"
+    func_name = 'convert_smiles_to_selfies'
+    description = "Convert SMILES to SELFIES string."
+    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    output_sig = [('selfies', 'str', 'SELFIES string of the molecule')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'selfies': '[C][C][O]'}},
+    ]
+
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError("The input is not a valid SMILES string.")
+        try:
+            selfies = sf.encoder(smiles)
+        except KeyboardInterrupt:
+            raise
+        except:
+            raise ChemMTKToolProcessError("Cannot convert the SMILES into SELFIES, possibly because it is not a valid SMILES string.")
+        return selfies
+
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+    parser = argparse.ArgumentParser(description="Run the MCP server.")
+    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
+    args = parser.parse_args()
+
+    if args.sse:
+        # build a Starlette/uvicorn app
+        app = mcp.sse_app()
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8001)
+    else:
+        # Run the MCP server with standard input/output
+        mcp.run(transport='stdio')
