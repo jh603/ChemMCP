@@ -1,4 +1,3 @@
-# chemmtk/__init__.py
 import importlib
 
 _tool_module_map = {
@@ -7,6 +6,27 @@ _tool_module_map = {
     "MoleculeGenerator": "molecule_description",
     "PubchemSearchQA": "pubchem_search",
     "PubchemSearch": "pubchem_search",  # Not registerred as an MCP tool
+    "ForwardSynthesis": "rxn4chem",
+    "Retrosynthesis": "rxn4chem",
+    "MolSimilarity": "molecule_ops",
+    "SMILES2Weight": "molecule_ops",
+    "FuncGroups": "molecule_ops",
+    "CanonicalizeSMILES": "molecule_ops",
+    "CountMolAtoms": "molecule_ops",
+    "GetMoleculePrice": "molecule_info",
+    "PatentCheck": "molecule_info",
+    "SolubilityPredictor": "property_prediction",
+    "LogDPredictor": "property_prediction",
+    "BBBPPredictor": "property_prediction",
+    "ToxicityPredictor": "property_prediction",
+    "HIVInhibitorPredictor": "property_prediction",
+    "SideEffectPredictor": "property_prediction",
+    "IUPAC2SMILES": "name_conversion",
+    "SMILES2IUPAC": "name_conversion",
+    "SMILES2Formula": "name_conversion",
+    "Name2SMILES": "name_conversion",
+    "SELFIES2SMILES": "name_conversion",
+    "SMILES2SELFIES": "name_conversion",
 }
 
 __all__ = list(_tool_module_map.keys())

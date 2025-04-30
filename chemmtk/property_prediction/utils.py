@@ -1,14 +1,12 @@
 import os
 import shutil
 import os
-import contextlib
 import pickle
 import lmdb
 import hashlib
 import pandas as pd
 import numpy as np
 from rdkit import Chem
-from tqdm import tqdm
 from rdkit.Chem import AllChem
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')

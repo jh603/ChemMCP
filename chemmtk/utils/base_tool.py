@@ -12,8 +12,8 @@ class BaseTool(ABC):
     name: str
     func_name: str
     description: str
-    text_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
     code_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
+    text_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
     output_sig: List[Tuple]  # [("output_name", "output_type", "output_description"), ...]
     examples: list
     

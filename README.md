@@ -165,8 +165,7 @@ Based on the functions, the tools can be divided into general tools, molecule to
 - [ ] [Feature] Support Python calling.
 - [ ] [NewTool] Add Wikipedia search tool.
 - [ ] [NewTool] Add neural network methods for name conversion.
-
-
+- [ ] [ToolUpdate] Fix the error messages when running property predictors, although not impacting their function.
 
 ## Citation
 
