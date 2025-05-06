@@ -6,7 +6,7 @@ from typing import List, Tuple
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.smiles import is_smiles
 from ..utils.errors import ChemMTKInputError, ChemMTKToolInitError
-from ..mcp_app import mcp
+from ..mcp_app import mcp_instance
 from . import utils as pp_utils
 
 
@@ -104,7 +104,7 @@ class PropertyPredictor(BaseTool):
         return r
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PropertyPredictorESOL(PropertyPredictor):
     name = "SolubilityPredictor"
     func_name = 'predict_solubility'
@@ -128,7 +128,7 @@ class PropertyPredictorESOL(PropertyPredictor):
         return 'The log solubility in mol/L is {:.3f}.'.format(r) + '\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PropertyPredictorLIPO(PropertyPredictor):
     name = "LogDPredictor"
     func_name = 'predict_logd'
@@ -152,7 +152,7 @@ class PropertyPredictorLIPO(PropertyPredictor):
         return 'The octanol/water distribution coefficient logD under the circumstance of pH 7.4 is {:.3f}.'.format(r) + '\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PropertyPredictorBBBP(PropertyPredictor):
     name = "BBBPPredictor"
     func_name = 'predict_bbbp'
@@ -176,7 +176,7 @@ class PropertyPredictorBBBP(PropertyPredictor):
         return 'The probability of the compound to penetrate the blood-brain barrier is {:.2f}%, which means it\'s {} to happen.'.format(r * 100, 'likely' if r >= 0.5 else 'unlikely') + '\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PropertyPredictorClinTox(PropertyPredictor):
     name = "ToxicityPredictor"
     func_name = 'predict_toxicity'
@@ -200,7 +200,7 @@ class PropertyPredictorClinTox(PropertyPredictor):
         return 'The probability of the compound to be toxic is {:.2f}%, which means it\'s {} to happen.'.format(r * 100, 'likely' if r >= 0.5 else 'unlikely') + '\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PropertyPredictorHIV(PropertyPredictor):
     name = "HIVInhibitorPredictor"
     func_name = 'predict_hiv'
@@ -224,7 +224,7 @@ class PropertyPredictorHIV(PropertyPredictor):
         return 'The probability of the compound to be an inhibitor of HIV replication is {:.2f}%, which means it\'s {} to happen.'.format(r * 100, 'likely' if r >= 0.5 else 'unlikely') + '\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PropertyPredictorSIDER(PropertyPredictor):
     subtask_list = ['Blood and lymphatic system disorders', 'Cardiac disorders', 'Congenital, familial and genetic disorders', 'Ear and labyrinth disorders', 'Endocrine disorders', 'Eye disorders', 'Gastrointestinal disorders', 'Hepatobiliary disorders', 'Immune system disorders', 'Metabolism and nutrition disorders', 'Musculoskeletal and connective tissue disorders', 'Neoplasms benign, malignant and unspecified (incl cysts and polyps)', 'Nervous system disorders', 'Pregnancy, puerperium and perinatal conditions', 'Psychiatric disorders', 'Renal and urinary disorders', 'Reproductive system and breast disorders', 'Respiratory, thoracic and mediastinal disorders', 'Skin and subcutaneous tissue disorders', 'Vascular disorders']
 
@@ -264,9 +264,9 @@ if __name__ == "__main__":
 
     if args.sse:
         # build a Starlette/uvicorn app
-        app = mcp.sse_app()
+        app = mcp_instance.sse_app()
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
-        mcp.run(transport='stdio')
+        mcp_instance.run(transport='stdio')

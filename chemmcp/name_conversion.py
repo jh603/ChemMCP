@@ -12,7 +12,7 @@ from .utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKTool
 from .utils.smiles import is_smiles
 from .utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
 from .utils.chemspace import ChemSpace
-from .mcp_app import mcp
+from .mcp_app import mcp_instance
 
 
 logger = logging.getLogger(__name__)
@@ -93,7 +93,7 @@ def smiles2formula(smiles):
     return formula
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class IUPAC2SMILES(BaseTool):
     name = "IUPAC2SMILES"
     func_name = 'convert_iupac_to_smiles'
@@ -140,7 +140,7 @@ class IUPAC2SMILES(BaseTool):
         return smi
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class SMILES2IUPAC(BaseTool):
     name = "SMILES2IUPAC"
     func_name = 'convert_smiles_to_iupac'
@@ -171,7 +171,7 @@ class SMILES2IUPAC(BaseTool):
         return name
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class SMILES2Formula(BaseTool):
     name = "SMILES2Formula"
     func_name = 'convert_smiles_to_formula'
@@ -197,7 +197,7 @@ class SMILES2Formula(BaseTool):
         return formula
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class Name2SMILES(BaseTool):
     name = "Name2SMILES"
     func_name = 'convert_chemical_name_to_smiles'
@@ -220,7 +220,7 @@ class Name2SMILES(BaseTool):
         return smi
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class SELFIES2SMILES(BaseTool):
     name = "SELFIES2SMILES"
     func_name = 'convert_selfies_to_smiles'
@@ -242,7 +242,7 @@ class SELFIES2SMILES(BaseTool):
         return smiles
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class SMILES2SELFIES(BaseTool):
     name = "SMILES2SELFIES"
     func_name = 'convert_smiles_to_selfies'
@@ -273,9 +273,9 @@ if __name__ == "__main__":
 
     if args.sse:
         # build a Starlette/uvicorn app
-        app = mcp.sse_app()
+        app = mcp_instance.sse_app()
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
-        mcp.run(transport='stdio')
+        mcp_instance.run(transport='stdio')

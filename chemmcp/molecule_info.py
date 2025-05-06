@@ -7,10 +7,10 @@ from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import ChemMTKApiNotFoundError, ChemMTKInputError
 from .utils.chemspace import ChemSpace
 from .utils.smiles import is_smiles
-from .mcp_app import mcp
+from .mcp_app import mcp_instance
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class GetMoleculePrice(BaseTool):
     name = "GetMoleculePrice"
     func_name = 'get_molecule_price'
@@ -36,7 +36,7 @@ class GetMoleculePrice(BaseTool):
         return price
     
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class PatentCheck(BaseTool):
     name = "PatentCheck"
     func_name = 'check_molecule_if_patented'
@@ -70,9 +70,9 @@ if __name__ == "__main__":
 
     if args.sse:
         # build a Starlette/uvicorn app
-        app = mcp.sse_app()
+        app = mcp_instance.sse_app()
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
-        mcp.run(transport='stdio')
+        mcp_instance.run(transport='stdio')

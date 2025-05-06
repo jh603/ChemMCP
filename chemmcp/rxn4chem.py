@@ -9,7 +9,7 @@ from rxn4chemistry import RXN4ChemistryWrapper  # type: ignore
 from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import ChemMTKToolProcessError, ChemMTKToolInitError, ChemMTKInputError, ChemMTKApiNotFoundError
 from .utils.smiles import is_smiles
-from .mcp_app import mcp
+from .mcp_app import mcp_instance
 
 
 logger = logging.getLogger(__name__)
@@ -84,7 +84,7 @@ class RXN4Chem(BaseTool):
         return decorator
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class ForwardSynthesis(RXN4Chem):
     """Predict reaction."""
 
@@ -138,7 +138,7 @@ class ForwardSynthesis(RXN4Chem):
             raise ChemMTKToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES of reactants separated by dot '.' and try again.")
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class Retrosynthesis(RXN4Chem):
     """Predict single-step retrosynthesis."""
 
@@ -222,9 +222,9 @@ if __name__ == "__main__":
 
     if args.sse:
         # build a Starlette/uvicorn app
-        app = mcp.sse_app()
+        app = mcp_instance.sse_app()
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
-        mcp.run(transport='stdio')
+        mcp_instance.run(transport='stdio')

@@ -7,7 +7,7 @@ from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import ChemMTKInputError
 from .utils.smiles import tanimoto, is_smiles
 from .utils.canonicalization import canonicalize_molecule_smiles
-from .mcp_app import mcp
+from .mcp_app import mcp_instance
 
 
 # Constants
@@ -60,7 +60,7 @@ DICT_FGS = {
 }
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class MolSimilarity(BaseTool):
     name = "MolSimilarity"
     func_name = 'cal_molecule_similarity'
@@ -102,7 +102,7 @@ class MolSimilarity(BaseTool):
         return message
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class SMILES2Weight(BaseTool):
     name = "SMILES2Weight"
     func_name = 'cal_molecular_weight'
@@ -122,7 +122,7 @@ class SMILES2Weight(BaseTool):
         return mol_weight
     
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class FuncGroups(BaseTool):
     name = "FuncGroups"
     func_name = 'get_functional_groups'
@@ -156,7 +156,7 @@ class FuncGroups(BaseTool):
             raise ChemMTKInputError("Invalid SMILES string.")
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class CanonicalizeSMILES(BaseTool):
     name = "CanonicalizeSMILES"
     func_name = 'canonicalize_smiles'
@@ -175,7 +175,7 @@ class CanonicalizeSMILES(BaseTool):
         return smiles
     
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class CountMolAtoms(BaseTool):
     name = "CountMolAtoms"
     func_name = 'count_molecule_atoms'
@@ -210,10 +210,10 @@ if __name__ == "__main__":
 
     if args.sse:
         # build a Starlette/uvicorn app
-        app = mcp.sse_app()
+        app = mcp_instance.sse_app()
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
-        mcp.run(transport='stdio')
+        mcp_instance.run(transport='stdio')
 

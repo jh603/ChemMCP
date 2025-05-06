@@ -5,10 +5,10 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.smiles import is_smiles
 from .utils.errors import ChemMTKInputError
-from .mcp_app import mcp
+from .mcp_app import mcp_instance
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class MoleculeCaptioner(BaseTool):
     name = "MoleculeCaptioner"
     func_name = "generate_molecule_caption"
@@ -47,7 +47,7 @@ class MoleculeCaptioner(BaseTool):
         return self._run_molt5(smiles) + "\n\nNote: This is a generated description and may not be accurate. Please double check the result."
 
 
-@register_mcp_tool(mcp)
+@register_mcp_tool(mcp_instance)
 class MoleculeGenerator(BaseTool):
     name = "MoleculeGenerator"
     func_name = "generate_molecule_from_description"
@@ -90,9 +90,9 @@ if __name__ == "__main__":
 
     if args.sse:
         # build a Starlette/uvicorn app
-        app = mcp.sse_app()
+        app = mcp_instance.sse_app()
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
-        mcp.run(transport='stdio')
+        mcp_instance.run(transport='stdio')

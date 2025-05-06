@@ -1,14 +1,14 @@
-# ChemMTK - Chemistry MCP ToolKit
+# ChemMCP - Chemistry MCP ToolKit
 
-<img src="static/img/banner.png" alt="ChemMTK Banner" style="zoom:20%;" />
+<img src="static/img/banner.png" alt="ChemMCP Banner" style="zoom:20%;" />
 
 ## What is this?
 
-ChemMTK (Chemistry MCP ToolKit) is **a specialized Model Context Protocol (MCP) server** that empowers AI assistants with advanced chemistry capabilities. By integrating **powerful chemistry tools**, ChemMTK **transforms general AI models into chemistry experts** capable of performing complex molecular analysis, property prediction, and reaction synthesis tasks without requiring domain-specific training. The current tools are from our [ChemToolAgent](https://osu-nlp-group.github.io/ChemToolAgent/), separated from the agent for easier and broader use.
+ChemMCP (Chemistry MCP ToolKit) is **a specialized Model Context Protocol (MCP) server** that empowers AI assistants with advanced chemistry capabilities. By integrating **powerful chemistry tools**, ChemMCP **transforms general AI models into chemistry experts** capable of performing complex molecular analysis, property prediction, and reaction synthesis tasks without requiring domain-specific training. The current tools are from our [ChemToolAgent](https://osu-nlp-group.github.io/ChemToolAgent/), separated from the agent for easier and broader use.
 
-[MCP (Model Context Protocol)](https://modelcontextprotocol.io/introduction) is a framework that allows AI models to access external tools and resources through a standardized interface. ChemMTK leverages this architecture to bridge the gap between general-purpose AI models and specialized chemistry tools, enabling seamless integration of chemistry expertise into AI workflows.
+[MCP (Model Context Protocol)](https://modelcontextprotocol.io/introduction) is a framework that allows AI models to access external tools and resources through a standardized interface. ChemMCP leverages this architecture to bridge the gap between general-purpose AI models and specialized chemistry tools, enabling seamless integration of chemistry expertise into AI workflows.
 
-With ChemMTK, you can:
+With ChemMCP, you can:
 
 - Convert between different molecular representations (SMILES, IUPAC, chemical names, etc.)
 - Analyze molecular properties and structures
@@ -18,13 +18,13 @@ With ChemMTK, you can:
 - Access scientific databases like PubChem for detailed compound information
 - ... (more to come)
 
-We will continue to add and maintain tools in ChemMTK. **You are more than welcome to contribute, by maining existing tools or adding new tools!**
+We will continue to add and maintain tools in ChemMCP. **You are more than welcome to contribute, by maining existing tools or adding new tools!**
 
 
 
 ## Usage
 
-ChemMTK follows standard MCP integration patterns, making it straightforward to incorporate into your AI workflows.
+ChemMCP follows standard MCP integration patterns, making it straightforward to incorporate into your AI workflows.
 
 **Note**: Tested only on Linux and macOS. Windows support depends on whether the dependent packages are compatible.
 
@@ -41,24 +41,24 @@ We recommend using [uv](https://github.com/astral-sh/uv) to manage the environme
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**Download ChemMTK**
+**Download ChemMCP**
 
 ```bash
-git clone https://github.com/OSU-NLP-Group/ChemMTK.git
+git clone https://github.com/OSU-NLP-Group/ChemMCP.git
 ```
 
 **Install Environment and Run**
 
 ```bash
-cd ChemMTK
-uv run -m chemmtk
+cd ChemMCP
+uv run -m chemmcp
 ```
 
 The server should run without error. If that is the case, you can kill it and check the following sections to integrate with your AI assistants.
 
 **Environment Variables**
 
-To make tools work properly, some variables containing API keys and configurations should be correctly set. Please get them before applying ChemMTK.
+To make tools work properly, some variables containing API keys and configurations should be correctly set. Please get them before applying ChemMCP.
 
 ```python
 {
@@ -77,13 +77,13 @@ To make tools work properly, some variables containing API keys and configuratio
 
 ### Use Case 1: Integration with LLM APIs
 
-LLM providers provide their SDKs to support MCP servers. Take OpenAI Agents SDK as an example, you can connect to ChemMTK using the following lines. See [this page](https://openai.github.io/openai-agents-python/mcp/) for details.
+LLM providers provide their SDKs to support MCP servers. Take OpenAI Agents SDK as an example, you can connect to ChemMCP using the following lines. See [this page](https://openai.github.io/openai-agents-python/mcp/) for details.
 
 ```python
 async with MCPServerStdio(
     params={
         "command": "uv",
-        "args": ["--directory", "/PATH/TO/ChemMTK", "run", "-m", "chemmtk"],
+        "args": ["--directory", "/PATH/TO/ChemMCP", "run", "-m", "chemmcp"],
         "toolCallTimeoutMillis": 300000,
         "env": envs,  # See the above "Environment Variables" section
     }
@@ -95,14 +95,14 @@ async with MCPServerStdio(
 
 ### Use Case 2: Integration with LLM GUI Client (Claude Desktop)
 
-Anthropic's Claude Desktop is the best client for MCP until know. Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure the client for ChemMTK. Specifically, you can see the JSON file like the following, pretty much the same as in OpenAI's API.
+Anthropic's Claude Desktop is the best client for MCP until know. Follow [this tutorial](https://modelcontextprotocol.io/quickstart/server#testing-your-server-with-claude-for-desktop) to configure the client for ChemMCP. Specifically, you can see the JSON file like the following, pretty much the same as in OpenAI's API.
 
 ```json
 {
     "mcpServers": {
-        "ChemMTK": {
+        "ChemMCP": {
             "command": "uv",
-            "args": ["--directory", "/PATH/TO/ChemMTK", "run", "-m", "chemmtk"],
+            "args": ["--directory", "/PATH/TO/ChemMCP", "run", "-m", "chemmcp"],
             "toolCallTimeoutMillis": 300000,
             "env": envs,  # See the above "Environment Variables" section
         }
@@ -111,8 +111,8 @@ Anthropic's Claude Desktop is the best client for MCP until know. Follow [this t
 ```
 
 <details>
-  <summary>An example of Claude using ChemMTK to do chemistry tasks.</summary>
-  <img src="static/img/claude_example.png" alt="Using ChemMTK in Claude Desktop." style="zoom:40%;" />
+  <summary>An example of Claude using ChemMCP to do chemistry tasks.</summary>
+  <img src="static/img/claude_example.png" alt="Using ChemMCP in Claude Desktop." style="zoom:40%;" />
 </details>
 
 
@@ -177,7 +177,7 @@ Based on the functions, the tools can be divided into general tools, molecule to
 
 ## Citation
 
-If ChemMTK is valuable to your research or development, please kindly cite our work.
+If ChemMCP is valuable to your research or development, please kindly cite our work.
 
 ```
 @article{yu2024chemtoolagent,
@@ -187,11 +187,11 @@ If ChemMTK is valuable to your research or development, please kindly cite our w
     year={2024}
 }
 
-@misc{yu2025chemmtk,
+@misc{yu2025chemmcp,
   author       = {Botao Yu and Huan Sun},
-  title        = {ChemMTK: A Chemistry MCP Toolkit},
+  title        = {ChemMCP: A Chemistry MCP Toolkit},
   year         = {2025},
-  url          = {https://github.com/OSU-NLP-Group/ChemMTK},
+  url          = {https://github.com/OSU-NLP-Group/ChemMCP},
   note         = {2025-04-28-01},
 }
 ```

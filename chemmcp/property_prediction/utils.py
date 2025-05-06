@@ -313,4 +313,3 @@ def run_on_dataset(args, task, model, loss):
             log_outputs.append(log_output)
         pickle.dump(log_outputs, open(save_path, "wb"))
     return None
-                

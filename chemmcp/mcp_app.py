@@ -3,10 +3,10 @@ from mcp.server.fastmcp import FastMCP
 
 from .utils.errors import catch_errors
 
-mcp = FastMCP("ChemMcpToolkit", request_timeout=300)
+mcp_instance = FastMCP("ChemMcpToolkit", request_timeout=300)
 
 
-original_tool = mcp.tool
+original_tool = mcp_instance.tool
 
 def tool_with_catch(*dargs, **dkwargs):
     def decorator(fn):
@@ -15,4 +15,4 @@ def tool_with_catch(*dargs, **dkwargs):
         return original_tool(*dargs, **dkwargs)(wrapped)
     return decorator
 
-mcp.tool = tool_with_catch
+mcp_instance.tool = tool_with_catch
