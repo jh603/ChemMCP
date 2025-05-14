@@ -1,15 +1,9 @@
 import argparse
-import logging
 
-logger = logging.getLogger(__name__)
-
-
-# Import all the modules to register them with the MCP server
-from . import property_prediction
-
+from ..tools.molecule_price import MoleculePrice
+from ..tools.patent_check import PatentCheck
 from ..utils.mcp_app import mcp_instance
 
-logger.info("ChemMTK tools initialized.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the MCP server.")
@@ -20,7 +14,7 @@ if __name__ == "__main__":
         # build a Starlette/uvicorn app
         app = mcp_instance.sse_app()
         import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info")
+        uvicorn.run(app, host="127.0.0.1", port=8001)
     else:
         # Run the MCP server with standard input/output
         mcp_instance.run(transport='stdio')

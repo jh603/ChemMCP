@@ -1,0 +1,49 @@
+import os
+import argparse
+
+from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.errors import ChemMTKApiNotFoundError, ChemMTKInputError
+from ..utils.chemspace import ChemSpace
+from ..utils.smiles import is_smiles
+from ..utils.mcp_app import mcp_instance
+
+
+@register_mcp_tool(mcp_instance)
+class MoleculePrice(BaseTool):
+    name = "MoleculePrice"
+    func_name = 'get_molecule_price'
+    description = "Get the cheapest available price of a molecule."
+    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    output_sig = [('price', 'str', 'Description of the cheapest available price of the molecule')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'price': '25g of this molecule cost 143 USD and can be purchased at A2B Chem.'}},
+    ]
+
+    def __init__(self, chemspace_api_key: str = None, init=True, interface='code') -> None:
+        chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
+        if chemspace_api_key is None:
+            raise ChemMTKApiNotFoundError("CHEMSPACE_API_KEY environment variable not set.")
+        self.chemspace = ChemSpace(chemspace_api_key)
+        super().__init__(init=init, interface=interface)
+
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError(f"smiles `{smiles}` is not a valid SMILES string.")
+        price = self.chemspace.buy_mol(smiles)
+        return price
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run the MCP server.")
+    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
+    args = parser.parse_args()
+
+    if args.sse:
+        # build a Starlette/uvicorn app
+        app = mcp_instance.sse_app()
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=8001)
+    else:
+        # Run the MCP server with standard input/output
+        mcp_instance.run(transport='stdio')

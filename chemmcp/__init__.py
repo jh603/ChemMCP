@@ -1,7 +1,7 @@
 import importlib
 
 _tool_module_map = {
-    "WebSearch":    "general_search",
+    "WebSearch":    "tools.web_search",
     "MoleculeCaptioner": "molecule_description",
     "MoleculeGenerator": "molecule_description",
     "PubchemSearchQA": "pubchem_search",

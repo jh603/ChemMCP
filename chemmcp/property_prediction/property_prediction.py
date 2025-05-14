@@ -6,7 +6,7 @@ from typing import List, Tuple
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.smiles import is_smiles
 from ..utils.errors import ChemMTKInputError, ChemMTKToolInitError
-from ..mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance
 from . import utils as pp_utils
 
 

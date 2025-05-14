@@ -7,12 +7,12 @@ import rdkit.Chem.rdMolDescriptors as molD
 import pubchempy as pcp
 import selfies as sf
 
-from .utils.base_tool import BaseTool, register_mcp_tool
-from .utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
-from .utils.smiles import is_smiles
-from .utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
-from .utils.chemspace import ChemSpace
-from .mcp_app import mcp_instance
+from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
+from ..utils.smiles import is_smiles
+from ..utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
+from ..utils.chemspace import ChemSpace
+from ..utils.mcp_app import mcp_instance
 
 
 logger = logging.getLogger(__name__)

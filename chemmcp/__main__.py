@@ -14,7 +14,7 @@ from . import property_prediction
 from . import pubchem_search
 from . import rxn4chem
 
-from .mcp_app import mcp_instance
+from .utils.mcp_app import mcp_instance
 
 logger.info("ChemMTK tools initialized.")
 

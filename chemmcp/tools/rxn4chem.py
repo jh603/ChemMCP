@@ -9,7 +9,7 @@ from rxn4chemistry import RXN4ChemistryWrapper  # type: ignore
 from .utils.base_tool import BaseTool, register_mcp_tool
 from .utils.errors import ChemMTKToolProcessError, ChemMTKToolInitError, ChemMTKInputError, ChemMTKApiNotFoundError
 from .utils.smiles import is_smiles
-from .mcp_app import mcp_instance
+from .utils.mcp_app import mcp_instance
 
 
 logger = logging.getLogger(__name__)
