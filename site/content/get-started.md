@@ -94,7 +94,7 @@ Set the following environment variables to enable tool functionality:
 
 {{< alert "circle-info" >}}
 
-To use all tools, you'll need all the above variables. If you only plan to use a subset, not all variables are required, and you can use our **QuickSetup** utility (TODO) to auto-configure your tools.
+To use all tools, you'll need all the above variables. If you only plan to use a subset, not all variables are required, and you can use our **QuickConfig** utility (TODO) to auto-configure your tools.
 
 {{< /alert >}}
 
@@ -189,7 +189,7 @@ See the full list and documentation on the [Tools](/tools) page.
 ## Next Steps
 
 - Browse all tools on the [Tools](/tools) page.
-- Use QuickSetup (TODO) to auto-configure tools based on your needs.
+- Use QuickConfig (TODO) to auto-configure tools based on your needs.
 - Contribute your own tools or improve existing ones (see Contributing Guide TODO).
 
 ## Contact
