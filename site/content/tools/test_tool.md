@@ -1,5 +1,5 @@
 ---
-title: "WebSearch (search_web)"
+title: "Test (search_web)"
 categories: ["General"]
 tags: ["Web", "LLMs", "Neural Networks"]
 description: "Search the web for any questions and knowledge (including both general ones and domain-specific ones) and obtain a concise answer of the search results."
@@ -7,7 +7,12 @@ weight: 2
 draft: false
 ---
 
-Version: 0.1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Update: 2025/05/10
+<div style="display: flex; gap: 0.75rem; align-items: center;">
+  {{< badge >}}Version: 0.1.0{{< /badge >}}
+  {{< badge >}}Last Update: 2025/05/10{{< /badge >}}
+  {{< badge >}}Support MCP{{< /badge >}}
+  {{< badge >}}Support Python Calling{{< /badge >}}
+</div>
 
 {{< lead >}}
 **Search the web for any questions and knowledge (including both general ones and domain-specific ones) and obtain a concise answer of the search results.** 
@@ -44,9 +49,9 @@ This tool supports both [**MCP usage**](#mcp-usage) and [**Python calling**](#py
 
 ### Output
 
-| Name | Type | Default |Description |
-| ----- | --- | --- | --- |
-| result   | str | N/A | The answer to the search query summarized by Tavily's LLM. |
+| Name | Type | Description |
+| ----- | --- | --- |
+| result   | str | The answer to the search query summarized by Tavily's LLM. |
 
 ### Required Env
 

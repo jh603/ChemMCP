@@ -22,8 +22,8 @@ class WebSearch(BaseTool):
     categories = ["General"]
     tags = ["Web", "LLMs", "Neural Networks"]
     required_envs = [("TAVILY_API_KEY", "The API key for [Tavily](https://tavily.com/).")]
-    text_input_sig = [("query", "str", "The search query.")]
-    code_input_sig = [("query", "str", "The search query.")]
+    text_input_sig = [("query", "str", "N/A", "The search query.")]
+    code_input_sig = [("query", "str", "N/A", "The search query.")]
     output_sig = [("result", "str", "The answer to the search query summarized by Tavily's LLM.")]
     examples = [
         {'text_input': {'query': 'What is the boiling point of water?'}, 'code_input': {'query': 'What is the boiling point of water?'}, 'output': {'result': 'The boiling point of water at sea level is 100°C (212°F).'}},
