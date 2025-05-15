@@ -15,6 +15,7 @@ class BBBPPredictor(PropertyPredictor):
     description = 'Predict the blood-brain barrier penetration of a molecule given its SMILES representation.'
     categories = ["Molecule"]
     tags = ["Molecular Properties", "Neural Networks"]
+    required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('bbbp', 'str', 'The probability of the compound to penetrate the blood-brain barrier.')]

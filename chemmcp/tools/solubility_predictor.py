@@ -15,6 +15,7 @@ class SolubilityPredictor(PropertyPredictor):
     description = "Predict the solubility of a molecule given its SMILES representation."
     categories = ["Molecule"]
     tags = ["Molecular Properties", "Neural Networks"]
+    required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('solubility', 'float', 'Log solubility in mol/L.')]

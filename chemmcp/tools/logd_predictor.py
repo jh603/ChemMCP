@@ -13,8 +13,11 @@ class LogDPredictor(PropertyPredictor):
     name = "LogDPredictor"
     func_name = 'predict_logd'
     description = 'Predict the logD of a molecule given its SMILES representation.'
-    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]
-    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]
+    categories = ["Molecule"]
+    tags = ["Molecular Properties", "Neural Networks"]
+    required_envs = []
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('logd', 'str', 'The octanol/water distribution coefficient logD under the circumstance of pH 7.4.')]
     examples = [
         {'code_input': {'smiles': 'NC(=O)C1=CC=CC=C1O'}, 'text_input': {'smiles': 'NC(=O)C1=CC=CC=C1O'}, 'output': {'logd': 'The octanol/water distribution coefficient logD under the circumstance of pH 7.4 is 1.090.\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'}},

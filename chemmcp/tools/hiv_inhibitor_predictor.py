@@ -15,6 +15,7 @@ class HIVInhibitorPredictor(PropertyPredictor):
     description = "Predict the HIV inhibition of a molecule given its SMILES representation."
     categories = ["Molecule"]
     tags = ["Molecular Properties", "Neural Networks"]
+    required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('hiv', 'str', 'The probability of the compound to be an inhibitor of HIV replication.')]

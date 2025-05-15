@@ -17,6 +17,7 @@ class SideEffectPredictor(PropertyPredictor):
     description = "Predict whether a molecule can cause 20 different side effects, along with the probabilities of each side effect. The side effects are: " + '; '.join(['(%d) %s' % (idx, subtask) for idx, subtask in enumerate(subtask_list, start=1)]) + "."
     categories = ["Molecule"]
     tags = ["Molecular Properties", "Neural Networks"]
+    required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('side_effect', 'str', 'The probabilities of the compound to cause different side effects.')]

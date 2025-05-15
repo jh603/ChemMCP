@@ -45,6 +45,9 @@ class BaseTool(ABC):
 
         # If this class is still abstract (i.e. it has abstract methods left unimplemented), skip the metadata check entirely.
         if inspect.isabstract(cls) or getattr(cls, '__abstract__', False):
+            if hasattr(cls, '__abstract__'):
+                # remove it so it doesn't propagate
+                delattr(cls, "__abstract__")
             return
 
         # Pydantic v2: model_fields maps our declared names → FieldInfo
