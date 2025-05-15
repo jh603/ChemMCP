@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class HivInhibitorPredictor(PropertyPredictor):
     __version__ = "0.1.0"
     name = "HivInhibitorPredictor"
-    func_name = 'predict_hiv'
+    func_name = 'predict_hiv_inhibitor'
     description = "Predict the HIV inhibition of a molecule given its SMILES representation."
     categories = ["Molecule"]
     tags = ["Molecular Properties", "Neural Networks"]
