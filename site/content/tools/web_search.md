@@ -14,7 +14,7 @@ weight: 2
 ---
 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
   {{< badge >}}Version: 0.1.0{{< /badge >}}
-  {{< badge >}}Last Update: 2025/05/14{{< /badge >}}
+  {{< badge >}}Last Update: Unknown{{< /badge >}}
   {{< badge >}}MCP Support{{< /badge >}}
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>

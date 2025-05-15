@@ -29,4 +29,5 @@ dependencies = [
 unicore = { git = "https://github.com/dptech-corp/Uni-Core.git" }
 
 [tool.setuptools]
+package-dir = { "" = "src" }
 packages = ["chemmcp"]
