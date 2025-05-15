@@ -177,8 +177,8 @@ cython_debug/
 
 *.ipynb
 
-chemmcp/tool_utils/property_prediction/checkpoints
-chemmcp/tool_utils/property_prediction/tmp_data
+src/chemmcp/tool_utils/property_prediction/checkpoints
+src/chemmcp/tool_utils/property_prediction/tmp_data
 
 **/.DS_Store
 

@@ -71,6 +71,8 @@ def run_mcp_server():
 
     ChemMCPManager.init_mcp_tools(mcp_instance)
 
+    logger.info("Initialized ChemMCP tools.")
+
     if args.sse:
         # build a Starlette/uvicorn app
         app = mcp_instance.sse_app()

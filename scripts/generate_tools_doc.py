@@ -9,7 +9,7 @@ HERE = os.path.dirname(__file__)
 SRC  = os.path.abspath(os.path.join(HERE, "..", "src"))
 sys.path.insert(0, SRC)
 
-from chemmcp import __all__ as all_tools
+from chemmcp.tools import __all__ as all_tools
 import chemmcp
 from .modules_utils import get_class_file_path, git_last_commit_date_for_class
 
