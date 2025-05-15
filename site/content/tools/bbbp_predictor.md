@@ -7,13 +7,13 @@ draft: false
 tags:
 - Molecular Properties
 - Neural Networks
-title: BBBPPredictor (predict_bbbp)
+title: BbbpPredictor (predict_bbbp)
 weight: 2
 
 ---
 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
   {{< badge >}}Version: 0.1.0{{< /badge >}}
-  {{< badge >}}Last Update: 2025/05/14{{< /badge >}}
+  {{< badge >}}Last Update: 2025/05/15{{< /badge >}}
   {{< badge >}}MCP Support{{< /badge >}}
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
@@ -60,10 +60,10 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import BBBPPredictor
+from chemmcp.tools import BbbpPredictor
 
 # Initialize the tool
-tool = BBBPPredictor()
+tool = BbbpPredictor()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)

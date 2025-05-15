@@ -6,13 +6,13 @@ draft: false
 tags:
 - SMILES
 - RDKit
-title: SMILES2Formula (convert_smiles_to_formula)
+title: Smiles2Formula (convert_smiles_to_formula)
 weight: 2
 
 ---
 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
   {{< badge >}}Version: 0.1.0{{< /badge >}}
-  {{< badge >}}Last Update: 2025/05/14{{< /badge >}}
+  {{< badge >}}Last Update: 2025/05/15{{< /badge >}}
   {{< badge >}}MCP Support{{< /badge >}}
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
@@ -59,10 +59,10 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import SMILES2Formula
+from chemmcp.tools import Smiles2Formula
 
 # Initialize the tool
-tool = SMILES2Formula()
+tool = Smiles2Formula()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
