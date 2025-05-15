@@ -1,15 +1,9 @@
 import os
-import logging
-from typing import List, Tuple
 
 from ...utils.base_tool import BaseTool
 from ...utils.errors import ChemMTKInputError, ChemMTKToolInitError
 from ...tool_utils.smiles import is_smiles
-from ...utils.mcp_app import mcp_instance
 from . import utils as pp_utils
-
-
-logger = logging.getLogger(__name__)
 
 
 file_path = os.path.abspath(__file__)

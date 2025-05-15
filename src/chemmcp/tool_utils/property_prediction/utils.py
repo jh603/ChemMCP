@@ -205,7 +205,7 @@ def load_model(args):
         attempt += 1
 
     # Load model
-    logger.info("loading model(s) from {}".format(args.path))
+    logger.debug("loading model(s) from {}".format(args.path))
     state = checkpoint_utils.load_checkpoint_to_cpu(args.path)
     task = tasks.setup_task(args)
     model = task.build_model(args)
@@ -283,7 +283,7 @@ def run_on_dataset(args, task, model, loss):
         except:
             fname = 'infer'
         save_path = os.path.join(args.results_path, fname + "_" + subset + ".out.pkl")
-        logger.info("Dataset Length: %d" % (len(dataset),))
+        logger.debug("Dataset Length: %d" % (len(dataset),))
         # Initialize data iterator
         itr = task.get_batch_iterator(
             dataset=dataset,

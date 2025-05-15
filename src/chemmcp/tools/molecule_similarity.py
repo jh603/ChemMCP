@@ -48,6 +48,12 @@ class MoleculeSimilarity(BaseTool):
             ]
             message = f"The Tanimoto similarity between {smiles1} and {smiles2} is {round(similarity, 4)}, indicating that the two molecules are {val}."
         return message
+    
+    def _run_text(self, smiles_pair: str) -> str:
+        smiles1, smiles2 = smiles_pair.split(';')
+        smiles1 = smiles1.strip()
+        smiles2 = smiles2.strip()
+        return self._run_base(smiles1, smiles2)
 
 
 if __name__ == "__main__":

@@ -151,7 +151,7 @@ Returns:
     def _run_text(self, query, *args, **kwargs):
         # Check the signature of self._run_base
         sig = inspect.signature(self._run_base)
-        params = list(sig.parameters.values())[1:]
+        params = list(sig.parameters.values())
         
         # If the number of parameters is 1, and the type is str, then we assume the tool is text-compatible
         if len(params) == 1 and params[0].annotation == str:

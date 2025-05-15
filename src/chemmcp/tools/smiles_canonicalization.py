@@ -25,6 +25,9 @@ class SmilesCanonicalization(BaseTool):
         if smiles is None:
             raise ChemMTKInputError("Invalid SMILES string.")
         return smiles
+    
+    def _run_text(self, smiles: str) -> str:
+        return self._run_base(smiles)
 
 
 if __name__ == "__main__":
