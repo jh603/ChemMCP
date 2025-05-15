@@ -1,10 +1,8 @@
-import argparse
-
 from rdkit import Chem
 
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.errors import ChemMTKInputError
-from ..utils.mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance, run_mcp_server
 
 
 @register_mcp_tool(mcp_instance)
@@ -13,8 +11,11 @@ class MoleculeAtomCount(BaseTool):
     name = "MolAtomCount"
     func_name = 'count_molecule_atoms'
     description = "Count the number of atoms of each type in a molecule."
-    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]
-    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]
+    categories = ["Molecule"]
+    tags = ["Molecular Information", "RDKit"]
+    required_envs = []
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('atom_counts', 'str', 'A description of atom numbers in the molecule.')]
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'atom_counts': 'There are altogether 3 atoms (omitting hydrogen atoms). The types and corresponding numbers are: {\'C\': 2, \'O\': 1}'}},
@@ -37,16 +38,5 @@ class MoleculeAtomCount(BaseTool):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the MCP server.")
-    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
-    args = parser.parse_args()
-
-    if args.sse:
-        # build a Starlette/uvicorn app
-        app = mcp_instance.sse_app()
-        import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001)
-    else:
-        # Run the MCP server with standard input/output
-        mcp_instance.run(transport='stdio')
+    run_mcp_server()
 

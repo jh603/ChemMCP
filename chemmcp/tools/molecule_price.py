@@ -1,26 +1,30 @@
 import os
-import argparse
+from typing import Optional
 
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.errors import ChemMTKApiNotFoundError, ChemMTKInputError
-from ..utils.chemspace import ChemSpace
+from ..tool_utils.chemspace import ChemSpace
 from ..utils.smiles import is_smiles
-from ..utils.mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance, run_mcp_server
 
 
 @register_mcp_tool(mcp_instance)
 class MoleculePrice(BaseTool):
+    __version__ = "0.1.0"
     name = "MoleculePrice"
     func_name = 'get_molecule_price'
     description = "Get the cheapest available price of a molecule."
-    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
-    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule')]
+    categories = ["Molecule"]
+    tags = ["Molecular Information", "ChemSpace"]
+    required_envs = [("CHEMSPACE_API_KEY", "The API key for ChemSpace.")]
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
     output_sig = [('price', 'str', 'Description of the cheapest available price of the molecule')]
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'price': '25g of this molecule cost 143 USD and can be purchased at A2B Chem.'}},
     ]
 
-    def __init__(self, chemspace_api_key: str = None, init=True, interface='code') -> None:
+    def __init__(self, chemspace_api_key: Optional[str] = None, init=True, interface='code') -> None:
         chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
         if chemspace_api_key is None:
             raise ChemMTKApiNotFoundError("CHEMSPACE_API_KEY environment variable not set.")
@@ -35,15 +39,4 @@ class MoleculePrice(BaseTool):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the MCP server.")
-    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
-    args = parser.parse_args()
-
-    if args.sse:
-        # build a Starlette/uvicorn app
-        app = mcp_instance.sse_app()
-        import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001)
-    else:
-        # Run the MCP server with standard input/output
-        mcp_instance.run(transport='stdio')
+    run_mcp_server()

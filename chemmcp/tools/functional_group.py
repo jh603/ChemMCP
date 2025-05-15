@@ -1,10 +1,8 @@
-import argparse
-
 from rdkit import Chem
 
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.errors import ChemMTKInputError
-from ..utils.mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance, run_mcp_server
 
 
 # Constants
@@ -63,8 +61,11 @@ class FunctionalGroups(BaseTool):
     name = "FunctionalGroups"
     func_name = 'get_functional_groups'
     description = "Get the functional groups in a molecule."
-    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]
-    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]
+    categories = ["Molecule"]
+    tags = ["Molecule Information", "RDKit"]
+    required_envs = []
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     output_sig = [('fgs', 'str', 'A description of functional groups in the molecule.')]
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'fgs': 'This molecule contains alcohol groups, and side-chain hydroxyls.'}},
@@ -93,16 +94,5 @@ class FunctionalGroups(BaseTool):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the MCP server.")
-    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
-    args = parser.parse_args()
-
-    if args.sse:
-        # build a Starlette/uvicorn app
-        app = mcp_instance.sse_app()
-        import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001)
-    else:
-        # Run the MCP server with standard input/output
-        mcp_instance.run(transport='stdio')
+    run_mcp_server()
 

@@ -3,9 +3,25 @@ import logging
 import inspect
 import functools
 from typing import Dict, List, Tuple, Literal, Any
+# from pydantic import BaseModel, Field, field_validator
 
 
 logger = logging.getLogger(__name__)
+
+
+# TODO: Add a validator for the required class attrs
+# class _BaseToolMeta(ABC):
+#     __version__: str = Field(..., description="The version of the tool.", pattern=r"^\d+\.\d+\.\d+$")
+#     name: str = Field(..., description="The name of the tool.", min_length=1)
+#     func_name: str = Field(..., description="The function name of the tool.", min_length=1)
+#     description: str = Field(..., description="The description of the tool.", min_length=1)
+#     categories: List[Literal["Molecule", "Reaction", "General"]] = Field(..., description="The categories of the tool.", min_length=1)
+#     tags: List[str] = Field(..., description="The tags of the tool.", min_length=1)
+#     required_envs: List[Tuple[str, str]] = Field(..., description="The required environment variables for the tool.")
+#     text_input_sig: List[Tuple[str, str, str, str]] = Field(..., description="The text input signature of the tool. Each element is a tuple of (arg_name, arg_type, arg_default, arg_description).")
+#     code_input_sig: List[Tuple[str, str, str, str]] = Field(..., description="The code input signature of the tool. Each element is a tuple of (arg_name, arg_type, arg_default, arg_description).")
+#     output_sig: List[Tuple[str, str, str]] = Field(..., description="The output signature of the tool. Each element is a tuple of (output_name, output_type, output_description).")
+#     examples: List[Dict[Literal["text_input", "code_input", "output"], Dict[str, Any]]] = Field(..., description="The examples of the tool.")
 
 
 class BaseTool(ABC):
@@ -20,19 +36,22 @@ class BaseTool(ABC):
     categories: List[Literal["Molecule", "Reaction", "General"]]
     tags: List[str]
     required_envs: List[Tuple[str, str]]  # [(env_name, env_description), ...]
-    code_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
-    text_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_description"), ...]
+    code_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_default", "arg_description"), ...]
+    text_input_sig: List[Tuple]  # [("arg_name", "arg_type", "arg_default", "arg_description"), ...]
     output_sig: List[Tuple]  # [("output_name", "output_type", "output_description"), ...]
     examples: List[Dict[Literal["text_input", "code_input", "output"], Dict[str, Any]]]
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
+
+        # Check if the required class attributes are defined
         missing = [attr for attr in cls._required_class_attrs if not hasattr(cls, attr)]
         if missing:
             raise TypeError(
                 f"{cls.__name__} must define class attrs: {', '.join(missing)}"
             )
         
+        # Check if the version string is valid
         version = getattr(cls, "__version__", None)
         if version is None:
             raise TypeError(f"{cls.__name__} must define an valid version string as __version__ class attribute.")
@@ -90,7 +109,15 @@ Returns:
         return self._run_text(query, *args, **kwargs)
     
     def _run_text(self, query, *args, **kwargs):
-        raise NotImplementedError("Text interface is not implemented for this tool yet.")
+        # Check the signature of self._run_base
+        sig = inspect.signature(self._run_base)
+        params = list(sig.parameters.values())[1:]
+        
+        # If the number of parameters is 1, and the type is str, then we assume the tool is text-compatible
+        if len(params) == 1 and params[0].annotation == str:
+            return self._run_base(query)
+        else:
+            raise NotImplementedError("Text interface is not implemented for this tool yet.")
     
     def run_code(self, *args, **kwargs):
         return self._run_code(*args, **kwargs)

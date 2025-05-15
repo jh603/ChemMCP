@@ -1,9 +1,7 @@
-import argparse
-
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.errors import ChemMTKInputError
 from ..utils.smiles import tanimoto, is_smiles
-from ..utils.mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance, run_mcp_server
 
 
 @register_mcp_tool(mcp_instance)
@@ -12,8 +10,11 @@ class MoleculeSimilarity(BaseTool):
     name = "MoleculeSimilarity"
     func_name = 'cal_molecule_similarity'
     description = "Get the Tanimoto similarity of two molecules. It Can also be used to check if two molecules are identical."
-    code_input_sig = [('smiles1', 'str', 'SMILES string of the first molecule'), ('smiles2', 'str', 'SMILES string of the second molecule.')]
-    text_input_sig = [('smiles_pair', 'str', 'SMILES strings of the two molecules, separated by a semicolon.')]
+    categories = ["Molecule"]
+    tags = ["Molecular Property", "RDKit"]
+    required_envs = []
+    code_input_sig = [('smiles1', 'str', 'N/A', 'SMILES string of the first molecule'), ('smiles2', 'str', 'N/A', 'SMILES string of the second molecule.')]
+    text_input_sig = [('smiles_pair', 'str', 'N/A', 'SMILES strings of the two molecules, separated by a semicolon.')]
     output_sig = [('similarity', 'str', 'Tanimoto similarity score and similarity description')]
     examples = [
         {'code_input': {'smiles1': 'CCO', 'smiles2': 'CCN'}, 'text_input': {'smiles_pair': 'CCO;CCN'}, 'output': {'similarity': 'The Tanimoto similarity between CCO and CCN is 0.3333, indicating that the two molecules are not similar.'}},
@@ -50,16 +51,5 @@ class MoleculeSimilarity(BaseTool):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the MCP server.")
-    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
-    args = parser.parse_args()
-
-    if args.sse:
-        # build a Starlette/uvicorn app
-        app = mcp_instance.sse_app()
-        import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001)
-    else:
-        # Run the MCP server with standard input/output
-        mcp_instance.run(transport='stdio')
+    run_mcp_server()
 

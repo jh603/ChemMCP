@@ -1,0 +1,49 @@
+import logging
+
+from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.errors import ChemMTKInputError, ChemMTKSearchFailError
+from ..utils.smiles import is_smiles
+from ..utils.names import pubchem_smiles2iupac
+from ..utils.mcp_app import mcp_instance, run_mcp_server
+
+
+logger = logging.getLogger(__name__)
+
+
+@register_mcp_tool(mcp_instance)
+class Smiles2Iupac(BaseTool):
+    __version__ = "0.1.0"
+    name = "SMILES2IUPAC"
+    func_name = 'convert_smiles_to_iupac'
+    description = "Convert SMILES to IUPAC name."
+    categories = ["Molecule"]
+    tags = ["SMILES", "RDKit", "PubChem", "IUPAC"]
+    required_envs = []
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
+    output_sig = [('iupac', 'str', 'IUPAC name of the molecule')]
+    examples = [
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'iupac': 'ethanol'}},
+    ]
+
+    def _run_base(self, smiles: str) -> str:
+        if not is_smiles(smiles):
+            raise ChemMTKInputError("The input is not a valid SMILES string.")
+        
+        try:
+            name = pubchem_smiles2iupac(smiles)
+            logger.debug("Looking up PubChem succeeded.")
+        except KeyboardInterrupt:
+            raise
+        except ChemMTKSearchFailError as e:
+            logger.debug("Looking up PubChem failed.")
+            raise e
+        
+        # If PubChem fails, try STOUT
+        # TODO: The STOUT package is not available anymore. Should be fixed later.
+        
+        return name
+
+
+if __name__ == "__main__":
+    run_mcp_server()

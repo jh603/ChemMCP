@@ -1,11 +1,9 @@
-import argparse
-
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.smiles import is_smiles
 from ..utils.errors import ChemMTKInputError
-from ..utils.mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance, run_mcp_server
 
 
 @register_mcp_tool(mcp_instance)
@@ -14,8 +12,11 @@ class MoleculeCaptioner(BaseTool):
     name = "MoleculeCaptioner"
     func_name = "generate_molecule_caption"
     description = "Generate a textual description of the molecule from its SMILES representation with MolT5. This tool uses neural networks to generate descriptions, which may not be accurate or correct. Please first try other tools that provide accurate and authoritative information, and only use this one as the last resort."
-    text_input_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
-    code_input_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
+    categories = ["Molecule"]
+    tags = ["Molecular Description", "Neural Networks"]
+    required_envs = []
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES representation of the molecule.')]
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES representation of the molecule.')]
     output_sig = [('description', 'str', 'Textual description of the molecule.')]
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.\n\nNote: This is a generated description and may not be accurate. Please double check the result.'}},
@@ -49,15 +50,4 @@ class MoleculeCaptioner(BaseTool):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the MCP server.")
-    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
-    args = parser.parse_args()
-
-    if args.sse:
-        # build a Starlette/uvicorn app
-        app = mcp_instance.sse_app()
-        import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001)
-    else:
-        # Run the MCP server with standard input/output
-        mcp_instance.run(transport='stdio')
+    run_mcp_server()

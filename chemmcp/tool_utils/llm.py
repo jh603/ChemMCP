@@ -2,7 +2,7 @@ import os
 
 from litellm import completion
 
-from .errors import ChemMTKToolInitError
+from ..utils.errors import ChemMTKToolInitError
 
 
 def llm_completion(*args, llm_model=None, **kwargs):

@@ -1,19 +1,20 @@
-import argparse
-
 from ..utils.base_tool import BaseTool, register_mcp_tool
 from ..utils.errors import ChemMTKInputError
 from ..utils.canonicalization import canonicalize_molecule_smiles
-from ..utils.mcp_app import mcp_instance
+from ..utils.mcp_app import mcp_instance, run_mcp_server
 
 
 @register_mcp_tool(mcp_instance)
-class SMILESCanonicalization(BaseTool):
+class SmilesCanonicalization(BaseTool):
     __version__ = "0.1.0"
-    name = "SMILESCanonicalization"
+    name = "SmilesCanonicalization"
     func_name = 'canonicalize_smiles'
     description = "Canonicalize a molecular SMILES string."
-    code_input_sig = [('smiles', 'str', 'SMILES string of the molecule.'), ('isomeric', 'bool', 'Whether to include isomeric information. Default is True.'), ('kekulization', 'bool', 'Whether to perform kekulization. Default is True.'), ('keep_atom_map', 'bool', 'Whether to keep atom mapping numbers, if any. Default is True.')]
-    text_input_sig = [('smiles', 'str', 'SMILES string of the molecule.')]  # TODO: Support options.
+    categories = ["Molecule"]
+    tags = ["SMILES", "Canonicalization", "RDKit"]
+    required_envs = []
+    code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.'), ('isomeric', 'bool', 'N/A', 'Whether to include isomeric information. Default is True.'), ('kekulization', 'bool', 'N/A', 'Whether to perform kekulization. Default is True.'), ('keep_atom_map', 'bool', 'N/A', 'Whether to keep atom mapping numbers, if any. Default is True.')]
+    text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]  # TODO: Support options.
     output_sig = [('canonical_smiles', 'str', 'Canonicalized SMILES string.')]
     examples = [
         {'code_input': {'smiles': 'C(O)C', 'isomeric': True, 'kekulization': True, 'keep_atom_map': False}, 'text_input': {'smiles': 'C(O)C'}, 'output': {'canonical_smiles': 'CCO'}},
@@ -27,16 +28,5 @@ class SMILESCanonicalization(BaseTool):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the MCP server.")
-    parser.add_argument('--sse', action='store_true', help="Run the server with SSE (Server-Sent Events) support.")
-    args = parser.parse_args()
-
-    if args.sse:
-        # build a Starlette/uvicorn app
-        app = mcp_instance.sse_app()
-        import uvicorn
-        uvicorn.run(app, host="127.0.0.1", port=8001)
-    else:
-        # Run the MCP server with standard input/output
-        mcp_instance.run(transport='stdio')
+    run_mcp_server()
 
