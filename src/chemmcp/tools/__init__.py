@@ -1,56 +1,47 @@
-from .bbbp_predictor import BbbpPredictor
-from .forward_synthesis import ForwardSynthesis
-from .functional_groups import FunctionalGroups
-from .hiv_inhibitor_predictor import HivInhibitorPredictor
-from .iupac2smiles import Iupac2Smiles
-from .logd_predictor import LogDPredictor
-from .molecule_atom_count import MoleculeAtomCount
-from .molecule_captioner import MoleculeCaptioner
-from .molecule_generator import MoleculeGenerator
-from .molecule_price import MoleculePrice
-from .molecule_similarity import MoleculeSimilarity
-from .molecule_weight import MoleculeWeight
-from .name2smiles import Name2Smiles
-from .patent_check import PatentCheck
-from .pubchem_search import PubchemSearch
-from .pubchem_search_qa import PubchemSearchQA
-from .retrosynthesis import Retrosynthesis
-from .selfies2smiles import Selfies2Smiles
-from .side_effect_predictor import SideEffectPredictor
-from .smiles_canonicalization import SmilesCanonicalization
-from .smiles2formula import Smiles2Formula
-from .smiles2iupac import Smiles2Iupac
-from .smiles2selfies import Smiles2Selfies
-from .solubility_predictor import SolubilityPredictor
-from .toxicity_predictor import ToxicityPredictor
-from .web_search import WebSearch
+import importlib
 
+_tool_module_map = {
+    "WebSearch":    "web_search",
+    "MoleculeCaptioner": "molecule_captioner",
+    "MoleculeGenerator": "molecule_generator",
+    "PubchemSearchQA": "pubchem_search_qa",
+    "PubchemSearch": "pubchem_search",  # Not registerred as an MCP tool
+    "ForwardSynthesis": "forward_synthesis",
+    "Retrosynthesis": "retrosynthesis",
+    "MoleculeSimilarity": "molecule_similarity",
+    "MoleculeWeight": "molecule_weight",
+    "FunctionalGroups": "functional_groups",
+    "SmilesCanonicalization": "smiles_canonicalization",
+    "MoleculeAtomCount": "molecule_atom_count",
+    "MoleculePrice": "molecule_price",
+    "PatentCheck": "patent_check",
+    "SolubilityPredictor": "solubility_predictor",
+    "LogDPredictor": "logd_predictor",
+    "BbbpPredictor": "bbbp_predictor",
+    "ToxicityPredictor": "toxicity_predictor",
+    "HivInhibitorPredictor": "hiv_inhibitor_predictor",
+    "SideEffectPredictor": "side_effect_predictor",
+    "Iupac2Smiles": "iupac2smiles",
+    "Smiles2Iupac": "smiles2iupac",
+    "Smiles2Formula": "smiles2formula",
+    "Name2Smiles": "name2smiles",
+    "Selfies2Smiles": "selfies2smiles",
+    "Smiles2Selfies": "smiles2selfies",
+}
 
-__all__ = [
-    "BbbpPredictor",
-    "ForwardSynthesis",
-    "FunctionalGroups",
-    "HivInhibitorPredictor",
-    "Iupac2Smiles",
-    "LogDPredictor",
-    "MoleculeAtomCount",
-    "MoleculeCaptioner",
-    "MoleculeGenerator",
-    "MoleculePrice",
-    "MoleculeSimilarity",
-    "MoleculeWeight",
-    "Name2Smiles",
-    "PatentCheck",
-    "PubchemSearch",
-    "PubchemSearchQA",
-    "Retrosynthesis",
-    "Selfies2Smiles",
-    "SideEffectPredictor",
-    "SmilesCanonicalization",
-    "Smiles2Formula",
-    "Smiles2Iupac",
-    "Smiles2Selfies",
-    "SolubilityPredictor",
-    "ToxicityPredictor",
-    "WebSearch",
-]
+__all__ = list(_tool_module_map.keys())
+
+def __getattr__(name: str):
+    if name in _tool_module_map:
+        module_name = _tool_module_map.get(name)
+        if module_name is None:
+            raise AttributeError(f"No mapping for tool {name!r} in chemmcp.tools")
+        module = importlib.import_module(f"{__name__}.{module_name}")
+        try:
+            return getattr(module, name)
+        except AttributeError:
+            raise ImportError(f"Module {module_name!r} has no attribute {name!r}")
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+def __dir__():
+    return list(__all__)
