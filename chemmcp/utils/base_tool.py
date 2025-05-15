@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import logging
 import inspect
 from typing import Dict, List, Tuple, Literal, Any
-from pydantic import BaseModel, Field, field_validator, ConfigDict, ValidationError
+from pydantic import BaseModel, Field, field_validator, ConfigDict, ValidationError, ValidationInfo
 
 from .errors import ChemMCPToolMetadataError
 
@@ -25,10 +25,27 @@ class ToolMeta(BaseModel):
 
     # Validate the entire 'examples' list once, *after* parsing.
     @field_validator("examples", mode="after")
-    def check_example_keys(cls, examples_list):
+    def check_example_keys(cls, examples_list, info: ValidationInfo):
+        tool_class = info.context.get('tool_class')
+        code_input_sig = tool_class.code_input_sig
+        code_input_keys = set([k for k, _, _, _ in code_input_sig])
+        text_input_sig = tool_class.text_input_sig
+        text_input_keys = set([k for k, _, _, _ in text_input_sig])
+        output_keys = set([k for k, _, _ in tool_class.output_sig])
+
+        # Check if the keys match the tool's input signatures
         for ex in examples_list:
             if not {"text_input","code_input","output"}.issubset(ex.keys()):
                 raise ValueError("each example must have text_input, code_input and output")
+            
+            # Check if the keys match the tool's input signatures
+            if code_input_keys != set(ex['code_input'].keys()):
+                raise ValueError("the keys of code_input must match the tool's input signatures: %s vs %s" % (code_input_keys, set(ex['code_input'].keys())))
+            if text_input_keys != set(ex['text_input'].keys()):
+                raise ValueError("the keys of text_input must match the tool's input signatures: %s vs %s" % (text_input_keys, set(ex['text_input'].keys())))
+            if output_keys != set(ex['output'].keys()):
+                raise ValueError("the keys of output must match the tool's output signatures: %s vs %s" % (output_keys, set(ex['output'].keys())))
+
         return examples_list
     
     # allow populating 'version' via the class’s __version__ attribute
@@ -65,7 +82,10 @@ class BaseTool(ABC):
 
         # one shot validation
         try:
-            cls._meta = ToolMeta(**meta_dict)
+            cls._meta = ToolMeta.model_validate(
+                meta_dict, 
+                context={'tool_class': cls}
+            )
         except ValidationError as e:
             error_msg = str(e)
             error_msg = error_msg.split("\n")

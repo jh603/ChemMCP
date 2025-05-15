@@ -20,7 +20,7 @@ class PubchemSearchQA(BaseTool):
     categories = ["Molecule"]
     tags = ["PubChem", "Molecule Information", "Molecular Properties"]
     required_envs = [("__llms__", "LiteLLM Envs.")]
-    text_input_sig = [("representation_name_and_representation", "str", 'N/A', "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\". Followed by \"Question: <your question about the molecule/compound>\".")]
+    text_input_sig = [("representation_name_and_representation_and_question", "str", 'N/A', "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\". Followed by \"Question: <your question about the molecule/compound>\".")]
     code_input_sig = [("representation_name", "str", 'N/A', "The representation name, can be \"smiles\", \"iupac\", or \"name\" (chemical's common name)."), ("representation", "str", 'N/A', "The representation of the molecule/compound, corresponding to the representation_name used."), ("question", "str", 'N/A', "The question about the molecule/compound.")]
     output_sig = [("answer", "str", "The answer to the question based on the PubChem page.")]
     examples = [
