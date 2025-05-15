@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 @ChemMCPManager.register_tool
-class HIVInhibitorPredictor(PropertyPredictor):
+class HivInhibitorPredictor(PropertyPredictor):
     __version__ = "0.1.0"
-    name = "HIVInhibitorPredictor"
+    name = "HivInhibitorPredictor"
     func_name = 'predict_hiv'
     description = "Predict the HIV inhibition of a molecule given its SMILES representation."
     categories = ["Molecule"]

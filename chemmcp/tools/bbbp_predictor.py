@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 @ChemMCPManager.register_tool
-class BBBPPredictor(PropertyPredictor):
+class BbbpPredictor(PropertyPredictor):
     __version__ = "0.1.0"
-    name = "BBBPPredictor"
+    name = "BbbpPredictor"
     func_name = 'predict_bbbp'
     description = 'Predict the blood-brain barrier penetration of a molecule given its SMILES representation.'
     categories = ["Molecule"]
