@@ -1,14 +1,13 @@
 import logging
 
-from ..utils.base_tool import register_mcp_tool
-from ..utils.mcp_app import mcp_instance, run_mcp_server
-from ..utils.property_prediction import PropertyPredictor
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
+from ..tool_utils.property_prediction import PropertyPredictor
 
 
 logger = logging.getLogger(__name__)
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class LogDPredictor(PropertyPredictor):
     __version__ = "0.1.0"
     name = "LogDPredictor"

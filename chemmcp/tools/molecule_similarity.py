@@ -1,10 +1,10 @@
-from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.base_tool import BaseTool
 from ..utils.errors import ChemMTKInputError
-from ..utils.smiles import tanimoto, is_smiles
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..tool_utils.smiles import tanimoto, is_smiles
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class MoleculeSimilarity(BaseTool):
     __version__ = "0.1.0"
     name = "MoleculeSimilarity"
@@ -18,7 +18,7 @@ class MoleculeSimilarity(BaseTool):
     output_sig = [('similarity', 'str', 'Tanimoto similarity score and similarity description')]
     examples = [
         {'code_input': {'smiles1': 'CCO', 'smiles2': 'CCN'}, 'text_input': {'smiles_pair': 'CCO;CCN'}, 'output': {'similarity': 'The Tanimoto similarity between CCO and CCN is 0.3333, indicating that the two molecules are not similar.'}},
-        {'code_input': {'smiles1': 'CCO', 'smiles2': 'C(O)C'}, 'text_input': 'CCO;C(O)C', 'output': {'similarity': 'Input Molecules Are Identical'}},
+        {'code_input': {'smiles1': 'CCO', 'smiles2': 'C(O)C'}, 'text_input': {'smiles_pair': 'CCO;C(O)C'}, 'output': {'similarity': 'Input Molecules Are Identical'}},
     ]
 
     def _run_base(self, smiles1: str, smiles2: str) -> str:

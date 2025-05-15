@@ -1,13 +1,12 @@
 import os
 import logging
-import argparse
 from typing import Optional
 
 from tavily import TavilyClient
 
-from ..utils.base_tool import BaseTool, ChemMCPManager
-from ..utils.errors import ChemMTKInputError, ChemMTKSearchFailError, ChemMTKToolProcessError, ChemMTKApiNotFoundError
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..utils.base_tool import BaseTool
+from ..utils.errors import ChemMTKSearchFailError, ChemMTKApiNotFoundError
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
 logger = logging.getLogger(__name__)

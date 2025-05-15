@@ -1,11 +1,11 @@
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..utils.base_tool import BaseTool
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class MoleculeWeight(BaseTool):
     __version__ = "0.1.0"
     name = "MoleculeWeight"

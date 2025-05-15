@@ -1,12 +1,12 @@
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
-from ..utils.smiles import is_smiles
+from ..utils.base_tool import BaseTool
+from ..tool_utils.smiles import is_smiles
 from ..utils.errors import ChemMTKInputError
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class MoleculeCaptioner(BaseTool):
     __version__ = "0.1.0"
     name = "MoleculeCaptioner"

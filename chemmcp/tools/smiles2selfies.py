@@ -1,12 +1,12 @@
 import selfies as sf
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.base_tool import BaseTool
 from ..utils.errors import ChemMTKInputError, ChemMTKToolProcessError
-from ..utils.smiles import is_smiles
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..tool_utils.smiles import is_smiles
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class Smiles2Selfies(BaseTool):
     __version__ = "0.1.0"
     name = "Smiles2Selfies"

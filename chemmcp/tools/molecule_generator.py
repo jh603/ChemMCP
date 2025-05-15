@@ -1,10 +1,10 @@
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..utils.base_tool import BaseTool
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class MoleculeGenerator(BaseTool):
     __version__ = "0.1.0"
     name = "MoleculeGenerator"
@@ -17,7 +17,7 @@ class MoleculeGenerator(BaseTool):
     code_input_sig = [('description', 'str', 'N/A', 'Textual description of the molecule.')]
     output_sig = [('smiles', 'str', 'SMILES representation of the molecule.')]
     examples = [
-        {'code_text': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'text_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'output': {'smiles': 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'}},
+        {'code_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'text_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'output': {'smiles': 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'}},
     ]
 
     def __init__(self, init=True, interface='text') -> None:

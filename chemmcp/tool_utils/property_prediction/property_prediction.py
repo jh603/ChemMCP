@@ -2,10 +2,10 @@ import os
 import logging
 from typing import List, Tuple
 
-from ..base_tool import BaseTool
-from ..smiles import is_smiles
-from ..errors import ChemMTKInputError, ChemMTKToolInitError
-from ..mcp_app import mcp_instance
+from ...utils.base_tool import BaseTool
+from ...utils.errors import ChemMTKInputError, ChemMTKToolInitError
+from ...tool_utils.smiles import is_smiles
+from ...utils.mcp_app import mcp_instance
 from . import utils as pp_utils
 
 
@@ -57,17 +57,8 @@ MODEL_ARGS = {
 
 
 class PropertyPredictor(BaseTool):
-    __version__ = None
-    name: str = None
-    func_name: str = None
-    description: str = None
-    categories: List[str] = None
-    tags: List[str] = None
-    required_envs: List[str] = None
-    text_input_sig: List[Tuple] = None
-    code_input_sig: List[Tuple] = None
-    output_sig: List[Tuple] = None
-    examples: list = None
+    __abstract__ = True
+
 
     def __init__(
         self, 

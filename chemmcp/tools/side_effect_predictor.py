@@ -1,14 +1,13 @@
 import logging
 
-from ..utils.base_tool import register_mcp_tool
-from ..utils.mcp_app import mcp_instance, run_mcp_server
-from ..utils.property_prediction import PropertyPredictor
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
+from ..tool_utils.property_prediction import PropertyPredictor
 
 
 logger = logging.getLogger(__name__)
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class SideEffectPredictor(PropertyPredictor):
     subtask_list = ['Blood and lymphatic system disorders', 'Cardiac disorders', 'Congenital, familial and genetic disorders', 'Ear and labyrinth disorders', 'Endocrine disorders', 'Eye disorders', 'Gastrointestinal disorders', 'Hepatobiliary disorders', 'Immune system disorders', 'Metabolism and nutrition disorders', 'Musculoskeletal and connective tissue disorders', 'Neoplasms benign, malignant and unspecified (incl cysts and polyps)', 'Nervous system disorders', 'Pregnancy, puerperium and perinatal conditions', 'Psychiatric disorders', 'Renal and urinary disorders', 'Reproductive system and breast disorders', 'Respiratory, thoracic and mediastinal disorders', 'Skin and subcutaneous tissue disorders', 'Vascular disorders']
 

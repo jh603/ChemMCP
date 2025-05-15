@@ -1,9 +1,9 @@
 from typing import Literal
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.base_tool import BaseTool
 from ..utils.errors import *
 from ..tool_utils.llm import llm_completion
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 from .pubchem_search import PubchemSearch
 
 
@@ -11,7 +11,7 @@ QA_SYSTEM_PROMPT = "You are an expert chemist. You will be given the PubChem pag
 
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class PubchemSearchQA(BaseTool):
     __version__ = "0.1.0"
     name = "PubchemSearchQA"

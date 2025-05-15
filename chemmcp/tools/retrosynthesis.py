@@ -1,18 +1,18 @@
 import logging
 from time import sleep
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.base_tool import BaseTool
 from ..utils.errors import ChemMTKToolProcessError, ChemMTKInputError
-from ..utils.smiles import is_smiles
-from ..utils.rxn4chem import RXN4Chem
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..tool_utils.smiles import is_smiles
+from ..tool_utils.rxn4chem import RXN4Chem
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
 logger = logging.getLogger(__name__)
 
 
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class Retrosynthesis(RXN4Chem):
     """Predict single-step retrosynthesis."""
     __version__ = "0.1.0"
@@ -26,7 +26,7 @@ class Retrosynthesis(RXN4Chem):
     text_input_sig = [("product_smiles", "str", "N/A", "The SMILES of the product.")]
     output_sig = [("reactants_and_confidence", "str", "The SMILES of the reactants and the confidence.")]
     examples = [
-        {'code_input': {'product_smiles: CCO'}, 'text_input': {'product_smiles: CCO'}, 'output': {'reactants_and_confidence': 'There are 13 possible sets of reactants for the given product:\n1.\tReactants: C1CCOC1.CCNC(=O)c1cccn1C.[Li][AlH4]\tConfidence: 1.0\n2.\tReactants: CCN.CCO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n3.\tReactants: CCN.CO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n4.\tReactants: CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n5.\tReactants: CCN.CCO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n6.\tReactants: CCN.CO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n7.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n8.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.938\n9.\tReactants: CCN.Cn1cccc1C=O\tConfidence: 0.917\n10.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.841\n11.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O\tConfidence: 0.797\n12.\tReactants: C1CCOC1.CCN.CO.Cn1cccc1C=O\tConfidence: 0.647\n13.\tReactants: C1CCOC1.CC(=O)NCc1cccn1C.[Li][AlH4]\tConfidence: 1.0\n'}},  
+        {'code_input': {'product_smiles': 'CCO'}, 'text_input': {'product_smiles': 'CCO'}, 'output': {'reactants_and_confidence': 'There are 13 possible sets of reactants for the given product:\n1.\tReactants: C1CCOC1.CCNC(=O)c1cccn1C.[Li][AlH4]\tConfidence: 1.0\n2.\tReactants: CCN.CCO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n3.\tReactants: CCN.CO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n4.\tReactants: CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n5.\tReactants: CCN.CCO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n6.\tReactants: CCN.CO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n7.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n8.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.938\n9.\tReactants: CCN.Cn1cccc1C=O\tConfidence: 0.917\n10.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.841\n11.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O\tConfidence: 0.797\n12.\tReactants: C1CCOC1.CCN.CO.Cn1cccc1C=O\tConfidence: 0.647\n13.\tReactants: C1CCOC1.CC(=O)NCc1cccn1C.[Li][AlH4]\tConfidence: 1.0\n'}},  
     ]
 
     def _run_base(self, product_smiles: str) -> str:

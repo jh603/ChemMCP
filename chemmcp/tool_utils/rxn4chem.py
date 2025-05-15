@@ -7,7 +7,6 @@ from rxn4chemistry import RXN4ChemistryWrapper  # type: ignore
 
 from ..utils.base_tool import BaseTool
 from ..utils.errors import ChemMTKToolInitError, ChemMTKApiNotFoundError
-from ..utils.mcp_app import mcp_instance
 
 
 logger = logging.getLogger(__name__)
@@ -15,17 +14,6 @@ logger = logging.getLogger(__name__)
 
 class RXN4Chem(BaseTool):
     """Wrapper for RXN4Chem functionalities."""
-    __version__ = "0.1.0"
-    name: str = None
-    func_name: str = None
-    description: str = None
-    categories: list = None
-    tags: list = None
-    required_envs: list = None
-    text_input_sig: List[Tuple] = None  # [("arg_name", "arg_type", "arg_description"), ...]
-    code_input_sig: List[Tuple] = None  # [("arg_name", "arg_type", "arg_description"), ...]
-    output_sig: List[Tuple] = None  # [("output_name", "output_type", "output_description"), ...]
-    examples: list = None
 
     base_url: str = "https://rxn.res.ibm.com"
     sleep_time: int = 5

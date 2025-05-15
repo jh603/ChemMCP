@@ -21,7 +21,7 @@ from unicore import checkpoint_utils, distributed_utils, options, utils
 from unicore.logging import progress_bar
 from unicore import tasks
 
-from ..utils.download import download_and_extract_zenodo_zip
+from ...tool_utils.download import download_and_extract_zenodo_zip
 
 
 logger = logging.getLogger(__name__)

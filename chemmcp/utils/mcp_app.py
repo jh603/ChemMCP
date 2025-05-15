@@ -1,9 +1,13 @@
 import argparse
+import functools
+import inspect
+import logging
 
 from mcp.server.fastmcp import FastMCP
 
 from .errors import catch_errors
-from .base_tool import ChemMCPManager
+
+logger = logging.getLogger(__name__)
 
 mcp_instance = FastMCP("ChemMcpToolkit", request_timeout=300)
 
@@ -18,6 +22,46 @@ def tool_with_catch(*dargs, **dkwargs):
     return decorator
 
 mcp_instance.tool = tool_with_catch
+
+
+class ChemMCPManager:
+    _tools: list[type] = []
+
+    @staticmethod
+    def register_tool(cls):
+        cls._registered_mcp_tool = True
+        ChemMCPManager._tools.append(cls)
+        return cls
+    
+    @staticmethod
+    def get_registered_tools():
+        return list(ChemMCPManager._tools)
+    
+    @staticmethod
+    def init_mcp_tools(mcp):
+        for cls in ChemMCPManager.get_registered_tools():
+            inst = cls()
+
+            sig = inspect.signature(cls._run_base)
+            params = list(sig.parameters.values())[1:]
+            exposed_sig = sig.replace(parameters=params)
+
+            def make_wrapper(inst, func):
+                @functools.wraps(func)
+                def wrapper(*args, **kwargs):
+                    return inst.run_code(*args, **kwargs)
+                return wrapper
+
+            wrapper = make_wrapper(inst, cls._run_base)
+            wrapper.__signature__ = exposed_sig
+            wrapper.__name__      = cls.func_name
+            wrapper.__doc__       = cls.get_doc(interface='code')
+
+            existing = set(mcp._tool_manager._tools.keys())
+            if cls.func_name not in existing:
+                mcp.tool()(wrapper)
+        
+        logger.info(f"Initialized {len(ChemMCPManager._tools)} tools to MCP.")
 
 
 def run_mcp_server():

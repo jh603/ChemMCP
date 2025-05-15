@@ -7,8 +7,8 @@ import pubchempy as pcp
 
 from ..utils.base_tool import BaseTool
 from ..utils.errors import *
-from ..utils.smiles import is_smiles
-from ..utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
+from ..tool_utils.smiles import is_smiles
+from ..tool_utils.pubchem import pubchem_iupac2cid, pubchem_name2cid
 
 
 unuseful_section_names = {
@@ -192,8 +192,8 @@ class PubchemSearch(BaseTool):
     categories = ["Molecule"]
     tags = ["PubChem", "Molecule Information", "Molecular Properties"]
     required_envs = []
-    text_input_sig = [("representation_name_and_representation", "str", "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\".")]
-    code_input_sig = [("representation_name", "str", "The representation name, can be \"SMILES\", \"IUPAC\", or \"Name\" (chemical's common name)."), ("representation", "str", "The representation of the molecule/compound, corresponding to the representation_name used.")]
+    text_input_sig = [("representation_name_and_representation", "str", "N/A", "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\".")]
+    code_input_sig = [("representation_name", "str", "N/A", "The representation name, can be \"SMILES\", \"IUPAC\", or \"Name\" (chemical's common name)."), ("representation", "str", "N/A", "The representation of the molecule/compound, corresponding to the representation_name used.")]
     output_sig = [("compound_doc", "str", "The document of the molecule/compound in a markdown format.")]
     examples = [
         {'code_input': {'representation_name': 'SMILES', 'representation': 'CCO'}, 'text_input': {'representation_name_and_representation': 'SMILES: CCO'}, 'output': {'compound_doc': '# 1 Names and Identifiers\nSection Description: Chemical names, synonyms, identifiers, and descriptors.\n\n## 1.1 Record Description\nSection Description: Summary Information\n\nEthanol with a small amount of an adulterant added so as to be unfit for use as a beverage. [...]'}},

@@ -1,8 +1,8 @@
 from rdkit import Chem
 
-from ..utils.base_tool import BaseTool, register_mcp_tool
+from ..utils.base_tool import BaseTool
 from ..utils.errors import ChemMTKInputError
-from ..utils.mcp_app import mcp_instance, run_mcp_server
+from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
 # Constants
@@ -55,7 +55,7 @@ DICT_FGS = {
 }
     
 
-@register_mcp_tool(mcp_instance)
+@ChemMCPManager.register_tool
 class FunctionalGroups(BaseTool):
     __version__ = "0.1.0"
     name = "FunctionalGroups"
