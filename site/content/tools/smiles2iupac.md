@@ -1,14 +1,14 @@
 ---
 categories:
-- General
-description: Search the web for any questions and knowledge and obtain a concise answer
-  based on thesearch results.
+- Molecule
+description: Convert SMILES to IUPAC name.
 draft: false
 tags:
-- Web
-- LLMs
-- Neural Networks
-title: WebSearch (search_web)
+- SMILES
+- RDKit
+- PubChem
+- IUPAC
+title: SMILES2IUPAC (convert_smiles_to_iupac)
 weight: 2
 
 ---
@@ -19,33 +19,30 @@ weight: 2
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
 {{< lead >}}
-**Search the web for any questions and knowledge and obtain a concise answer based on thesearch results.**
+**Convert SMILES to IUPAC name.**
 {{< /lead >}}
 
 **Example**
 
 Input:
 ```yaml
-query: 'What is the boiling point of water?'
+smiles: 'CCO'
 ```
 
 Text Input (used for the `run_text` function in the Python calling mode):
 ```yaml
-query: 'What is the boiling point of water?'
+smiles: 'CCO'
 ```
 
 Output:
 ```yaml
-result: 'The boiling point of water at sea level is 100°C (212°F).'
+iupac: 'ethanol'
 ```
 
 ## Usage
 
 The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-calling-mode).
 
-### Environment Variables
-This tool requires the following environment variables:
-- **TAVILY_API_KEY**: The API key for [Tavily](https://tavily.com/).
 
 
 ### MCP Mode
@@ -54,11 +51,9 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.web_search"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.smiles2iupac"],
     "toolCallTimeoutMillis": 300000,
-    "env": {
-        "TAVILY_API_KEY": "VALUE_TO_BE_SET"
-    }
+    "env": {}
 }
 ```
 
@@ -66,22 +61,19 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import WebSearch
-
-# Set the environment variables
-os.environ['TAVILY_API_KEY'] = 'VALUE_TO_BE_SET'
+from chemmcp.tools import SMILES2IUPAC
 
 # Initialize the tool
-tool = WebSearch()
+tool = SMILES2IUPAC()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
 output = tool.run_code(
-    query='What is the boiling point of water?'
+    smiles='CCO'
 )
 # 2. Run with text-only input
 output = tool.run_text(
-    query='What is the boiling point of water?'
+    smiles='CCO'
 )
 ```
 
@@ -101,21 +93,19 @@ For the input and output domains, please refer to the tool's [signature](#tool-s
 Used in the MCP mode, as well as the `run_code` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| smiles | str | N/A | SMILES string of the molecule |
 
 ### Text Input
 Used in the `run_text` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| smiles | str | N/A | SMILES string of the molecule |
 
 ### Output
 The output is the same in both input cases.
 | Name | Type | Description |
 | --- | --- | --- |
-| result | str | The answer to the search query summarized by Tavily's LLM. |
+| iupac | str | IUPAC name of the molecule |
 
 ### Envs
-| Name | Description |
-| --- | --- |
-| TAVILY_API_KEY | The API key for [Tavily](https://tavily.com/). |
+No required environment variables for this tool.

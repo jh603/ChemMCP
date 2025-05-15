@@ -1,14 +1,12 @@
 ---
 categories:
-- General
-description: Search the web for any questions and knowledge and obtain a concise answer
-  based on thesearch results.
+- Molecule
+description: Get the cheapest available price of a molecule.
 draft: false
 tags:
-- Web
-- LLMs
-- Neural Networks
-title: WebSearch (search_web)
+- Molecular Information
+- ChemSpace
+title: MoleculePrice (get_molecule_price)
 weight: 2
 
 ---
@@ -19,24 +17,24 @@ weight: 2
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
 {{< lead >}}
-**Search the web for any questions and knowledge and obtain a concise answer based on thesearch results.**
+**Get the cheapest available price of a molecule.**
 {{< /lead >}}
 
 **Example**
 
 Input:
 ```yaml
-query: 'What is the boiling point of water?'
+smiles: 'CCO'
 ```
 
 Text Input (used for the `run_text` function in the Python calling mode):
 ```yaml
-query: 'What is the boiling point of water?'
+smiles: 'CCO'
 ```
 
 Output:
 ```yaml
-result: 'The boiling point of water at sea level is 100°C (212°F).'
+price: '25g of this molecule cost 143 USD and can be purchased at A2B Chem.'
 ```
 
 ## Usage
@@ -45,7 +43,7 @@ The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-c
 
 ### Environment Variables
 This tool requires the following environment variables:
-- **TAVILY_API_KEY**: The API key for [Tavily](https://tavily.com/).
+- **CHEMSPACE_API_KEY**: The API key for ChemSpace.
 
 
 ### MCP Mode
@@ -54,10 +52,10 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.web_search"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.molecule_price"],
     "toolCallTimeoutMillis": 300000,
     "env": {
-        "TAVILY_API_KEY": "VALUE_TO_BE_SET"
+        "CHEMSPACE_API_KEY": "VALUE_TO_BE_SET"
     }
 }
 ```
@@ -66,22 +64,22 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import WebSearch
+from chemmcp.tools import MoleculePrice
 
 # Set the environment variables
-os.environ['TAVILY_API_KEY'] = 'VALUE_TO_BE_SET'
+os.environ['CHEMSPACE_API_KEY'] = 'VALUE_TO_BE_SET'
 
 # Initialize the tool
-tool = WebSearch()
+tool = MoleculePrice()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
 output = tool.run_code(
-    query='What is the boiling point of water?'
+    smiles='CCO'
 )
 # 2. Run with text-only input
 output = tool.run_text(
-    query='What is the boiling point of water?'
+    smiles='CCO'
 )
 ```
 
@@ -101,21 +99,21 @@ For the input and output domains, please refer to the tool's [signature](#tool-s
 Used in the MCP mode, as well as the `run_code` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| smiles | str | N/A | SMILES string of the molecule |
 
 ### Text Input
 Used in the `run_text` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| smiles | str | N/A | SMILES string of the molecule |
 
 ### Output
 The output is the same in both input cases.
 | Name | Type | Description |
 | --- | --- | --- |
-| result | str | The answer to the search query summarized by Tavily's LLM. |
+| price | str | Description of the cheapest available price of the molecule |
 
 ### Envs
 | Name | Description |
 | --- | --- |
-| TAVILY_API_KEY | The API key for [Tavily](https://tavily.com/). |
+| CHEMSPACE_API_KEY | The API key for ChemSpace. |

@@ -1,21 +1,27 @@
 import os
 import json
-from copy import deepcopy
-from chemmcp import __all__
+import yaml
+import argparse
+from chemmcp import __all__ as all_tools
 import chemmcp
 from .modules_utils import get_class_file_path, git_last_commit_date_for_class
 
 
 def get_tool_metainfo(tool_cls: type):
+    frontmatter = {
+        "title": f"{tool_cls.name} ({tool_cls.func_name})",
+        "categories": list(tool_cls.categories),
+        "tags": list(tool_cls.tags),
+        "description": tool_cls.description,
+        "weight": 2,
+        "draft": False,
+    }
+
     txt = f"""---
-title: "{tool_cls.name} ({tool_cls.func_name})"
-categories: {str(list(tool_cls.categories))}
-tags: {str(list(tool_cls.tags))}
-description: "{tool_cls.description}"
-weight: 2
-draft: false
+{yaml.dump(frontmatter)}
 ---
 """
+
     return txt
 
 
@@ -126,16 +132,31 @@ def get_tool_python_usage(tool_cls: type, required_envs: dict, requires_llms: bo
         envs_setup.append("os.environ['LLM_MODEL_NAME'] = 'VALUE_TO_BE_SET'")
         envs_setup.append("# Also add LLM credentials required by the LLM model, such as `OPENAI_API_KEY`")
 
-    envs_setup = "\n".join(envs_setup)
+    if len(envs_setup) > 0:
+        envs_setup = ["# Set the environment variables"] + envs_setup
+        envs_setup = "\n".join(envs_setup) + '\n\n'
+    else:
+        envs_setup = ""
+
+    code_input_signature = tool_cls.code_input_sig
+    code_input_example = tool_cls.examples[0]['code_input']
+    run_code_inputs = []
+    for param_name, param_type, param_default, param_description in code_input_signature:
+        run_code_inputs.append(f'    {param_name}={repr(code_input_example[param_name])}')
+    run_code_inputs = '\n'.join(run_code_inputs)
+
+    text_input_signature = tool_cls.text_input_sig
+    text_input_example = tool_cls.examples[0]['text_input']
+    run_text_inputs = []
+    for param_name, param_type, param_default, param_description in text_input_signature:
+        run_text_inputs.append(f'    {param_name}={repr(text_input_example[param_name])}')
+    run_text_inputs = '\n'.join(run_text_inputs)
 
     txt = """```python
 import os
 from chemmcp.tools import {tool_name}
 
-# Set the environment variables
-{envs_setup}
-
-# Initialize the tool
+{envs_setup}# Initialize the tool
 tool = {tool_name}()
 
 # The tool has two alternative ways to run:
@@ -148,7 +169,7 @@ output = tool.run_text(
 {run_text_inputs}
 )
 ```
-""".format(tool_name=tool_cls.name, envs_setup=envs_setup, run_code_inputs="TODO", run_text_inputs="TODO")
+""".format(tool_name=tool_cls.name, envs_setup=envs_setup, run_code_inputs=run_code_inputs, run_text_inputs=run_text_inputs)
     
     txt += """
 
@@ -166,9 +187,9 @@ def get_tool_usage(tool_cls: type):
     if tool_cls._registered_mcp_tool and tool_cls._registered_tool:
         support_description = "The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-calling-mode)."
     elif tool_cls._registered_mcp_tool:
-        support_description = "The tool supports MCP mode."
+        support_description = "The tool supports [MCP mode](#mcp-mode)."
     elif tool_cls._registered_tool:
-        support_description = "The tool supports Python calling mode."
+        support_description = "The tool supports [Python calling mode](#python-calling-mode)."
     else:
         raise ValueError(f"Tool {tool_cls.name} is not registered as either MCP tool or Python tool.")
     
@@ -193,8 +214,15 @@ def get_tool_usage(tool_cls: type):
             envs_instructions += f"- **LLM_MODEL_NAME**: The name of the LLM to use. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details.\n"
             envs_instructions += f"- Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details.\n"
     
-    mcp_usage = get_tool_mcp_usage(tool_cls, required_envs, requires_llms)
-    python_usage = get_tool_python_usage(tool_cls, required_envs, requires_llms)
+    if tool_cls._registered_mcp_tool:
+        mcp_usage = get_tool_mcp_usage(tool_cls, required_envs, requires_llms)
+    else:
+        mcp_usage = "This tool does not support MCP mode."
+
+    if tool_cls._registered_tool:
+        python_usage = get_tool_python_usage(tool_cls, required_envs, requires_llms)
+    else:
+        python_usage = "This tool does not support Python calling mode."
 
     txt = """## Usage
 
@@ -288,11 +316,22 @@ def generate_tool_doc(tool_name: str, save_dir: str='site/content/tools/'):
     return doc
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--tools', type=str, nargs='+', help='The tools to generate the documentation for.')
+    parser.add_argument('--save-dir', type=str, default='site/content/tools/', help='The directory to save the tool documentation.')
+    return parser.parse_args()
+
+
 def main():
-    tool_name = 'WebSearch'
+    args = parse_args()
+    if args.tools is None:
+        tools = all_tools
+    else:
+        tools = args.tools
 
-    doc = generate_tool_doc(tool_name)
-
+    for tool_name in tools:
+        generate_tool_doc(tool_name, save_dir=args.save_dir)
 
 
 if __name__ == '__main__':

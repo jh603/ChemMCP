@@ -1,14 +1,12 @@
 ---
 categories:
-- General
-description: Search the web for any questions and knowledge and obtain a concise answer
-  based on thesearch results.
+- Molecule
+description: Get the functional groups in a molecule.
 draft: false
 tags:
-- Web
-- LLMs
-- Neural Networks
-title: WebSearch (search_web)
+- Molecule Information
+- RDKit
+title: FunctionalGroups (get_functional_groups)
 weight: 2
 
 ---
@@ -19,33 +17,30 @@ weight: 2
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
 {{< lead >}}
-**Search the web for any questions and knowledge and obtain a concise answer based on thesearch results.**
+**Get the functional groups in a molecule.**
 {{< /lead >}}
 
 **Example**
 
 Input:
 ```yaml
-query: 'What is the boiling point of water?'
+smiles: 'CCO'
 ```
 
 Text Input (used for the `run_text` function in the Python calling mode):
 ```yaml
-query: 'What is the boiling point of water?'
+smiles: 'CCO'
 ```
 
 Output:
 ```yaml
-result: 'The boiling point of water at sea level is 100°C (212°F).'
+fgs: 'This molecule contains alcohol groups, and side-chain hydroxyls.'
 ```
 
 ## Usage
 
 The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-calling-mode).
 
-### Environment Variables
-This tool requires the following environment variables:
-- **TAVILY_API_KEY**: The API key for [Tavily](https://tavily.com/).
 
 
 ### MCP Mode
@@ -54,11 +49,9 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.web_search"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.functional_groups"],
     "toolCallTimeoutMillis": 300000,
-    "env": {
-        "TAVILY_API_KEY": "VALUE_TO_BE_SET"
-    }
+    "env": {}
 }
 ```
 
@@ -66,22 +59,19 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import WebSearch
-
-# Set the environment variables
-os.environ['TAVILY_API_KEY'] = 'VALUE_TO_BE_SET'
+from chemmcp.tools import FunctionalGroups
 
 # Initialize the tool
-tool = WebSearch()
+tool = FunctionalGroups()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
 output = tool.run_code(
-    query='What is the boiling point of water?'
+    smiles='CCO'
 )
 # 2. Run with text-only input
 output = tool.run_text(
-    query='What is the boiling point of water?'
+    smiles='CCO'
 )
 ```
 
@@ -101,21 +91,19 @@ For the input and output domains, please refer to the tool's [signature](#tool-s
 Used in the MCP mode, as well as the `run_code` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| smiles | str | N/A | SMILES string of the molecule. |
 
 ### Text Input
 Used in the `run_text` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| smiles | str | N/A | SMILES string of the molecule. |
 
 ### Output
 The output is the same in both input cases.
 | Name | Type | Description |
 | --- | --- | --- |
-| result | str | The answer to the search query summarized by Tavily's LLM. |
+| fgs | str | A description of functional groups in the molecule. |
 
 ### Envs
-| Name | Description |
-| --- | --- |
-| TAVILY_API_KEY | The API key for [Tavily](https://tavily.com/). |
+No required environment variables for this tool.

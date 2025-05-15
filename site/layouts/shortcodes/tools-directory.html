@@ -13,7 +13,7 @@
             {{ end }}
           {{ end }}
         {{ end }}
-        {{ range (uniq $categories) }}
+        {{ range (sort (uniq $categories)) }}
           <li><label class="flex items-center gap-2"><input type="checkbox" class="tools-category-filter pretty-checkbox" value="{{ . }}"><span class="ml-3">{{ . }}</span></label></li>
         {{ end }}
       </ul>
@@ -30,7 +30,7 @@
             {{ end }}
           {{ end }}
         {{ end }}
-        {{ range (uniq $tags) }}
+        {{ range (sort (uniq $tags)) }}
           <li><label class="flex items-center gap-2"><input type="checkbox" class="tools-tag-filter pretty-checkbox" value="{{ . }}"><span class="ml-3">{{ . }}</span></label></li>
         {{ end }}
       </ul>
@@ -41,7 +41,13 @@
     {{ range sort $tools "Params.weight" }}
       <div class="border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-2xl bg-white dark:bg-neutral-900 p-6 flex flex-col justify-between min-h-[160px]">
         <a href="{{ .RelPermalink }}" class="font-bold text-xl text-neutral-800 decoration-primary-500 hover:underline hover:underline-offset-2 dark:text-neutral mb-2">{{ .Title }}</a>
-        <div class="text-base text-neutral-500 dark:text-neutral-400 mb-3">{{ .Params.description }}</div>
+        <div class="text-base text-neutral-500 dark:text-neutral-400 mb-3" data-full-description="{{ .Params.description }}">
+          {{ if gt (len .Params.description) 180 }}
+            {{ slicestr .Params.description 0 180 }}...
+          {{ else }}
+            {{ .Params.description }}
+          {{ end }}
+        </div>
         <div class="flex flex-row flex-wrap mt-auto">
           {{ range .Params.categories }}
             <span class="rounded-md border border-primary-400 px-2 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400 mr-2 mb-2">{{ . }}</span>
@@ -227,7 +233,7 @@
     toolCards.forEach(card => {
       const title = card.querySelector('a').textContent.toLowerCase();
       const descElem = card.querySelector('.text-base');
-      const desc = descElem ? descElem.textContent.toLowerCase() : '';
+      const desc = descElem ? descElem.getAttribute('data-full-description').toLowerCase() : '';
       const tags = Array.from(card.querySelectorAll('span')).map(t => t.textContent.toLowerCase());
       let show = true;
       if (search && !tags.concat([title, desc]).some(t => t.includes(search))) show = false;

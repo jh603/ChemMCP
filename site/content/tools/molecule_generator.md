@@ -1,14 +1,13 @@
 ---
 categories:
-- General
-description: Search the web for any questions and knowledge and obtain a concise answer
-  based on thesearch results.
+- Molecule
+description: Generate a molecule represented in SMILES with MolT5 that matches the
+  given textual description.
 draft: false
 tags:
-- Web
-- LLMs
+- Molecular Generation
 - Neural Networks
-title: WebSearch (search_web)
+title: MoleculeGenerator (generate_molecule_from_description)
 weight: 2
 
 ---
@@ -19,33 +18,30 @@ weight: 2
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
 {{< lead >}}
-**Search the web for any questions and knowledge and obtain a concise answer based on thesearch results.**
+**Generate a molecule represented in SMILES with MolT5 that matches the given textual description.**
 {{< /lead >}}
 
 **Example**
 
 Input:
 ```yaml
-query: 'What is the boiling point of water?'
+description: 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'
 ```
 
 Text Input (used for the `run_text` function in the Python calling mode):
 ```yaml
-query: 'What is the boiling point of water?'
+description: 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'
 ```
 
 Output:
 ```yaml
-result: 'The boiling point of water at sea level is 100°C (212°F).'
+smiles: 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'
 ```
 
 ## Usage
 
 The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-calling-mode).
 
-### Environment Variables
-This tool requires the following environment variables:
-- **TAVILY_API_KEY**: The API key for [Tavily](https://tavily.com/).
 
 
 ### MCP Mode
@@ -54,11 +50,9 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.web_search"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.molecule_generator"],
     "toolCallTimeoutMillis": 300000,
-    "env": {
-        "TAVILY_API_KEY": "VALUE_TO_BE_SET"
-    }
+    "env": {}
 }
 ```
 
@@ -66,22 +60,19 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import WebSearch
-
-# Set the environment variables
-os.environ['TAVILY_API_KEY'] = 'VALUE_TO_BE_SET'
+from chemmcp.tools import MoleculeGenerator
 
 # Initialize the tool
-tool = WebSearch()
+tool = MoleculeGenerator()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
 output = tool.run_code(
-    query='What is the boiling point of water?'
+    description='The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'
 )
 # 2. Run with text-only input
 output = tool.run_text(
-    query='What is the boiling point of water?'
+    description='The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'
 )
 ```
 
@@ -101,21 +92,19 @@ For the input and output domains, please refer to the tool's [signature](#tool-s
 Used in the MCP mode, as well as the `run_code` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| description | str | N/A | Textual description of the molecule. |
 
 ### Text Input
 Used in the `run_text` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| description | str | N/A | Textual description of the molecule. |
 
 ### Output
 The output is the same in both input cases.
 | Name | Type | Description |
 | --- | --- | --- |
-| result | str | The answer to the search query summarized by Tavily's LLM. |
+| smiles | str | SMILES representation of the molecule. |
 
 ### Envs
-| Name | Description |
-| --- | --- |
-| TAVILY_API_KEY | The API key for [Tavily](https://tavily.com/). |
+No required environment variables for this tool.

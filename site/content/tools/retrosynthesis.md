@@ -1,14 +1,13 @@
 ---
 categories:
-- General
-description: Search the web for any questions and knowledge and obtain a concise answer
-  based on thesearch results.
+- Reaction
+description: Conduct single-step retrosynthesis. Given the product(s), predict multiple
+  sets of potential reactants, along with their confidence.
 draft: false
 tags:
-- Web
-- LLMs
-- Neural Networks
-title: WebSearch (search_web)
+- Retrosynthesis
+- Reaction Prediction
+title: Retrosynthesis (do_retrosynthesis)
 weight: 2
 
 ---
@@ -19,24 +18,24 @@ weight: 2
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
 {{< lead >}}
-**Search the web for any questions and knowledge and obtain a concise answer based on thesearch results.**
+**Conduct single-step retrosynthesis. Given the product(s), predict multiple sets of potential reactants, along with their confidence.**
 {{< /lead >}}
 
 **Example**
 
 Input:
 ```yaml
-query: 'What is the boiling point of water?'
+product_smiles: 'CCO'
 ```
 
 Text Input (used for the `run_text` function in the Python calling mode):
 ```yaml
-query: 'What is the boiling point of water?'
+product_smiles: 'CCO'
 ```
 
 Output:
 ```yaml
-result: 'The boiling point of water at sea level is 100°C (212°F).'
+reactants_and_confidence: 'There are 13 possible sets of reactants for the given product:\n1.\tReactants: C1CCOC1.CCNC(=O)c1cccn1C.[Li][AlH4]\tConfidence: 1.0\n2.\tReactants: CCN.CCO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n3.\tReactants: CCN.CO.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n4.\tReactants: CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n5.\tReactants: CCN.CCO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n6.\tReactants: CCN.CO.Cn1cccc1C=O.O.[BH4-].[Na+]\tConfidence: 1.0\n7.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O.[BH4-].[Na+]\tConfidence: 1.0\n8.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.938\n9.\tReactants: CCN.Cn1cccc1C=O\tConfidence: 0.917\n10.\tReactants: CCN.Cl.Cn1cccc1C=O\tConfidence: 0.841\n11.\tReactants: C1CCOC1.CCN.Cn1cccc1C=O\tConfidence: 0.797\n12.\tReactants: C1CCOC1.CCN.CO.Cn1cccc1C=O\tConfidence: 0.647\n13.\tReactants: C1CCOC1.CC(=O)NCc1cccn1C.[Li][AlH4]\tConfidence: 1.0\n'
 ```
 
 ## Usage
@@ -45,7 +44,7 @@ The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-c
 
 ### Environment Variables
 This tool requires the following environment variables:
-- **TAVILY_API_KEY**: The API key for [Tavily](https://tavily.com/).
+- **RXN4CHEM_API_KEY**: The API key for IBM RXN4Chem.
 
 
 ### MCP Mode
@@ -54,10 +53,10 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.web_search"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.retrosynthesis"],
     "toolCallTimeoutMillis": 300000,
     "env": {
-        "TAVILY_API_KEY": "VALUE_TO_BE_SET"
+        "RXN4CHEM_API_KEY": "VALUE_TO_BE_SET"
     }
 }
 ```
@@ -66,22 +65,22 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import WebSearch
+from chemmcp.tools import Retrosynthesis
 
 # Set the environment variables
-os.environ['TAVILY_API_KEY'] = 'VALUE_TO_BE_SET'
+os.environ['RXN4CHEM_API_KEY'] = 'VALUE_TO_BE_SET'
 
 # Initialize the tool
-tool = WebSearch()
+tool = Retrosynthesis()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
 output = tool.run_code(
-    query='What is the boiling point of water?'
+    product_smiles='CCO'
 )
 # 2. Run with text-only input
 output = tool.run_text(
-    query='What is the boiling point of water?'
+    product_smiles='CCO'
 )
 ```
 
@@ -101,21 +100,21 @@ For the input and output domains, please refer to the tool's [signature](#tool-s
 Used in the MCP mode, as well as the `run_code` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| product_smiles | str | N/A | The SMILES of the product. |
 
 ### Text Input
 Used in the `run_text` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| product_smiles | str | N/A | The SMILES of the product. |
 
 ### Output
 The output is the same in both input cases.
 | Name | Type | Description |
 | --- | --- | --- |
-| result | str | The answer to the search query summarized by Tavily's LLM. |
+| reactants_and_confidence | str | The SMILES of the reactants and the confidence. |
 
 ### Envs
 | Name | Description |
 | --- | --- |
-| TAVILY_API_KEY | The API key for [Tavily](https://tavily.com/). |
+| RXN4CHEM_API_KEY | The API key for IBM RXN4Chem. |

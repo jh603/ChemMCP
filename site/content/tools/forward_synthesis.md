@@ -1,14 +1,12 @@
 ---
 categories:
-- General
-description: Search the web for any questions and knowledge and obtain a concise answer
-  based on thesearch results.
+- Reaction
+description: Given reactants and reagents, predict the product(s) of a chemical reaction.
 draft: false
 tags:
-- Web
-- LLMs
-- Neural Networks
-title: WebSearch (search_web)
+- Forward Synthesis
+- Reaction Prediction
+title: ForwardSynthesis (do_forward_synthesis)
 weight: 2
 
 ---
@@ -19,24 +17,24 @@ weight: 2
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
 {{< lead >}}
-**Search the web for any questions and knowledge and obtain a concise answer based on thesearch results.**
+**Given reactants and reagents, predict the product(s) of a chemical reaction.**
 {{< /lead >}}
 
 **Example**
 
 Input:
 ```yaml
-query: 'What is the boiling point of water?'
+reactants_and_reagents_smiles: 'CCN.CN1C=CC=C1C=O'
 ```
 
 Text Input (used for the `run_text` function in the Python calling mode):
 ```yaml
-query: 'What is the boiling point of water?'
+reactants_and_reagents_smiles: 'CCN.CN1C=CC=C1C=O'
 ```
 
 Output:
 ```yaml
-result: 'The boiling point of water at sea level is 100°C (212°F).'
+product_smiles: 'CCNCc1cccn1C'
 ```
 
 ## Usage
@@ -45,7 +43,7 @@ The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-c
 
 ### Environment Variables
 This tool requires the following environment variables:
-- **TAVILY_API_KEY**: The API key for [Tavily](https://tavily.com/).
+- **RXN4CHEM_API_KEY**: The API key for IBM RXN4Chem.
 
 
 ### MCP Mode
@@ -54,10 +52,10 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.web_search"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.forward_synthesis"],
     "toolCallTimeoutMillis": 300000,
     "env": {
-        "TAVILY_API_KEY": "VALUE_TO_BE_SET"
+        "RXN4CHEM_API_KEY": "VALUE_TO_BE_SET"
     }
 }
 ```
@@ -66,22 +64,22 @@ Configure your MCP client following its instructions with something like:
 
 ```python
 import os
-from chemmcp.tools import WebSearch
+from chemmcp.tools import ForwardSynthesis
 
 # Set the environment variables
-os.environ['TAVILY_API_KEY'] = 'VALUE_TO_BE_SET'
+os.environ['RXN4CHEM_API_KEY'] = 'VALUE_TO_BE_SET'
 
 # Initialize the tool
-tool = WebSearch()
+tool = ForwardSynthesis()
 
 # The tool has two alternative ways to run:
 # 1. Run with separate input domains (recommended)
 output = tool.run_code(
-    query='What is the boiling point of water?'
+    reactants_and_reagents_smiles='CCN.CN1C=CC=C1C=O'
 )
 # 2. Run with text-only input
 output = tool.run_text(
-    query='What is the boiling point of water?'
+    reactants_and_reagents_smiles='CCN.CN1C=CC=C1C=O'
 )
 ```
 
@@ -101,21 +99,21 @@ For the input and output domains, please refer to the tool's [signature](#tool-s
 Used in the MCP mode, as well as the `run_code` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| reactants_and_reagents_smiles | str | N/A | The SMILES of the reactants and reagents separated by a dot '.'. |
 
 ### Text Input
 Used in the `run_text` function in the Python calling mode.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| query | str | N/A | The search query. |
+| reactants_and_reagents_smiles | str | N/A | The SMILES of the reactants and reagents separated by a dot '.'. |
 
 ### Output
 The output is the same in both input cases.
 | Name | Type | Description |
 | --- | --- | --- |
-| result | str | The answer to the search query summarized by Tavily's LLM. |
+| product_smiles | str | The SMILES of the product(s). |
 
 ### Envs
 | Name | Description |
 | --- | --- |
-| TAVILY_API_KEY | The API key for [Tavily](https://tavily.com/). |
+| RXN4CHEM_API_KEY | The API key for IBM RXN4Chem. |
