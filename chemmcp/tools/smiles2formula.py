@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 @ChemMCPManager.register_tool
 class Smiles2Formula(BaseTool):
     __version__ = "0.1.0"
-    name = "SMILES2Formula"
+    name = "Smiles2Formula"
     func_name = 'convert_smiles_to_formula'
     description = "Convert SMILES to molecular formula."
     categories = ["Molecule"]

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 @ChemMCPManager.register_tool
 class Smiles2Iupac(BaseTool):
     __version__ = "0.1.0"
-    name = "SMILES2IUPAC"
+    name = "Smiles2Iupac"
     func_name = 'convert_smiles_to_iupac'
     description = "Convert SMILES to IUPAC name."
     categories = ["Molecule"]

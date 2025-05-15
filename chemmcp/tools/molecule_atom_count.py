@@ -8,7 +8,7 @@ from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 @ChemMCPManager.register_tool
 class MoleculeAtomCount(BaseTool):
     __version__ = "0.1.0"
-    name = "MolAtomCount"
+    name = "MoleculeAtomCount"
     func_name = 'count_molecule_atoms'
     description = "Count the number of atoms of each type in a molecule."
     categories = ["Molecule"]

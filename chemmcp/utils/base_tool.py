@@ -48,6 +48,18 @@ class ToolMeta(BaseModel):
 
         return examples_list
     
+    @field_validator("name", mode="after")
+    def check_name(cls, name, info: ValidationInfo):
+        tool_class = info.context.get('tool_class')
+
+        if not name.isidentifier():
+            raise ValueError("the name of the tool must be a valid identifier")
+        
+        if name != tool_class.__name__:
+            raise ValueError("the name of the tool must be the same as the class name")
+
+        return name
+    
     # allow populating 'version' via the class’s __version__ attribute
     model_config = ConfigDict(populate_by_name=True)
 
