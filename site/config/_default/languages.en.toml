@@ -12,12 +12,12 @@ title = "ChemMCP"
   description = "A powerful, lightweight theme for Hugo."
 
 [params.author]
-  name = "Blowfish"
+  name = "The OSU NLP Group"
   email = "nuno@n9o.xyz"
-  image = "img/blowfish_logo.png"
-  headline = "A powerful, lightweight theme for Hugo."
-  bio = "A powerful, lightweight theme for Hugo."
+  image = "img/osunlp_logo.jpg"
+  headline = "The OSU NLP Group."
+  bio = "The OSU NLP Group."
   links = [
-    { x-twitter = "https://twitter.com/burufugu" },
-    { github = "https://github.com/nunocoracao/blowfish" },
+    { x-twitter = "https://x.com/osunlp" },
+    { github = "https://github.com/OSU-NLP-Group" },
   ]
