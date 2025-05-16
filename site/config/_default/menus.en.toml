@@ -11,14 +11,29 @@
 # ordered by weight from lowest to highest.
 
 [[main]]
+  name = "Home"
+  pageRef = "_index"
+  weight = 1
+
+[[main]]
   name = "Get Started"
   pageRef = "get-started"
-  weight = 1
+  weight = 3
 
 [[main]]
   name = "Tools"
   pageRef = "tools"
   weight = 12
+
+[[main]]
+  name = "QuickConfig"
+  pageRef = "quick-config"
+  weight = 13
+
+[[main]]
+  name = "Dev Guide"
+  pageRef = "dev-guide"
+  weight = 15
 
 # [[main]]
 #   identifier = "twitter"
