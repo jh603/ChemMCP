@@ -13,10 +13,15 @@ from chemmcp.tools import __all__ as all_tools
 import chemmcp
 
 
-def generate_tool_envs(tool_names: List[str], save_path: str='site/data/tool_envs/all_tool_envs.json'):
+def generate_tool_envs(tool_names: List[str], save_path: str='site/static/data/tool_envs/all_tool_envs.json'):
     tools_envs_dict = {}
     for tool_name in tool_names:
         tool_cls = getattr(chemmcp.tools, tool_name)
+        if not tool_cls._registered_mcp_tool:
+            # Don't include tools that are not registered as MCP tools
+            # This is for quick config for the MCP mode
+            continue
+
         tool_envs = tool_cls.required_envs
 
         tool_envs_dict = {}
@@ -35,7 +40,7 @@ def generate_tool_envs(tool_names: List[str], save_path: str='site/data/tool_env
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--tools', type=str, nargs='+', help='The tools to gather the envs for.')
-    parser.add_argument('--save_path', type=str, default='site/data/tool_envs/all_tool_envs.json', help='The path to save the tool envs.')
+    parser.add_argument('--save_path', type=str, default='site/static/data/tool_envs/all_tool_envs.json', help='The path to save the tool envs.')
     return parser.parse_args()
 
 

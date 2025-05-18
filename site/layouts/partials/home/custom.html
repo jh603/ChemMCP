@@ -144,8 +144,9 @@
       If you use ChemMCP in your research, please cite the following papers:
     </p>
     
-    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg overflow-auto">
-      <pre class="text-sm overflow-x-auto text-neutral-800 dark:text-neutral-200"><code>@misc{yu2025chemmcp,
+    <div class="highlight-wrapper">
+      <div class="highlight bg-neutral-100 dark:bg-neutral-800 rounded-md shadow-sm">
+        <pre tabindex="0" class="chroma language-bibtex bg-transparent dark:bg-transparent px-6 py-4 text-sm text-neutral-800 dark:text-neutral-200 overflow-auto"><code>@misc{yu2025chemmcp,
   author       = {Botao Yu and Huan Sun},
   title        = {ChemMCP: A Chemistry MCP Toolkit},
   year         = {2025},
@@ -158,9 +159,36 @@
   journal={arXiv preprint arXiv:2411.07228},
   year={2024}
 }</code></pre>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- Add Prism.js for BibTeX syntax highlighting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+
+<style>
+  /* Code highlighting styles to match QuickConfig page */
+  .highlight-wrapper {
+    @apply block;
+  }
+
+  .highlight {
+    @apply relative z-0;
+  }
+
+  /* Code block styling */
+  pre.chroma {
+    margin: 0 !important;
+  }
+
+  /* Override Prism.js styles */
+  pre.language-bibtex {
+    text-shadow: none !important;
+    background: none !important;
+  }
+</style>
 
 {{ if .Site.Params.homepage.layoutBackgroundBlur | default false }}
 <div id="background-blur" class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl"></div>

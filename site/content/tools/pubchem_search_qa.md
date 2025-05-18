@@ -48,8 +48,8 @@ The tool supports both [MCP mode](#mcp-mode) and [Python calling mode](#python-c
 
 ### Environment Variables
 This tool requires the following environment variables:
-- **LLM_MODEL_NAME**: The name of the LLM to use. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details.
-- Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details.
+- **LLM_MODEL_NAME**: The name of the LLM to use. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details.
+- Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details.
 
 
 ### MCP Mode
@@ -129,5 +129,5 @@ The output is the same in both input cases.
 ### Envs
 | Name | Description |
 | --- | --- |
-| LLM_MODEL_NAME | The name of the LLM to use. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details. |
-| LLM credentials | Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details. |
+| LLM_MODEL_NAME | The name of the LLM to use. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details. |
+| LLM credentials | Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details. |
