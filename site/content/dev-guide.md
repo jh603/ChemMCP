@@ -26,8 +26,8 @@ You need to determine a tool name and a tool function name for your tool. Specif
   - Use **snake-case**, verb-phrase style.
   - Examples: `search_web`, `predict_bbbp`, `convert_smiles_to_iupac`.
 
-- **File Name** (or module name): The Python module name, used in the MCP server.
-  - Lowercase, snake-case, matching your tool name.
+- **File Name** (or module name): The Python module name, **matching your tool name**.
+  - Lowercase, snake-case.
   - Examples: `web_search.py`, `bbbp_predictor.py`, `smiles2iupac.py`.
 
 ## Step 2: Create Your Tool File and Register

@@ -121,7 +121,7 @@ def get_tool_mcp_usage(tool_cls: type, required_envs: dict, requires_llms: bool)
     txt += f"""```JSON
 {{
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "{tool_cls.__module__}"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "--tools", "{tool_cls.name}"],
     "toolCallTimeoutMillis": 300000,
     "env": {envs_txt}
 }}
@@ -302,7 +302,7 @@ The output is the same in both input cases.
     return signature_txt
 
 def generate_tool_doc(tool_name: str, save_dir: str='site/content/tools/'):
-    tool_cls = getattr(chemmcp, tool_name)
+    tool_cls = getattr(chemmcp.tools, tool_name)
     tool_file_path = get_class_file_path(tool_cls)
     tool_file_base_name = os.path.basename(tool_file_path)
     tool_file_name = os.path.splitext(tool_file_base_name)[0]

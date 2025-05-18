@@ -12,7 +12,7 @@ weight: 2
 ---
 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
   {{< badge >}}Version: 0.1.0{{< /badge >}}
-  {{< badge >}}Last Update: Unknown{{< /badge >}}
+  {{< badge >}}Last Update: 2025/05/17{{< /badge >}}
   {{< badge >}}MCP Support{{< /badge >}}
   {{< badge >}}Python Calling Support{{< /badge >}}
 </div>
@@ -52,7 +52,7 @@ Configure your MCP client following its instructions with something like:
 ```JSON
 {
     "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "-m", "chemmcp.tools.molecule_price"],
+    "args": ["--directory", "/ABSTRACT/PATH/TO/ChemMCP", "run", "--tools", "MoleculePrice"],
     "toolCallTimeoutMillis": 300000,
     "env": {
         "CHEMSPACE_API_KEY": "VALUE_TO_BE_SET"
