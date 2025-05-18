@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
 ## Step 4: Test Your Tool
 
-You can write a script, or use Jupyter Notebook, or any other tools you like, to test your tool. Basically, initialize an instance of your tool class, and check if the tool works as expected.
+You can write a script, or use Jupyter Notebook, or any other ways you like, to test your tool. Basically, initialize an instance of your tool class, and check if the tool works as expected.
 
 ```python
 import os
