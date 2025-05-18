@@ -218,8 +218,8 @@ def get_tool_usage(tool_cls: type):
             envs_instructions += f"- **{env}**: {env_description}\n"
 
         if requires_llms:
-            envs_instructions += f"- **LLM_MODEL_NAME**: The name of the LLM to use. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details.\n"
-            envs_instructions += f"- Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details.\n"
+            envs_instructions += f"- **LLM_MODEL_NAME**: The name of the LLM to use. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details.\n"
+            envs_instructions += f"- Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details.\n"
     
     if tool_cls._registered_mcp_tool:
         mcp_usage = get_tool_mcp_usage(tool_cls, required_envs, requires_llms)
@@ -271,8 +271,8 @@ def get_tool_signature(tool_cls: type):
     except KeyError:
         pass
     else:
-        required_envs["LLM_MODEL_NAME"] = "The name of the LLM to use. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details."
-        required_envs["LLM credentials"] = "Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://github.com/Lightning-AI/litellm) for more details."
+        required_envs["LLM_MODEL_NAME"] = "The name of the LLM to use. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details."
+        required_envs["LLM credentials"] = "Other LLM credentials are required to be set in the `env` field. See [LiteLLM](https://docs.litellm.ai/docs/#basic-usage) for more details."
 
     if len(required_envs) > 0:
         envs_table_lines = ["| Name | Description |", "| --- | --- |"]
