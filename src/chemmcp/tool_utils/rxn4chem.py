@@ -6,7 +6,7 @@ from typing import List, Tuple
 from rxn4chemistry import RXN4ChemistryWrapper  # type: ignore
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKToolInitError, ChemMTKApiNotFoundError
+from ..utils.errors import ChemMCPToolInitError, ChemMCPApiNotFoundError
 
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ class RXN4Chem(BaseTool):
 
         rxn4chem_api_key = os.environ.get("RXN4CHEM_API_KEY")
         if rxn4chem_api_key is None:
-            raise ChemMTKApiNotFoundError("The RXN4Chem API key is not set. Please set the RXN4CHEM_API_KEY environment variable.")
+            raise ChemMCPApiNotFoundError("The RXN4Chem API key is not set. Please set the RXN4CHEM_API_KEY environment variable.")
 
         self.rxn4chem_api_key = rxn4chem_api_key
         if RXN4Chem.rxn4chem_chemistry_wrapper is None:
@@ -37,7 +37,7 @@ class RXN4Chem(BaseTool):
         self.rxn4chem = RXN4Chem.rxn4chem_chemistry_wrapper
         if init:
             if self.rxn4chem.project_id is None:
-                raise ChemMTKToolInitError("The RXN4Chem project ID cannot be initialized.")
+                raise ChemMCPToolInitError("The RXN4Chem project ID cannot be initialized.")
         logger.debug("RXN4Chem project ID: %s" % self.rxn4chem.project_id)
 
     @staticmethod

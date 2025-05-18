@@ -1,7 +1,7 @@
 from rdkit import Chem
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKInputError
+from ..utils.errors import ChemMCPInputError
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
@@ -24,7 +24,7 @@ class MoleculeAtomCount(BaseTool):
     def _run_base(self, smiles: str) -> str:
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
-            raise ChemMTKInputError(f"`{smiles}` is not a valid SMILES string.")
+            raise ChemMCPInputError(f"`{smiles}` is not a valid SMILES string.")
         
         num_atoms = mol.GetNumAtoms()
         # Get the atom types

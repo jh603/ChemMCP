@@ -2,7 +2,7 @@ import os
 from typing import Optional
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKApiNotFoundError, ChemMTKInputError
+from ..utils.errors import ChemMCPApiNotFoundError, ChemMCPInputError
 from ..tool_utils.chemspace import ChemSpace
 from ..tool_utils.smiles import is_smiles
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
@@ -27,13 +27,13 @@ class MoleculePrice(BaseTool):
     def __init__(self, chemspace_api_key: Optional[str] = None, init=True, interface='code') -> None:
         chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)
         if chemspace_api_key is None:
-            raise ChemMTKApiNotFoundError("CHEMSPACE_API_KEY environment variable not set.")
+            raise ChemMCPApiNotFoundError("CHEMSPACE_API_KEY environment variable not set.")
         self.chemspace = ChemSpace(chemspace_api_key)
         super().__init__(init=init, interface=interface)
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
-            raise ChemMTKInputError(f"smiles `{smiles}` is not a valid SMILES string.")
+            raise ChemMCPInputError(f"smiles `{smiles}` is not a valid SMILES string.")
         price = self.chemspace.buy_mol(smiles)
         return price
 

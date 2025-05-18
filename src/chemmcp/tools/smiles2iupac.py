@@ -1,7 +1,7 @@
 import logging
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKInputError, ChemMTKSearchFailError
+from ..utils.errors import ChemMCPInputError, ChemMCPSearchFailError
 from ..tool_utils.smiles import is_smiles
 from ..tool_utils.names import pubchem_smiles2iupac
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
@@ -28,14 +28,14 @@ class Smiles2Iupac(BaseTool):
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
-            raise ChemMTKInputError("The input is not a valid SMILES string.")
+            raise ChemMCPInputError("The input is not a valid SMILES string.")
         
         try:
             name = pubchem_smiles2iupac(smiles)
             logger.debug("Looking up PubChem succeeded.")
         except KeyboardInterrupt:
             raise
-        except ChemMTKSearchFailError as e:
+        except ChemMCPSearchFailError as e:
             logger.debug("Looking up PubChem failed.")
             raise e
         

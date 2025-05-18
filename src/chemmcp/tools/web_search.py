@@ -5,7 +5,7 @@ from typing import Optional
 from tavily import TavilyClient
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKSearchFailError, ChemMTKApiNotFoundError
+from ..utils.errors import ChemMCPSearchFailError, ChemMCPApiNotFoundError
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
@@ -32,7 +32,7 @@ class WebSearch(BaseTool):
         if tavily_api_key is None:
             tavily_api_key = os.getenv("TAVILY_API_KEY", None)
         if tavily_api_key is None:
-            raise ChemMTKApiNotFoundError("Cannot find the API key for Tavily. Please set the TAVILY_API_KEY environment variable.")
+            raise ChemMCPApiNotFoundError("Cannot find the API key for Tavily. Please set the TAVILY_API_KEY environment variable.")
         self.client = TavilyClient(api_key=tavily_api_key)
         super().__init__(init, interface=interface)
 
@@ -42,7 +42,7 @@ class WebSearch(BaseTool):
         try:
             answer = response['answer']
         except KeyError as e:
-            raise ChemMTKSearchFailError(f"Error searching the web: {e}") from e
+            raise ChemMCPSearchFailError(f"Error searching the web: {e}") from e
         return answer
 
 

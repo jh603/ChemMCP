@@ -1,7 +1,7 @@
 import selfies as sf
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKToolProcessError
+from ..utils.errors import ChemMCPToolProcessError
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
@@ -27,7 +27,7 @@ class Selfies2Smiles(BaseTool):
         except KeyboardInterrupt:
             raise
         except:
-            raise ChemMTKToolProcessError("Cannot convert the SELFIES into SMILES, possibly because it is not a valid SELFIES string.")
+            raise ChemMCPToolProcessError("Cannot convert the SELFIES into SMILES, possibly because it is not a valid SELFIES string.")
         return smiles
 
 

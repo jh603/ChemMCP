@@ -4,7 +4,7 @@ from rdkit import Chem
 import rdkit.Chem.rdMolDescriptors as molD
 import pubchempy as pcp
 
-from ..utils.errors import ChemMTKSearchFailError
+from ..utils.errors import ChemMCPSearchFailError
 from .pubchem import pubchem_iupac2cid, pubchem_name2cid
 
 
@@ -51,16 +51,16 @@ def pubchem_smiles2iupac(smi):
             for part in parts:
                 try:
                     iupac = pubchem_smiles2iupac(part)
-                except ChemMTKSearchFailError:
+                except ChemMCPSearchFailError:
                     parts_cannot_find.append(part)
                 else:
                     parts_iupac.append(iupac)
             if len(parts_cannot_find) > 0:
-                raise ChemMTKSearchFailError("Cannot find a matched molecule/compound for the following parts of the input SMILES: %s" % ', '.join(parts_cannot_find))
+                raise ChemMCPSearchFailError("Cannot find a matched molecule/compound for the following parts of the input SMILES: %s" % ', '.join(parts_cannot_find))
             else:
                 r = ';'.join(parts_iupac)
         else:
-            raise ChemMTKSearchFailError("Cannot find a matched molecule/compound. Please check the input SMILES.")
+            raise ChemMCPSearchFailError("Cannot find a matched molecule/compound. Please check the input SMILES.")
     elif len(c) >= 1:
         if len(c) > 1:
             logger.info("There are more than one molecules/compounds that match the input SMILES. Using the first matched one.")
@@ -69,7 +69,7 @@ def pubchem_smiles2iupac(smi):
         r = c.iupac_name
     
     if r is None or r == 'None':
-        raise ChemMTKSearchFailError(f"The PubChem entry (CID: {c.cid}) does not have a valid IUPAC name recorded.")
+        raise ChemMCPSearchFailError(f"The PubChem entry (CID: {c.cid}) does not have a valid IUPAC name recorded.")
 
     return r
 

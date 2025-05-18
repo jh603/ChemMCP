@@ -1,5 +1,5 @@
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKInputError
+from ..utils.errors import ChemMCPInputError
 from ..tool_utils.canonicalization import canonicalize_molecule_smiles
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
@@ -23,7 +23,7 @@ class SmilesCanonicalization(BaseTool):
     def _run_base(self, smiles: str, isomeric: bool = True, kekulization: bool = True, keep_atom_map: bool = True) -> str:
         smiles = canonicalize_molecule_smiles(smiles, isomeric=isomeric, kekulization=kekulization, keep_atom_map=keep_atom_map)
         if smiles is None:
-            raise ChemMTKInputError("Invalid SMILES string.")
+            raise ChemMCPInputError("Invalid SMILES string.")
         return smiles
     
     def _run_text(self, smiles: str) -> str:

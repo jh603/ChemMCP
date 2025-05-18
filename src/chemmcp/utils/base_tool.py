@@ -67,8 +67,7 @@ class ToolMeta(BaseModel):
 class BaseTool(ABC):
     _registered_tool = True
     _registered_mcp_tool = False
-    _required_class_attrs = ['__version__', 'name', 'func_name', 'description', 'categories', 'tags', 'required_envs', 'text_input_sig', 'code_input_sig', 'output_sig', 'examples']
-
+    
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
 

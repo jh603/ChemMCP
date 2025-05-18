@@ -2,7 +2,7 @@ import logging
 from time import sleep
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKToolProcessError, ChemMTKInputError
+from ..utils.errors import ChemMCPToolProcessError, ChemMCPInputError
 from ..tool_utils.smiles import is_smiles
 from ..tool_utils.rxn4chem import RXN4Chem
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
@@ -33,7 +33,7 @@ class Retrosynthesis(RXN4Chem):
         """Run retrosynthesis prediction."""
         # Check that input is smiles
         if not is_smiles(product_smiles):
-            raise ChemMTKInputError("The input contains invalid SMILES. Please double-check.")
+            raise ChemMCPInputError("The input contains invalid SMILES. Please double-check.")
 
         try:
             prediction_id = self.predict_retrosynthesis(product_smiles)
@@ -41,7 +41,7 @@ class Retrosynthesis(RXN4Chem):
         except KeyboardInterrupt:
             raise
         except Exception as e:
-            raise ChemMTKToolProcessError("Failed to predict the reactants for the input string. Please make sure the input is a valid SMILES string containing one chemical.") from e
+            raise ChemMCPToolProcessError("Failed to predict the reactants for the input string. Please make sure the input is a valid SMILES string containing one chemical.") from e
 
         result = "There %s %d possible sets of reactants for the given product:\n" % (
             "are" if len(paths) > 1 else "is",
@@ -67,21 +67,21 @@ class Retrosynthesis(RXN4Chem):
             return response["prediction_id"]
         raise KeyError
 
-    @RXN4Chem.retry(20, ChemMTKToolProcessError)
+    @RXN4Chem.retry(20, ChemMCPToolProcessError)
     def get_paths(self, prediction_id: str) -> str:
         """Make api request."""
         results = self.rxn4chem.get_predict_automatic_retrosynthesis_results(
             prediction_id
         )
         if "retrosynthetic_paths" not in results.keys():
-            raise ChemMTKToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES and try again.")
+            raise ChemMCPToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES and try again.")
         paths = results["retrosynthetic_paths"]
         if paths is not None:
             if len(paths) > 0:
                 return paths
         if results["status"] == "PROCESSING":
             sleep(self.sleep_time * 2)
-        raise ChemMTKToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES and try again.")
+        raise ChemMCPToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES and try again.")
     
     def _get_children_smiles_and_confidence(self, path):
         children = path['children']

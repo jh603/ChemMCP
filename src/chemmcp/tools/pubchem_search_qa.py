@@ -38,7 +38,7 @@ class PubchemSearchQA(BaseTool):
 
     def _run_text(self, representation_name_and_representation_and_question: str) -> str:
         if 'Question:' not in representation_name_and_representation_and_question:
-            raise ChemMTKInputError("The input is not in a correct format. Please input the molecule/compound representation followed by the question about the molecule/compound. An example: \"SMILES: <SMILES of the molecule/compound> Question: <your question about the molecule/compound>\".")
+            raise ChemMCPInputError("The input is not in a correct format. Please input the molecule/compound representation followed by the question about the molecule/compound. An example: \"SMILES: <SMILES of the molecule/compound> Question: <your question about the molecule/compound>\".")
         representation_name_and_representation_and_question, question = representation_name_and_representation_and_question.split('Question:')
         representation_name_and_representation_and_question = representation_name_and_representation_and_question.strip()
         question = question.strip()
@@ -54,11 +54,11 @@ class PubchemSearchQA(BaseTool):
             elif namespace.lower() in ('name', 'common name'):
                 namespace = 'name'
             elif namespace == '':
-                raise ChemMTKInputError('Empty representation name.')
+                raise ChemMCPInputError('Empty representation name.')
             else:
-                raise ChemMTKInputError('The representation name \"%s\" is not supported. Please use \"SMILES\", \"IUPAC\", or \"Name\".' % namespace)
-        except (ChemMTKInputError, ValueError) as e:
-            raise ChemMTKInputError("The input is not in a correct format: %s If searching with SMILES, please input \"SMILES: <SMILES of the molecule/compound>\"; if searching with IUPAC name, please input \"IUPAC: <IUPAC name of the molecule/compound>\"; if searching with common name, please input \"Name: <common name of the molecule/compound>\". After that, append your question about the molecule/compound as \"Question: <your question>\"." % str(e))
+                raise ChemMCPInputError('The representation name \"%s\" is not supported. Please use \"SMILES\", \"IUPAC\", or \"Name\".' % namespace)
+        except (ChemMCPInputError, ValueError) as e:
+            raise ChemMCPInputError("The input is not in a correct format: %s If searching with SMILES, please input \"SMILES: <SMILES of the molecule/compound>\"; if searching with IUPAC name, please input \"IUPAC: <IUPAC name of the molecule/compound>\"; if searching with common name, please input \"Name: <common name of the molecule/compound>\". After that, append your question about the molecule/compound as \"Question: <your question>\"." % str(e))
         r = self._run_base(namespace, identifier, question)
         return r
     

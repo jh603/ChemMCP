@@ -1,5 +1,5 @@
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKInputError
+from ..utils.errors import ChemMCPInputError
 from ..tool_utils.smiles import tanimoto, is_smiles
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
@@ -23,10 +23,10 @@ class MoleculeSimilarity(BaseTool):
 
     def _run_base(self, smiles1: str, smiles2: str) -> str:
         if not is_smiles(smiles1):
-            raise ChemMTKInputError(f"smiles1 `{smiles1}` is not a valid SMILES string.")
+            raise ChemMCPInputError(f"smiles1 `{smiles1}` is not a valid SMILES string.")
         
         if not is_smiles(smiles2):
-            raise ChemMTKInputError(f"smiles2 `{smiles2}` is not a valid SMILES string.")
+            raise ChemMCPInputError(f"smiles2 `{smiles2}` is not a valid SMILES string.")
 
         similarity = tanimoto(smiles1, smiles2)
 

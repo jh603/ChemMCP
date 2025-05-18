@@ -20,7 +20,7 @@ def pubchem_iupac2cid(iupac, strict=False):
     try:
         rows = data['SDQOutputSet'][0]['rows']
     except KeyError as e:
-        raise ChemMTKSearchFailError("Cannot find a molecule/compound on PubChem that matches the input IUPAC name.") from e
+        raise ChemMCPSearchFailError("Cannot find a molecule/compound on PubChem that matches the input IUPAC name.") from e
 
     potential_cid = None
     if len(rows) > 0:  # If there are rows, meaning that there are some results
@@ -49,21 +49,21 @@ def pubchem_iupac2cid(iupac, strict=False):
             part = part.strip()
             try:
                 cid = pubchem_iupac2cid(part)
-            except ChemMTKSearchFailError:
+            except ChemMCPSearchFailError:
                 parts_cannot_find.append(part)
             else:
                 parts_cid.append(cid)
         if len(parts_cannot_find) > 0:
-            raise ChemMTKSearchFailError("Cannot find a molecule/compound for the following parts of the input IUPAC name: %s" % ', '.join(parts_cannot_find))
+            raise ChemMCPSearchFailError("Cannot find a molecule/compound for the following parts of the input IUPAC name: %s" % ', '.join(parts_cannot_find))
         else:
             return tuple(parts_cid)
     else:
         if potential_cid is not None:
             if strict:
-                raise ChemMTKSearchFailError("Cannot find a molecule/compound that matches the input IUPAC name.")
+                raise ChemMCPSearchFailError("Cannot find a molecule/compound that matches the input IUPAC name.")
             logger.info("Cannot find a molecule/compound that matches the input IUPAC name. Using the first matched one.")
             return potential_cid
-        raise ChemMTKSearchFailError("Cannot find a molecule/compound on PubChem that matches the input IUPAC name. Possible reasons: 1) The input must be a valid IUPAC name. 2) Must input only one at a time. If you have multiple molecules to look up, please input each of them at a time.")
+        raise ChemMCPSearchFailError("Cannot find a molecule/compound on PubChem that matches the input IUPAC name. Possible reasons: 1) The input must be a valid IUPAC name. 2) Must input only one at a time. If you have multiple molecules to look up, please input each of them at a time.")
 
 
 def pubchem_name2cid_old(name):
@@ -71,14 +71,14 @@ def pubchem_name2cid_old(name):
     try:
         rows = data['SDQOutputSet'][0]['rows']
     except KeyError as e:
-        raise ChemMTKSearchFailError("Cannot find a molecule/compound that matches the input IUPAC name.") from e
+        raise ChemMCPSearchFailError("Cannot find a molecule/compound that matches the input IUPAC name.") from e
 
     if len(rows) > 0:
         if len(rows) > 1:
             logger.info("There are more than one molecules/compounds that match the input name. Using the first matched one.")
         return rows[0]['cid']
     else:
-        raise ChemMTKSearchFailError("Cannot find a molecule/compound that matches the input name.")
+        raise ChemMCPSearchFailError("Cannot find a molecule/compound that matches the input name.")
     
 
 def pubchem_name2cid(name):
@@ -87,5 +87,5 @@ def pubchem_name2cid(name):
     try:
         cid = data['IdentifierList']['CID'][0]
     except KeyError as e:
-        raise ChemMTKSearchFailError("Cannot find a molecule/compound that matches the input chemical name.") from e
+        raise ChemMCPSearchFailError("Cannot find a molecule/compound that matches the input chemical name.") from e
     return cid

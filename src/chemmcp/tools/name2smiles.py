@@ -1,7 +1,7 @@
 import logging
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKSearchFailError
+from ..utils.errors import ChemMCPSearchFailError
 from ..tool_utils.names import pubchem_name2smiles
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
@@ -29,7 +29,7 @@ class Name2Smiles(BaseTool):
         try:
             smi = pubchem_name2smiles(name)
             logger.debug("Looking up PubChem succeeded.")
-        except ChemMTKSearchFailError as e:
+        except ChemMCPSearchFailError as e:
             logger.debug("Looking up PubChem failed.")
             raise e
         

@@ -4,7 +4,7 @@ import argparse
 import molbloom
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKApiNotFoundError, ChemMTKInputError
+from ..utils.errors import ChemMCPApiNotFoundError, ChemMCPInputError
 from ..tool_utils.smiles import is_smiles
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
     
@@ -27,7 +27,7 @@ class PatentCheck(BaseTool):
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
-            raise ChemMTKInputError(f"smiles `{smiles}` is not a valid SMILES string.")
+            raise ChemMCPInputError(f"smiles `{smiles}` is not a valid SMILES string.")
 
         try:
             r = molbloom.buy(smiles, canonicalize=True, catalog="surechembl")

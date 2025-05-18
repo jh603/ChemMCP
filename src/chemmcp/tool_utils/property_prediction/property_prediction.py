@@ -1,7 +1,7 @@
 import os
 
 from ...utils.base_tool import BaseTool
-from ...utils.errors import ChemMTKInputError, ChemMTKToolInitError
+from ...utils.errors import ChemMCPInputError, ChemMCPToolInitError
 from ...tool_utils.smiles import is_smiles
 from . import utils as pp_utils
 
@@ -74,14 +74,14 @@ class PropertyPredictor(BaseTool):
         try:
             self.model, self.task, self.loss = pp_utils.load_model(self.args)
         except FileNotFoundError as e:
-            raise ChemMTKToolInitError(f"Model file not found: {e}")
+            raise ChemMCPToolInitError(f"Model file not found: {e}")
 
     def _run_base(self, smiles: str) -> str:
         if self.model is None or self.task is None or self.loss is None or self.args is None:
             self._init_modules()
 
         if not is_smiles(smiles):
-            raise ChemMTKInputError(f"Invalid SMILES: {smiles}")
+            raise ChemMCPInputError(f"Invalid SMILES: {smiles}")
         task_num = 2
         if 'task_num' in MODEL_ARGS[self.task_name]:
             task_num = MODEL_ARGS[self.task_name]['task_num']

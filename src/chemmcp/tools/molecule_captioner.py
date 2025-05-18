@@ -2,7 +2,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 from ..utils.base_tool import BaseTool
 from ..tool_utils.smiles import is_smiles
-from ..utils.errors import ChemMTKInputError
+from ..utils.errors import ChemMCPInputError
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
@@ -44,7 +44,7 @@ class MoleculeCaptioner(BaseTool):
     
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
-            raise ChemMTKInputError("The input is not a valid SMILES string.")
+            raise ChemMCPInputError("The input is not a valid SMILES string.")
         
         return self._run_molt5(smiles) + "\n\nNote: This is a generated description and may not be accurate. Please double check the result."
 

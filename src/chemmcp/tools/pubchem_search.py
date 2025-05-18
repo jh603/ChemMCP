@@ -217,11 +217,11 @@ class PubchemSearch(BaseTool):
             elif namespace.lower() in ('name', 'common name'):
                 namespace = 'name'
             elif namespace == '':
-                raise ChemMTKInputError('Empty representation name.')
+                raise ChemMCPInputError('Empty representation name.')
             else:
-                raise ChemMTKInputError('The representation name \"%s\" is not supported. Please use \"SMILES\", \"IUPAC\", or \"Name\".' % namespace)
-        except (ChemMTKInputError, ValueError) as e:
-            raise ChemMTKInputError("The input is not in a correct format: %s If searching with SMILES, please input \"SMILES: <SMILES of the molecule/compound>\"; if searching with IUPAC name, please input \"IUPAC: <IUPAC name of the molecule/compound>\"; if searching with common name, please input \"Name: <common name of the molecule/compound>\"." % str(e))
+                raise ChemMCPInputError('The representation name \"%s\" is not supported. Please use \"SMILES\", \"IUPAC\", or \"Name\".' % namespace)
+        except (ChemMCPInputError, ValueError) as e:
+            raise ChemMCPInputError("The input is not in a correct format: %s If searching with SMILES, please input \"SMILES: <SMILES of the molecule/compound>\"; if searching with IUPAC name, please input \"IUPAC: <IUPAC name of the molecule/compound>\"; if searching with common name, please input \"Name: <common name of the molecule/compound>\"." % str(e))
         r = self._run_base(namespace, identifier)
         return r
     
@@ -245,7 +245,7 @@ class PubchemSearch(BaseTool):
 
     def _search_cid(self, namespace, identifier):
         if namespace == 'smiles' and not is_smiles(identifier):
-            raise ChemMTKInputError('The input SMILES is invalid. Please double-check. Note that you should input only one molecule/compound at a time.')
+            raise ChemMCPInputError('The input SMILES is invalid. Please double-check. Note that you should input only one molecule/compound at a time.')
         
         if namespace == 'iupac':
             cid = pubchem_iupac2cid(identifier)
@@ -253,17 +253,17 @@ class PubchemSearch(BaseTool):
             try:
                 c = pcp.get_compounds(identifier, namespace=namespace)
             except pcp.BadRequestError:
-                raise ChemMTKSearchFailError("Error occurred while searching for the molecule/compound on PubChem. Please try other tools or double check your input.")
+                raise ChemMCPSearchFailError("Error occurred while searching for the molecule/compound on PubChem. Please try other tools or double check your input.")
             if len(c) >= 1:
                 c = c[0]
             else:
-                raise ChemMTKSearchFailError("Could not find a matched molecule/compound on PubChem. Please double check your input and search for one molecule/compound at a time, or use its another identifier (e.g., IUPAC name or common name) for the search.")
+                raise ChemMCPSearchFailError("Could not find a matched molecule/compound on PubChem. Please double check your input and search for one molecule/compound at a time, or use its another identifier (e.g., IUPAC name or common name) for the search.")
             cid = c.cid
         else:
             cid = pubchem_name2cid(identifier)
         
         if cid is None:
-            raise ChemMTKSearchFailError("Could not find a matched molecule/compound on PubChem. Please double check your input and search for one molecule/compound at a time, or use its another identifier for the search.")
+            raise ChemMCPSearchFailError("Could not find a matched molecule/compound on PubChem. Please double check your input and search for one molecule/compound at a time, or use its another identifier for the search.")
 
         return cid
     

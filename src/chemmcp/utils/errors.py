@@ -1,32 +1,29 @@
 import functools
 import inspect
 
-class ChemMTKError(Exception): ...
-"""Errors related to the ChemMcpToolkit library."""
 
+class ChemMCPError(Exception): ...
+"""Errors related to the ChemMCP library."""
 
-class ChemMTKFatalError(ChemMTKError): ...
-"""Fatal errors are unrecoverable errors that should not be caught."""
-
-class ChemMCPToolMetadataError(ChemMTKFatalError): ...
+class ChemMCPToolMetadataError(ChemMCPError): ...
 """Errors related to the metadata of a ChemMCP tool."""
-class ChemMTKGeneralError(ChemMTKError): ...
-"""General errors are recoverable errors that can be caught."""
 
-class ChemMTKRemoteServerDownError(ChemMTKGeneralError): ...
+class ChemMCPApiNotFoundError(ChemMCPError): ...
+"""The API key for an external resource is not found or correctly set."""
+
+class ChemMCPToolInitError(ChemMCPError): ...
+"""The tool cannot be initialized, e.g., checkpoint file not found or cannot be loaded."""
+
+class ChemMCPRemoteServerDownError(ChemMCPError): ...
 """The remote server is down or unreachable."""
 
-class ChemMTKToolInitError(ChemMTKGeneralError): ...
+class ChemMCPToolProcessError(ChemMCPError): ...
+"""The tool cannot correctly run or return a result due to a runtime error."""
 
-class ChemMTKToolProcessError(ChemMTKGeneralError): ...
+class ChemMCPInputError(ChemMCPError): ...
+"""The input to a tool is invalid."""
 
-class ChemMTKApiNotFoundError(ChemMTKGeneralError): ...
-
-class ChemMTKInputError(ChemMTKGeneralError): ...
-
-class ChemMTKOutputError(ChemMTKGeneralError): ...
-
-class ChemMTKSearchFailError(ChemMTKGeneralError): ...
+class ChemMCPSearchFailError(ChemMCPError): ...
 """The search on an external resource cannot get reasonable results."""
 
 
@@ -37,7 +34,7 @@ def catch_errors(func):
         async def wrapper(*args, **kwargs):
             try:
                 return await func(*args, **kwargs)
-            except ChemMTKError as e:
+            except ChemMCPError as e:
                 return f"Error ({e.__class__.__name__}): {e}"
         return wrapper
     else:
@@ -45,6 +42,6 @@ def catch_errors(func):
         def wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
-            except ChemMTKError as e:
+            except ChemMCPError as e:
                 return f"Error ({e.__class__.__name__}): {e}"
         return wrapper

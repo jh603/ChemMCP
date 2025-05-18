@@ -1,7 +1,7 @@
 import selfies as sf
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKInputError, ChemMTKToolProcessError
+from ..utils.errors import ChemMCPInputError, ChemMCPToolProcessError
 from ..tool_utils.smiles import is_smiles
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
@@ -24,13 +24,13 @@ class Smiles2Selfies(BaseTool):
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
-            raise ChemMTKInputError("The input is not a valid SMILES string.")
+            raise ChemMCPInputError("The input is not a valid SMILES string.")
         try:
             selfies = sf.encoder(smiles)
         except KeyboardInterrupt:
             raise
         except:
-            raise ChemMTKToolProcessError("Cannot convert the SMILES into SELFIES, possibly because it is not a valid SMILES string.")
+            raise ChemMCPToolProcessError("Cannot convert the SMILES into SELFIES, possibly because it is not a valid SMILES string.")
         return selfies
 
 

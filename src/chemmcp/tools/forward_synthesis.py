@@ -1,6 +1,6 @@
 import logging
 
-from ..utils.errors import ChemMTKToolProcessError, ChemMTKInputError
+from ..utils.errors import ChemMCPToolProcessError, ChemMCPInputError
 from ..tool_utils.smiles import is_smiles
 from ..tool_utils.rxn4chem import RXN4Chem
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
@@ -33,9 +33,9 @@ class ForwardSynthesis(RXN4Chem):
         """Run reaction prediction."""
         # Check that input is smiles
         if not is_smiles(reactants_and_reagents_smiles):
-            raise ChemMTKInputError("The input contains invalid SMILES. Please double-check.")
+            raise ChemMCPInputError("The input contains invalid SMILES. Please double-check.")
         if '.' not in reactants_and_reagents_smiles:
-            raise ChemMTKInputError("This tool only support inputs with at least two reactants and reagents separated by a dot '.'. Please double-check.")
+            raise ChemMCPInputError("This tool only support inputs with at least two reactants and reagents separated by a dot '.'. Please double-check.")
 
         try:
             prediction_id = self.predict_reaction(reactants_and_reagents_smiles)
@@ -44,26 +44,26 @@ class ForwardSynthesis(RXN4Chem):
         except KeyboardInterrupt:
             raise
         except Exception as e:
-            raise ChemMTKToolProcessError("Failed to predict the products for the input string. Please make sure the input is a valid SMILES string containing reactants and reagents separated by a dot '.'") from e
+            raise ChemMCPToolProcessError("Failed to predict the products for the input string. Please make sure the input is a valid SMILES string containing reactants and reagents separated by a dot '.'") from e
         return product
 
-    @RXN4Chem.retry(10, ChemMTKToolProcessError)
+    @RXN4Chem.retry(10, ChemMCPToolProcessError)
     def predict_reaction(self, reactants: str) -> str:
         """Make api request."""
         response = self.rxn4chem.predict_reaction(reactants)
         if "prediction_id" in response.keys():
             return response["prediction_id"]
         else:
-            raise ChemMTKToolProcessError("The tool failed to predict the reaction. Maybe the input is invalid. Please make sure the input is valid SMILES of reactants separated by dot '.' and try again.")
+            raise ChemMCPToolProcessError("The tool failed to predict the reaction. Maybe the input is invalid. Please make sure the input is valid SMILES of reactants separated by dot '.' and try again.")
 
-    @RXN4Chem.retry(10, ChemMTKToolProcessError)
+    @RXN4Chem.retry(10, ChemMCPToolProcessError)
     def get_results(self, prediction_id: str) -> str:
         """Make api request."""
         results = self.rxn4chem.get_predict_reaction_results(prediction_id)
         if "payload" in results["response"].keys():
             return results["response"]["payload"]["attempts"][0]
         else:
-            raise ChemMTKToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES of reactants separated by dot '.' and try again.")
+            raise ChemMCPToolProcessError("Error in obtaining the results. Please make sure the input is valid SMILES of reactants separated by dot '.' and try again.")
         
 
 if __name__ == "__main__":

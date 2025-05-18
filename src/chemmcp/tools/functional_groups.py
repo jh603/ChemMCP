@@ -1,7 +1,7 @@
 from rdkit import Chem
 
 from ..utils.base_tool import BaseTool
-from ..utils.errors import ChemMTKInputError
+from ..utils.errors import ChemMCPInputError
 from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 
@@ -90,7 +90,7 @@ class FunctionalGroups(BaseTool):
             else:
                 return "This molecule does not contain any functional groups."
         except:
-            raise ChemMTKInputError("Invalid SMILES string.")
+            raise ChemMCPInputError("Invalid SMILES string.")
 
 
 if __name__ == "__main__":
