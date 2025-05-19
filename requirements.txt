@@ -15,4 +15,4 @@ sentencepiece>=0.2.0
 tavily-python>=0.7.0
 torch==2.5
 transformers>=4.51.3
-git+https://github.com/dptech-corp/Uni-Core.git#egg=unicore
+git+https://github.com/btyu/Uni-Core.git@ea7db06540c007158a216156d77595799e42ae0c#egg=uni_core
