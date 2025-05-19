@@ -36,8 +36,8 @@ jobs:
 
       - name: Sync env, generate docs
         run: |
-          source .venv/bin/activate
           uv sync
+          source .venv/bin/activate
           python -m scripts.generate_tool_envs
           python -m scripts.generate_tools_doc
 
