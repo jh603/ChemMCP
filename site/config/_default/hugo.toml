@@ -6,6 +6,8 @@ theme = "blowfish"
 baseURL = "https://osu-nlp-group.github.io/ChemMCP"
 defaultContentLanguage = "en"
 disableLanguages = [] #to allow translation work requiring shipping to production
+relativeURLs = false
+canonifyURLs = true
 
 # pluralizeListTitles = "true" # hugo function useful for non-english languages, find out more in  https://gohugo.io/getting-started/configuration/#pluralizelisttitles
 
