@@ -189,7 +189,7 @@ See the full list and documentation on the [Tools](/tools) page.
 ## Next Steps
 
 - Browse all tools on the [Tools](/tools) page.
-- Use [QuickConfig](/auto-config) to auto-configure tools based on your needs.
+- Use [QuickConfig](/quick-config) to auto-configure tools based on your needs.
 - Contribute your own tools or improve existing ones (see [Dev Guide](/dev-guide)).
 
 ## Contact

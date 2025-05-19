@@ -80,7 +80,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', async function() {
     // Load tools data
-    const response = await fetch('https://osu-nlp-group.github.io/ChemMCP/data/tool_envs/all_tool_envs.json');
+    const response = await fetch('/data/tool_envs/all_tool_envs.json');
     const toolsEnvsDict = await response.json();
     const allTools = Object.keys(toolsEnvsDict).sort(); // Sort tools alphabetically
     
