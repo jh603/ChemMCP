@@ -27,10 +27,17 @@ jobs:
           # uv installs into ~/.local/bin by default, so add that to PATH
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
+      - name: Configure GitHub authentication for private deps
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Rewrite any https://github.com/ URL to include the token
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+
       - name: Sync env, generate docs
         run: |
-          uv sync
           source .venv/bin/activate
+          uv sync
           python -m scripts.generate_tool_envs
           python -m scripts.generate_tools_doc
 
