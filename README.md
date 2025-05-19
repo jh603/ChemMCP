@@ -12,7 +12,7 @@ ChemMCP is **a continuously updated collection of chemistry tools for LLMs and A
 
 Specifically, ChemMCP provides:
 
-- **Professional Chemistry Tools**: ChemMCP's curated collection of chemistry tools empowers you and your AI to predict molecules and reactions, analyze chemical data, explore scientific knowledge, and much more. Discover the full range in our [tool directory](http://localhost:1313/tools/).
+- **Professional Chemistry Tools**: ChemMCP's curated collection of chemistry tools empowers you and your AI to predict molecules and reactions, analyze chemical data, explore scientific knowledge, and much more. Discover the full range in our [tool directory](https://github.com/OSU-NLP-Group/ChemMCP/tools).
 - **Effortless Integration with MCP**: Seamlessly supercharge your LLM clients—like Claude, GPT, and others—using ChemMCP. Thanks to the MCP, you can add powerful chemistry tools to your workflow in minutes, simply by including a JSON configuration file.
 - **Python-Ready for Your Projects**: Bring ChemMCP's power directly into your Python projects! Effortlessly integrate our tools for data processing, agent building, or your custom applications, perfect for researchers, developers, and innovators alike.
 
