@@ -80,7 +80,8 @@
 <script>
   document.addEventListener('DOMContentLoaded', async function() {
     // Load tools data
-    const response = await fetch('/data/tool_envs/all_tool_envs.json');
+    const dataUrl = '{{ "data/tool_envs/all_tool_envs.json" | absURL }}';
+    const response = await fetch(dataUrl);
     const toolsEnvsDict = await response.json();
     const allTools = Object.keys(toolsEnvsDict).sort(); // Sort tools alphabetically
     
