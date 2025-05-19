@@ -13,7 +13,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0          # full history still needed
+          submodules: recursive   # ← fetches all submodules
 
       - name: Set up Python 3.x
         uses: actions/setup-python@v4
@@ -27,17 +28,13 @@ jobs:
           # uv installs into ~/.local/bin by default, so add that to PATH
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Configure GitHub authentication for private deps
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Rewrite any https://github.com/ URL to include the token
-          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
-
-      - name: Sync env, generate docs
+      - name: Sync env
         run: |
           uv sync
           source .venv/bin/activate
+      
+      - name: Generate docs
+        run: |
           python -m scripts.generate_tool_envs
           python -m scripts.generate_tools_doc
 
