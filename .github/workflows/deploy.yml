@@ -1,0 +1,52 @@
+name: Build & deploy Hugo site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main   # or whichever branch you author in
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out your code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0     # so we can push to gh_pages later
+
+      # 2. Set up Python
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # 3. Install your CLI (if needed) and prepare your docs
+      - name: Sync env, activate, generate docs
+        run: |
+          uv sync
+          source .venv/bin/activate
+          python -m scripts.generate_tool_envs
+          python -m scripts.generate_tools_doc
+
+      # 4. Install Hugo
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+
+      # 5. Build the site
+      - name: Build Hugo site
+        run: hugo --source site --destination site/public
+
+      # 6. Deploy the built site to gh_pages branch
+      - name: Deploy to gh_pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          # uses the GITHUB_TOKEN to push changes
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site/public
+          publish_branch: gh_pages
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
