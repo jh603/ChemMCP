@@ -349,8 +349,7 @@ wheels = [
 ]
 
 [[package]]
-name = "chemmtk"
-version = "0.1.0"
+name = "chemmcp"
 source = { virtual = "." }
 dependencies = [
     { name = "jupyter" },

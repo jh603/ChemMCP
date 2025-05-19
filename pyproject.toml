@@ -1,9 +1,9 @@
 [project]
-name = "ChemMTK"
-version = "0.1.0"
+name = "ChemMCP"
 description = "Chemistry MCP ToolKit"
 readme = "README.md"
 requires-python = ">=3.11"
+dynamic = ["version"]
 dependencies = [
     "jupyter>=1.1.1",
     "litellm==1.65.8",
@@ -27,3 +27,10 @@ dependencies = [
 
 [tool.uv.sources]
 unicore = { git = "https://github.com/dptech-corp/Uni-Core.git" }
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["chemmcp"]
+
+[tool.setuptools.dynamic]
+version = { attr = "chemmcp.__version__" }
