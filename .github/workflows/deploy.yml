@@ -35,8 +35,8 @@ jobs:
       
       - name: Generate docs
         run: |
-          python -m scripts.generate_tool_envs
-          python -m scripts.generate_tools_doc
+          uv run python -m scripts.generate_tool_envs
+          uv run python -m scripts.generate_tools_doc
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
