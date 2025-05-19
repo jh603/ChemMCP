@@ -139,9 +139,10 @@ class MyNewTool(BaseTool):  # Class name must match the tool name
     # The output is the output of your tool.
     def _run_base(self, smiles: str, threshold: float = 0.5) -> float:
         """
-        Core logic invoked for both text and code interfaces.
+        Core logic of your tool.
         """
         # … your implementation of the tool function …
+        # You could call external APIs, load any models, or implement your own algorithms.
         score: float = self.openai_client.predict(smiles)  # this is just a simplified example
 
         return score
