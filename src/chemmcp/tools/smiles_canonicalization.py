@@ -11,7 +11,7 @@ class SmilesCanonicalization(BaseTool):
     func_name = 'canonicalize_smiles'
     description = "Canonicalize a molecular SMILES string."
     categories = ["Molecule"]
-    tags = ["SMILES", "Canonicalization", "RDKit"]
+    tags = ["SMILES", "RDKit", "Molecular Operations"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.'), ('isomeric', 'bool', 'N/A', 'Whether to include isomeric information. Default is True.'), ('kekulization', 'bool', 'N/A', 'Whether to perform kekulization. Default is True.'), ('keep_atom_map', 'bool', 'N/A', 'Whether to keep atom mapping numbers, if any. Default is True.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]  # TODO: Support options.

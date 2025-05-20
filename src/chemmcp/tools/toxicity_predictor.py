@@ -14,7 +14,7 @@ class ToxicityPredictor(PropertyPredictor):
     func_name = 'predict_toxicity'
     description = "Predict the toxicity of a molecule given its SMILES representation."
     categories = ["Molecule"]
-    tags = ["Molecular Properties", "Neural Networks"]
+    tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]

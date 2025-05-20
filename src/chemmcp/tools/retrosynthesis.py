@@ -20,7 +20,7 @@ class Retrosynthesis(RXN4Chem):
     func_name = "do_retrosynthesis"
     description = "Conduct single-step retrosynthesis. Given the product(s), predict multiple sets of potential reactants, along with their confidence."
     categories = ["Reaction"]
-    tags = ["Retrosynthesis", "Reaction Prediction"]
+    tags =["Reaction Prediction", "Neural Networks", "APIs", "SMILES"]
     required_envs = [("RXN4CHEM_API_KEY", "The API key for IBM RXN4Chem.")]
     code_input_sig = [("product_smiles", "str", "N/A", "The SMILES of the product.")]
     text_input_sig = [("product_smiles", "str", "N/A", "The SMILES of the product.")]

@@ -11,7 +11,7 @@ class MoleculeSimilarity(BaseTool):
     func_name = 'cal_molecule_similarity'
     description = "Get the Tanimoto similarity of two molecules. It Can also be used to check if two molecules are identical."
     categories = ["Molecule"]
-    tags = ["Molecular Property", "RDKit"]
+    tags = ["Molecular Information", "RDKit", "SMILES", "Molecular Operations"]
     required_envs = []
     code_input_sig = [('smiles1', 'str', 'N/A', 'SMILES string of the first molecule'), ('smiles2', 'str', 'N/A', 'SMILES string of the second molecule.')]
     text_input_sig = [('smiles_pair', 'str', 'N/A', 'SMILES strings of the two molecules, separated by a semicolon.')]

@@ -16,7 +16,7 @@ class PatentCheck(BaseTool):
     func_name = 'check_molecule_if_patented'
     description = "Get whether a molecule is patented or not."
     categories = ["Molecule"]
-    tags = ["Patent", "MolBloom", "Web"]
+    tags = ["Molecular Information", "SMILES", "APIs"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]

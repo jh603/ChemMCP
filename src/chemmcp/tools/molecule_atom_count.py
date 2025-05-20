@@ -12,7 +12,7 @@ class MoleculeAtomCount(BaseTool):
     func_name = 'count_molecule_atoms'
     description = "Count the number of atoms of each type in a molecule."
     categories = ["Molecule"]
-    tags = ["Molecular Information", "RDKit"]
+    tags = ["Molecular Information", "RDKit", "SMILES"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]

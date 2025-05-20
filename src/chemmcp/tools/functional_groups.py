@@ -62,7 +62,7 @@ class FunctionalGroups(BaseTool):
     func_name = 'get_functional_groups'
     description = "Get the functional groups in a molecule."
     categories = ["Molecule"]
-    tags = ["Molecule Information", "RDKit"]
+    tags = ["Molecular Information", "RDKit", "SMILES"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule.')]

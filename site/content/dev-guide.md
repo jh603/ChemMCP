@@ -67,7 +67,7 @@ class MyNewTool(BaseTool):  # Class name must match the tool name
     func_name        = "do_something"     # snake-case verb phrase
     description      = "Brief description of what MyNewTool does."
     categories       = ["General"]        # choose from Molecule | Reaction | General
-    tags             = ["API", "Web", "Neural Networks", "Molecular Properties", "LLMs"]  # keywords for this tool
+    tags             = ["API", "Neural Networks", "Molecular Properties", "LLMs"]  # keywords for this tool
     required_envs    = [                  # if this tool needs users to set API keys or any environment variables; otherwise, leave it an empty list
         ("OPENAI_API_KEY", "API key for OpenAI"),
     ]

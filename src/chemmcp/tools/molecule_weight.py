@@ -12,7 +12,7 @@ class MoleculeWeight(BaseTool):
     func_name = 'cal_molecular_weight'
     description = "Calculate molecular weight."
     categories = ["Molecule"]
-    tags = ["Molecular Property", "RDKit"]
+    tags = ["Molecular Information", "Molecular Properties", "RDKit", "SMILES"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]

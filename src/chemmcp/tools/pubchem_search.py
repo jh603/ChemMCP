@@ -190,7 +190,7 @@ class PubchemSearch(BaseTool):
     func_name = 'search_pubchem'
     description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities."
     categories = ["Molecule"]
-    tags = ["PubChem", "Molecule Information", "Molecular Properties"]
+    tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecule Name", "APIs"]
     required_envs = []
     text_input_sig = [("representation_name_and_representation", "str", "N/A", "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\".")]
     code_input_sig = [("representation_name", "str", "N/A", "The representation name, can be \"SMILES\", \"IUPAC\", or \"Name\" (chemical's common name)."), ("representation", "str", "N/A", "The representation of the molecule/compound, corresponding to the representation_name used.")]

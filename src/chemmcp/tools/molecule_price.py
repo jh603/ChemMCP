@@ -15,7 +15,7 @@ class MoleculePrice(BaseTool):
     func_name = 'get_molecule_price'
     description = "Get the cheapest available price of a molecule."
     categories = ["Molecule"]
-    tags = ["Molecular Information", "ChemSpace"]
+    tags = ["Molecular Information", "ChemSpace", "APIs", "SMILES"]
     required_envs = [("CHEMSPACE_API_KEY", "The API key for ChemSpace.")]
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]

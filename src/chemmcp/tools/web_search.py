@@ -19,7 +19,7 @@ class WebSearch(BaseTool):
     func_name = 'search_web'
     description = "Search the web for any questions and knowledge and obtain a concise answer based on thesearch results."
     categories = ["General"]
-    tags = ["Web", "LLMs", "Neural Networks"]
+    tags = ["Web Searching", "LLMs", "Neural Networks", "APIs"]
     required_envs = [("TAVILY_API_KEY", "The API key for [Tavily](https://tavily.com/).")]
     text_input_sig = [("query", "str", "N/A", "The search query.")]
     code_input_sig = [("query", "str", "N/A", "The search query.")]

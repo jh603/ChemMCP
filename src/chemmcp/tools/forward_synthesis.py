@@ -17,7 +17,7 @@ class ForwardSynthesis(RXN4Chem):
     func_name = "do_forward_synthesis"
     description = "Given reactants and reagents, predict the product(s) of a chemical reaction."
     categories = ["Reaction"]
-    tags = ["Forward Synthesis", "Reaction Prediction"]
+    tags = ["Reaction Prediction", "Neural Networks", "APIs", "SMILES"]
     required_envs = [("RXN4CHEM_API_KEY", "The API key for IBM RXN4Chem.")]
     text_input_sig = [("reactants_and_reagents_smiles", "str", "N/A", "The SMILES of the reactants and reagents separated by a dot '.'.")]
     code_input_sig = [("reactants_and_reagents_smiles", "str", "N/A", "The SMILES of the reactants and reagents separated by a dot '.'.")]

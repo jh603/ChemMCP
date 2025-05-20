@@ -17,7 +17,7 @@ class Smiles2Formula(BaseTool):
     func_name = 'convert_smiles_to_formula'
     description = "Convert SMILES to molecular formula."
     categories = ["Molecule"]
-    tags = ["SMILES", "RDKit"]
+    tags = ["Name Conversion", "Molecular Formulas", "SMILES", "RDKit"]
     required_envs = []
     code_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]

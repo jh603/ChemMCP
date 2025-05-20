@@ -12,7 +12,7 @@ class Selfies2Smiles(BaseTool):
     func_name = 'convert_selfies_to_smiles'
     description = "Convert SELFIES to SMILES string."
     categories = ["Molecule"]
-    tags = ["SMILES", "SELFIES"]
+    tags = ["SMILES", "SELFIES", "Name Conversion"]
     required_envs = []
     code_input_sig = [('selfies', 'str', 'N/A', 'SELFIES string of the molecule')]
     text_input_sig = [('selfies', 'str', 'N/A', 'SELFIES string of the molecule')]

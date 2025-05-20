@@ -16,7 +16,7 @@ class Name2Smiles(BaseTool):
     func_name = 'convert_chemical_name_to_smiles'
     description = "Convert chemical name to SMILES string."
     categories = ["Molecule"]
-    tags = ["SMILES", "RDKit", "PubChem"]
+    tags = ["Name Conversion", "SMILES", "Molecular Names", "PubChem", "APIs"]
     required_envs = []
     code_input_sig = [('name', 'str', 'N/A', 'Chemical name of the molecule')]
     text_input_sig = [('name', 'str', 'N/A', 'Chemical name of the molecule')]
