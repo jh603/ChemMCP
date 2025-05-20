@@ -18,7 +18,7 @@ class PubchemSearchQA(BaseTool):
     func_name = 'search_pubchem_qa'
     description = "Answer questions about molecules/compounds based on the information from PubChem, one of the most comprehensive database of chemical molecules and their activities."
     categories = ["Molecule"]
-    tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecule Name", "APIs", "QA", "LLMs"]
+    tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecular Names", "APIs", "QA", "LLMs"]
     required_envs = [("__llms__", "LiteLLM Envs.")]
     text_input_sig = [("representation_name_and_representation_and_question", "str", 'N/A', "The representation name and representation of the molecule/compound, e.g., \"SMILES: <SMILES>\", \"IUPAC: <IUPAC name>\", or \"Name: <common name>\". Followed by \"Question: <your question about the molecule/compound>\".")]
     code_input_sig = [("representation_name", "str", 'N/A', "The representation name, can be \"smiles\", \"iupac\", or \"name\" (chemical's common name)."), ("representation", "str", 'N/A', "The representation of the molecule/compound, corresponding to the representation_name used."), ("question", "str", 'N/A', "The question about the molecule/compound.")]
