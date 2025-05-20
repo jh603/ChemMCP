@@ -32,13 +32,6 @@ Based on the functions, the tools can be divided into general tools, molecule to
 
 Check the updated full list of tools [here](https://osu-nlp-group.github.io/ChemMCP/get-started/).
 
-## To-Dos
-
-- [ ] [NewTool] Add Wikipedia search tool.
-- [ ] [NewTool] Add neural network methods for name conversion.
-- [ ] [ToolUpdate] Fix the error messages when running property predictors, although not impacting their function.
-- [x] [Feature] Support Python calling.
-
 ## Citation
 
 If ChemMCP is valuable to your research or development, please kindly cite our work.
