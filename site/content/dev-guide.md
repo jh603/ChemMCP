@@ -153,7 +153,7 @@ class MyNewTool(BaseTool):  # Class name must match the tool name
     # Otherwise, please implement it.
     def _run_text(self, smiles_and_threshold: str) -> str:
         """
-        Parse the only text str input and ensure the output is also a str.
+        Parse the only text str input, and then call _run_base. Return the result of _run_base.
         """
 
         # parse the text query into _run_base's input arguments

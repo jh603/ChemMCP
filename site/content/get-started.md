@@ -71,7 +71,7 @@ This guide will help you quickly set up and start using ChemMCP.
 
 ChemMCP supports two usage modes:
 
-- **MCP**: Run ChemMCP as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server to easily integrate with MCP-compatible clients like [Claude Desktop](https://github.com/punkpeye/awesome-mcp-clients) and [more](https://github.com/punkpeye/awesome-mcp-clients).
+- **MCP**: Run ChemMCP as a [Model Context Protocol (MCP)](https://claude.ai/download) server to easily integrate with MCP-compatible clients like [Claude Desktop](https://github.com/punkpeye/awesome-mcp-clients) and [more](https://github.com/punkpeye/awesome-mcp-clients).
 
 - **Python Calling**: Use ChemMCP as a standard Python package directly in your Python code.
 
