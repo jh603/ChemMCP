@@ -13,10 +13,10 @@ QA_SYSTEM_PROMPT = "You are an expert chemist. You will be given the PubChem pag
 
 @ChemMCPManager.register_tool
 class PubchemSearchQA(BaseTool):
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
     name = "PubchemSearchQA"
     func_name = 'search_pubchem_qa'
-    description = "Answer questions about molecules/compounds based on the information from PubChem, one of the most comprehensive database of chemical molecules and their activities."
+    description = "Answer questions about molecules/compounds based on the information from PubChem, one of the most comprehensive database of chemical molecules and their activities. You can get authoritative answers about molecular names, properties, activities, and more."
     categories = ["Molecule"]
     tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecular Names", "APIs", "QA", "LLMs"]
     required_envs = [("__llms__", "LiteLLM Envs.")]

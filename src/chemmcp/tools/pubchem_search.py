@@ -185,10 +185,10 @@ class PubchemStructuredDoc:
 
 
 class PubchemSearch(BaseTool):
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
     name = "PubchemSearch"
     func_name = 'search_pubchem'
-    description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities."
+    description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. You can get authoritative information about molecular names, properties, activities, and more."
     categories = ["Molecule"]
     tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecular Names", "APIs"]
     required_envs = []
@@ -225,7 +225,7 @@ class PubchemSearch(BaseTool):
         r = self._run_base(namespace, identifier)
         return r
     
-    def _run_base(self, representation_name: Literal["smiles", 'iupac', 'name'], representation: str) -> str:
+    def _run_base(self, representation_name: Literal["SMILES", "IUPAC", "Name"], representation: str) -> str:
         cid = self._search_cid(representation_name, representation)
         return self.get_cid_doc_text(cid)
         
@@ -244,6 +244,7 @@ class PubchemSearch(BaseTool):
         return doc
 
     def _search_cid(self, namespace, identifier):
+        namespace = namespace.lower()
         if namespace == 'smiles' and not is_smiles(identifier):
             raise ChemMCPInputError('The input SMILES is invalid. Please double-check. Note that you should input only one molecule/compound at a time.')
         

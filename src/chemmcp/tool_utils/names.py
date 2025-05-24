@@ -3,6 +3,7 @@ import logging
 from rdkit import Chem
 import rdkit.Chem.rdMolDescriptors as molD
 import pubchempy as pcp
+import requests
 
 from ..utils.errors import ChemMCPSearchFailError
 from .pubchem import pubchem_iupac2cid, pubchem_name2cid
@@ -36,6 +37,36 @@ def pubchem_name2smiles(
     r = c.isomeric_smiles
 
     return r
+
+
+def pubchem_smiles2cas(smi):
+    """This function queries the given molecule smiles and returns cas"""
+
+    url_cid = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/{}/{}/cids/JSON"
+    url_data = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{}/JSON"
+
+    try:
+        url_cid = url_cid.format('smiles', smi)
+        cid = requests.get(url_cid).json()["IdentifierList"]["CID"][0]
+        url_data = url_data.format(cid)
+        data = requests.get(url_data).json()
+    except (requests.exceptions.RequestException, KeyError):
+        raise ChemMCPSearchFailError("No Pubchem entry for the input SMILES.")
+
+    try:
+        for section in data["Record"]["Section"]:
+            if section.get("TOCHeading") == "Names and Identifiers":
+                for subsection in section["Section"]:
+                    if subsection.get("TOCHeading") == "Other Identifiers":
+                        for subsubsection in subsection["Section"]:
+                            if subsubsection.get("TOCHeading") == "CAS":
+                                return subsubsection["Information"][0]["Value"][
+                                    "StringWithMarkup"
+                                ][0]["String"]
+    except KeyError:
+        raise ChemMCPSearchFailError("Cannot find the CAS for the input SMILES.")
+
+    raise ChemMCPSearchFailError("Cannot find the CAS for the input SMILES.")
 
 
 def pubchem_smiles2iupac(smi):

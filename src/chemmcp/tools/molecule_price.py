@@ -10,10 +10,10 @@ from ..utils.mcp_app import ChemMCPManager, run_mcp_server
 
 @ChemMCPManager.register_tool
 class MoleculePrice(BaseTool):
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
     name = "MoleculePrice"
     func_name = 'get_molecule_price'
-    description = "Get the cheapest available price of a molecule."
+    description = "Check the purchasability and get the cheapest available price of a molecule."
     categories = ["Molecule"]
     tags = ["Molecular Information", "ChemSpace", "APIs", "SMILES"]
     required_envs = [("CHEMSPACE_API_KEY", "The API key for ChemSpace.")]

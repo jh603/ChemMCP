@@ -27,6 +27,9 @@ _tool_module_map = {
     "Name2Smiles": "name2smiles",
     "Selfies2Smiles": "selfies2smiles",
     "Smiles2Selfies": "smiles2selfies",
+    "SmilesCheck": "smiles_check",
+    "SmartsCheck": "smarts_check",
+    "Smiles2Cas": "smiles2cas",
 }
 
 __all__ = list(_tool_module_map.keys())
