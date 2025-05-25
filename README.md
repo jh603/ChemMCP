@@ -30,7 +30,7 @@ Based on the functions, the tools can be divided into general tools, molecule to
 - **Molecule Tools**: Offer various analyses, predictions, and conversions related to chemical compounds and their properties.
 - **Reaction Tools**: Predict products of chemical reactions and suggest potential reactants for synthesizing given products.
 
-Check the updated full list of tools [here](https://osu-nlp-group.github.io/ChemMCP/get-started/).
+Check the updated full list of tools [here](https://osu-nlp-group.github.io/ChemMCP/tools/).
 
 ## Citation
 

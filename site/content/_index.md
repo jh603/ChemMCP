@@ -1,6 +1,6 @@
 ---
-title: "Welcome to Blowfish! :tada:"
-description: "This page was built using the Blowfish theme for Hugo."
+title: "ChemMCP - Build your own AI chemistry co-scientist."
+description: "ChemMCP is an MCP-compatible chemistry toolkit that enhances AI assistants with advanced chemical capabilities."
 ---
 
 
