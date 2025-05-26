@@ -36,23 +36,22 @@
 <article class="max-w-full prose dark:prose-invert">
   <div class="relative px-4 py-6 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-4xl">
-      <h1 class="text-3xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">QuickConfig</h1>
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">QuickConfig</h1>
       <p class="text-lg text-neutral-700 dark:text-neutral-300 mb-6">
         This utility automatically generates the MCP configuration for your selected ChemMCP tools.
       </p>
 
       <!-- Tool Selection Area -->
       <div class="mb-8">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100">Select Tools</h2>
-          <div class="space-x-3">
-            <button id="select-all" class="!rounded-md bg-primary-600 px-4 py-2 !text-neutral !no-underline hover:!bg-primary-500 dark:bg-primary-800 dark:hover:!bg-primary-700 text-sm font-medium">
-              Select All
-            </button>
-            <button id="select-none" class="!rounded-md bg-primary-600 px-4 py-2 !text-neutral !no-underline hover:!bg-primary-500 dark:bg-primary-800 dark:hover:!bg-primary-700 text-sm font-medium">
-              Select None
-            </button>
-          </div>
+        <h2 class="text-xl font-semibold mb-2 text-neutral-900 dark:text-neutral-100">Select Tools</h2>
+        <div class="mb-3">
+          <button id="select-all" class="text-sm underline text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-medium py-1">
+            Select All
+          </button>
+          <span class="inline-block w-12"></span>
+          <button id="select-none" class="text-sm underline text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 font-medium py-1">
+            Select None
+          </button>
         </div>
         <div class="bg-neutral-100 dark:bg-neutral-800 p-5 rounded-lg shadow-sm">
           <div id="tool-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-0 gap-x-4 max-h-[500px] overflow-y-auto py-2">
@@ -65,9 +64,9 @@
       <div class="mb-8">
         <h2 class="text-xl font-semibold mb-4 text-neutral-900 dark:text-neutral-100">Configuration</h2>
         <p id="config-description" class="mb-3 text-neutral-700 dark:text-neutral-300"></p>
-        <div id="config-container" class="highlight-wrapper">
-          <div class="highlight bg-neutral-100 dark:bg-neutral-800 rounded-md shadow-sm">
-            <pre tabindex="0" class="chroma language-json bg-transparent dark:bg-transparent"><code id="config-display" class="language-json" data-lang="json"></code></pre>
+        <div class="highlight-wrapper">
+          <div class="highlight">
+            <pre tabindex="0" class="chroma"><code id="config-display" class="language-json" data-lang="json"></code></pre>
           </div>
         </div>
         <p id="no-tools-message" class="mb-3 text-red-500 font-medium hidden">No tool selected. You should select at least 1 tool from above to use.</p>
@@ -212,7 +211,7 @@
       
       // Get DOM elements for toggling visibility
       const configDescription = document.getElementById('config-description');
-      const configContainer = document.getElementById('config-container');
+      const configContainer = document.querySelector('.highlight-wrapper');
       const noToolsMessage = document.getElementById('no-tools-message');
       
       // Check if any tools are selected
@@ -262,21 +261,104 @@
       // Format the JSON with proper indentation
       const configStr = JSON.stringify(configTemplate, null, 4);
       
-      // Set content and let Prism highlight it
-      configDisplay.textContent = configStr;
-      
-      // Manually trigger Prism highlighting
-      Prism.highlightElement(configDisplay);
+      // Set content with syntax highlighting
+      configDisplay.innerHTML = syntaxHighlightJSON(configStr);
+    }
+    
+    // Function to add syntax highlighting to JSON
+    function syntaxHighlightJSON(json) {
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        let cls = 's'; // string
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'nt'; // key/property name
+            match = match.replace(/:$/, ''); // Remove the colon from the match
+            return '<span class="nt">' + match + '</span>:';
+          } else {
+            cls = 's2'; // string value
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'kc'; // boolean
+        } else if (/null/.test(match)) {
+          cls = 'kc'; // null
+        } else if (/-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test(match)) {
+          cls = 'mi'; // number
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      })
+      .replace(/({|}|\[|\]|,)/g, function(match) {
+        return '<span class="p">' + match + '</span>';  // punctuation
+      });
     }
     
     // Initialize with all tools selected
     updateConfig();
+    
+    // Add copy button functionality to match Blowfish theme behavior
+    function createCopyButton(highlightDiv) {
+      const button = document.createElement("button");
+      button.className = "copy-button";
+      button.type = "button";
+      button.ariaLabel = "Copy";
+      button.innerText = "Copy";
+      button.addEventListener("click", () => copyCodeToClipboard(button, highlightDiv));
+      addCopyButtonToDom(button, highlightDiv);
+    }
+    
+    async function copyCodeToClipboard(button, highlightDiv) {
+      const codeToCopy = highlightDiv.querySelector(":last-child").innerText;
+      try {
+        result = await navigator.permissions.query({ name: "clipboard-write" });
+        if (result.state == "granted" || result.state == "prompt") {
+          await navigator.clipboard.writeText(codeToCopy);
+        } else {
+          copyCodeBlockExecCommand(codeToCopy, highlightDiv);
+        }
+      } catch (_) {
+        copyCodeBlockExecCommand(codeToCopy, highlightDiv);
+      } finally {
+        codeWasCopied(button);
+      }
+    }
+    
+    function copyCodeBlockExecCommand(codeToCopy, highlightDiv) {
+      const textArea = document.createElement("textArea");
+      textArea.contentEditable = "true";
+      textArea.readOnly = "false";
+      textArea.className = "copy-textarea";
+      textArea.value = codeToCopy;
+      highlightDiv.insertBefore(textArea, highlightDiv.firstChild);
+      const range = document.createRange();
+      range.selectNodeContents(textArea);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      textArea.setSelectionRange(0, 999999);
+      document.execCommand("copy");
+      highlightDiv.removeChild(textArea);
+    }
+    
+    function codeWasCopied(button) {
+      button.blur();
+      button.innerText = "Copied";
+      setTimeout(function () {
+        button.innerText = "Copy";
+      }, 2000);
+    }
+    
+    function addCopyButtonToDom(button, highlightDiv) {
+      highlightDiv.insertBefore(button, highlightDiv.firstChild);
+    }
+    
+    // Add copy button to the highlight div
+    setTimeout(() => {
+      const highlightDiv = document.querySelector('.highlight');
+      if (highlightDiv) {
+        createCopyButton(highlightDiv);
+      }
+    }, 100);
   });
 </script>
-
-<!-- Add Prism.js for reliable syntax highlighting (no theme - we're using our own styles) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
 <style>
   /* Code highlighting styles from Blowfish theme */
@@ -286,70 +368,36 @@
 
   .highlight {
     @apply relative z-0 shadow-sm;
-    padding: 0;
+  }
+
+  .highlight:hover>.copy-button {
+    @apply visible;
+  }
+
+  .copy-button {
+    @apply absolute top-0 right-0 z-10 invisible w-20 py-1 font-mono text-sm cursor-pointer opacity-90 bg-neutral-200 whitespace-nowrap rounded-bl-md rounded-tr-md text-neutral-700 dark:bg-neutral-600 dark:text-neutral-200;
+  }
+
+  .copy-button:hover,
+  .copy-button:focus,
+  .copy-button:active,
+  .copy-button:active:hover {
+    @apply bg-primary-100 dark:bg-primary-600;
+  }
+
+  .copy-textarea {
+    @apply absolute opacity-5 -z-10;
   }
 
   /* Chroma Highlight */
   .chroma {
-    @apply rounded-md;
+    @apply static rounded-md text-neutral-700 bg-neutral-50 dark:bg-neutral-700 dark:text-neutral-200;
   }
 
   pre {
     @apply block w-auto px-6 py-4 overflow-auto text-base;
   }
-
-  /* Override Prism.js styles to match Blowfish better */
-  pre.language-json {
-    text-shadow: none !important;
-    background: none !important;
-    margin: 0 !important;
-  }
-
-  /* Make sure the code is properly colored regardless of background */
-  code.language-json {
-    color: #333;
-    @apply dark:text-neutral-200;
-  }
-
-  .token.property {
-    color: #905;
-  }
   
-  .token.string {
-    color: #690;
-  }
-  
-  .token.number,
-  .token.boolean,
-  .token.null {
-    color: #c76b29;
-  }
-  
-  .token.punctuation {
-    color: #666;
-  }
-  
-  /* Dark mode adjustments */
-  @media (prefers-color-scheme: dark) {
-    .token.property {
-      color: #c792ea;
-    }
-    
-    .token.string {
-      color: #a5e075;
-    }
-    
-    .token.number,
-    .token.boolean,
-    .token.null {
-      color: #f78c6c;
-    }
-    
-    .token.punctuation {
-      color: #bbb;
-    }
-  }
-
   /* Clean tool item styles without hover effects */
   .tool-item {
     @apply border-b border-neutral-200 dark:border-neutral-700;

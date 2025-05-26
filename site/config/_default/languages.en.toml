@@ -9,6 +9,7 @@ isoCode = "en"
 rtl = false
 dateFormat = "2 January 2006"
 logo = "img/icon_logo.svg"
+secondaryLogo = "img/icon_logo_white.svg"
 description = "Turn your AI assistant into a Chemistry coscientist."
 disableTextInHeader = true
 
