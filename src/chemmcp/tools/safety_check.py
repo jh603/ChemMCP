@@ -70,7 +70,7 @@ class SafetyCheck(BaseTool):
         # Check if the molecule is a controlled chemical
         query_esc = re.escape(smiles)
         found = (
-            self.cw_df["smiles"]
+            self.cw_df["canonical_smiles"]
             .astype(str)
             .str.contains(f"^{query_esc}$", regex=True)
             .any()
@@ -79,7 +79,7 @@ class SafetyCheck(BaseTool):
         return found
 
     def _check_similar_chemical(self, smiles: str) -> bool:
-        max_sim = self.cw_df["smiles"].apply(lambda x: tanimoto(smiles, x)).max()
+        max_sim = self.cw_df["canonical_smiles"].apply(lambda x: tanimoto(smiles, x)).max()
         return max_sim > 0.35
 
     def _run_base(self, namespace: Literal["SMILES", "IUPAC", "Name"], identifier: str) -> str:
