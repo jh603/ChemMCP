@@ -74,10 +74,10 @@ def get_tool_examples(tool_cls: type):
             if isinstance(value, str):
                 value_lines = value.strip().split('\n')
                 if len(value_lines) > 1:
-                    example_output_lines.append('"""' + value[0])
-                    for line in value[1:-1]:
+                    example_output_lines.append('"""' + value_lines[0])
+                    for line in value_lines[1:-1]:
                         example_output_lines.append(line)
-                    example_output_lines.append(value[-1] + '"""')
+                    example_output_lines.append(value_lines[-1] + '"""')
                 else:
                     example_output_lines.append(f"{repr(value)}")
             else:
