@@ -61,11 +61,28 @@ def get_tool_examples(tool_cls: type):
     if len(tool_examples) == 0:
         return ""
     
-    def get_example_input_output_lines(tool_example_input_output: dict):
+    def get_example_input_lines(tool_example_input: dict):
+        example_input_lines = []
+        for key, value in tool_example_input.items():
+            example_input_lines.append(f"{key}: {repr(value)}")
+        example_input_txt = "```yaml\n" + "\n".join(example_input_lines) + "\n```"
+        return example_input_txt
+    
+    def get_example_output_lines(tool_example_output: dict):
         example_output_lines = []
-        for key, value in tool_example_input_output.items():
-            example_output_lines.append(f"{key}: {repr(value)}")
-        example_output_txt = "```yaml\n" + "\n".join(example_output_lines) + "\n```"
+        for key, value in tool_example_output.items():
+            if isinstance(value, str):
+                value_lines = value.strip().split('\n')
+                if len(value_lines) > 1:
+                    example_output_lines.append('"""' + value[0])
+                    for line in value[1:-1]:
+                        example_output_lines.append(line)
+                    example_output_lines.append(value[-1] + '"""')
+                else:
+                    example_output_lines.append(f"{repr(value)}")
+            else:
+                example_output_lines.append(f"{repr(value)}")
+        example_output_txt = "```\n" + "\n".join(example_output_lines) + "\n```"
         return example_output_txt
     
     examples_txt = ""
@@ -86,9 +103,9 @@ Output:
 
 """ % (
         example_title,
-        get_example_input_output_lines(tool_example['code_input']),
-        get_example_input_output_lines(tool_example['text_input']),
-        get_example_input_output_lines(tool_example['output'])
+        get_example_input_lines(tool_example['code_input']),
+        get_example_input_lines(tool_example['text_input']),
+        get_example_output_lines(tool_example['output'])
     )
     
     examples_txt += example_txt
