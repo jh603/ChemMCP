@@ -180,5 +180,9 @@ cython_debug/
 src/chemmcp/tool_utils/property_prediction/checkpoints
 src/chemmcp/tool_utils/property_prediction/tmp_data
 
+site/content/tools/*
+!site/content/tools/_index.md
+site/static/data/tool_envs/*
+
 **/.DS_Store
 
