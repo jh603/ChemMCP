@@ -228,9 +228,13 @@ class PubchemSearch(BaseTool):
     def _run_base(self, representation_name: Literal["SMILES", "IUPAC", "Name"], representation: str) -> str:
         cid = self._search_cid(representation_name, representation)
         return self.get_cid_doc_text(cid)
+    
+    def get_data(self, representation_name: Literal["SMILES", "IUPAC", "Name"], representation: str) -> dict:
+        cid = self._search_cid(representation_name, representation)
+        return self._get_data(cid)
         
     def get_cid_doc_text(self, cid):
-        data = self.get_data(cid)
+        data = self._get_data(cid)
 
         try:
             sections = self.remove_unuseful_sections(data['Record']['Section'])
@@ -269,7 +273,7 @@ class PubchemSearch(BaseTool):
         return cid
     
     @staticmethod
-    def get_data(cid):
+    def _get_data(cid):
         url = PubchemSearch.url.format(cid)
         data = requests.get(url).json()
         return data

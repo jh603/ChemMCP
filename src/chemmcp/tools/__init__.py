@@ -30,6 +30,7 @@ _tool_module_map = {
     "SmilesCheck": "smiles_check",
     "SmartsCheck": "smarts_check",
     "Smiles2Cas": "smiles2cas",
+    "SafetyCheck": "safety_check",
 }
 
 __all__ = list(_tool_module_map.keys())
