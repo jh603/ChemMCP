@@ -31,6 +31,7 @@ _tool_module_map = {
     "SmartsCheck": "smarts_check",
     "Smiles2Cas": "smiles2cas",
     "SafetyCheck": "safety_check",
+    "MoleculeModifier": "molecule_modifier",
 }
 
 __all__ = list(_tool_module_map.keys())
