@@ -27,6 +27,7 @@ class PythonExecutor(BaseTool):
     ]
 
     def __init__(self, kernel_url: Optional[str] = None, init=True, interface='code'):
+        kernel_url = kernel_url or os.getenv("JUPYTER_KERNEL_GATEWAY_URL", None)
         self.jupyter = JupyterBackbone(kernel_url=kernel_url)
         super().__init__(init, interface=interface)
 

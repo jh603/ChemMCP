@@ -132,7 +132,7 @@ class KernelSession:
         except Exception:
             pass
 
-class PythonExecutor:
+class JupyterBackbone:
     """
     Runs code in a Docker-hosted or existing Jupyter kernel gateway, auto-cleaning containers on exit.
 
