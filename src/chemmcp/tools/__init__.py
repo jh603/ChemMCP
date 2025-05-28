@@ -33,6 +33,7 @@ _tool_module_map = {
     "SafetyCheck": "safety_check",
     "MoleculeModifier": "molecule_modifier",
     "PythonExecutor": "python_executor",
+    "MoleculeVisualizer": "molecule_visualizer",
 }
 
 __all__ = list(_tool_module_map.keys())

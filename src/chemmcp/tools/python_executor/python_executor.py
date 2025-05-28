@@ -1,6 +1,9 @@
 import os
 import logging
-from typing import Optional
+from typing import Optional, List, Union
+import base64
+
+from mcp.server.fastmcp import Image
 
 from ...utils.base_tool import BaseTool
 from ...utils.mcp_app import ChemMCPManager, run_mcp_server
@@ -34,9 +37,35 @@ class PythonExecutor(BaseTool):
     def __del__(self):
         self.jupyter.close()
 
-    def _run_base(self, code: str) -> str:
-        result = self.jupyter.run_code(code)
-        return result
+    def _run_base(self, code: str) -> List[Union[str, Image]]:
+        msgs = self.jupyter.execute_jupyter(code)
+
+        parts = []
+        for msg in msgs:
+            mtype = msg['msg_type']
+            content = msg['content']
+
+            if mtype == 'stream':
+                parts.append(content.get('text', ''))
+
+            elif mtype in ('execute_result', 'display_data'):
+                data = content.get('data', {})
+                # PNG image
+                if 'image/png' in data:
+                    png_bytes = base64.b64decode(data['image/png'])
+                    parts.append(Image(data=png_bytes, format='png'))
+                # SVG fallback
+                elif 'image/svg+xml' in data:
+                    parts.append(data['image/svg+xml'])
+                # Plain text fallback
+                elif 'text/plain' in data:
+                    parts.append(data['text/plain'])
+
+            elif mtype == 'error':
+                tb = '\n'.join(content.get('traceback', []))
+                parts.append(tb)
+        
+        return parts
 
 
 if __name__ == "__main__":
