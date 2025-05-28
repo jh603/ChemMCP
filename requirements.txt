@@ -16,3 +16,5 @@ tavily-python>=0.7.0
 torch==2.5
 transformers>=4.51.3
 git+https://github.com/btyu/Uni-Core.git@ea7db06540c007158a216156d77595799e42ae0c#egg=uni_core
+docker>=7.1.0
+synspace>=1.0.0
