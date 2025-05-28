@@ -12,10 +12,7 @@ import docker
 import queue
 from websocket import WebSocketApp
 import threading
-
-from mcp.server.fastmcp import Image
-from ...utils.base_tool import BaseTool
-from ...utils.mcp_app import ChemMCPManager, run_mcp_server
+import subprocess
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -30,6 +27,20 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir jupyter jupyter_kernel_gateway rdkit matplotlib
 """
+
+
+def has_gpu() -> bool:
+    try:
+        # this will return non-zero and raise if no NVIDIA driver / no GPUs
+        subprocess.run(
+            ["nvidia-smi"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
 
 def strip_ansi(text: str) -> str:
     """Remove ANSI escape sequences for clean output."""
@@ -201,18 +212,23 @@ class JupyterBackbone:
                 logger.info("Image built locally")
             # Launch container
             ports = {f"{self.JUPYTER_PORT}/tcp": None}
+            device_req = docker.types.DeviceRequest(count=-1, capabilities=[['gpu']])
             cmd = (
                 f"jupyter kernelgateway --ip=0.0.0.0 --port={self.JUPYTER_PORT}"
             )
-            self.container = client.containers.run(
-                self.image,
+            run_kwargs = dict(
+                image=self.image,
                 command=cmd,
                 detach=True,
                 remove=True,
                 ports=ports,
                 mem_limit=self.mem_limit,
-                nano_cpus=int(self.cpus * 1e9)
+                nano_cpus=int(self.cpus * 1e9),
             )
+            if has_gpu():
+                device_req = docker.types.DeviceRequest(count=-1, capabilities=[["gpu"]])
+                run_kwargs["device_requests"] = [device_req]
+            self.container = client.containers.run(**run_kwargs)
             self.container.reload()
             binding = self.container.attrs['NetworkSettings']['Ports'][f"{self.JUPYTER_PORT}/tcp"][0]
             port = int(binding['HostPort'])
