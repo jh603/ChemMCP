@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 @ChemMCPManager.register_tool
-class SmilesCheck(BaseTool):
+class MoleculeSmilesCheck(BaseTool):
     __version__ = "0.1.0"
-    name = "SmilesCheck"
-    func_name = 'check_smiles'
+    name = "MoleculeSmilesCheck"
+    func_name = 'check_molecule_smiles'
     description = "Check the syntactical validity of a molecular SMILES string."
     categories = ["Molecule"]
     tags = ["SMILES", "RDKit", "Molecular Information"]
