@@ -35,7 +35,8 @@ class PythonExecutor(BaseTool):
         super().__init__(init, interface=interface)
 
     def __del__(self):
-        self.jupyter.close()
+        if hasattr(self, 'jupyter') and self.jupyter:
+            self.jupyter.close()
 
     def _run_base(self, code: str) -> List[Union[str, Image]]:
         msgs = self.jupyter.execute_jupyter(code)
