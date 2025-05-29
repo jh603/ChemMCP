@@ -111,7 +111,7 @@ Follow [this guide](https://modelcontextprotocol.io/quickstart/server#testing-yo
     "mcpServers": {
         "ChemMCP": {
             "command": "/ABSTRACT/PATH/TO/uv",  // Use `which uv` to get its path
-            "args": ["--directory", "/PATH/TO/ChemMCP", "run", "-m", "chemmcp"],
+            "args": ["run", "-m", "chemmcp"],
             "toolCallTimeoutMillis": 300000,  // Set this value because some tools may be slow in response of requests
             "env": {
                 "CHEMSPACE_API_KEY": "API_KEY",
