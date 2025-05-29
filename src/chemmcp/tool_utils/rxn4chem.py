@@ -33,7 +33,7 @@ class RXN4Chem(BaseTool):
             RXN4Chem.rxn4chem_chemistry_wrapper = RXN4ChemistryWrapper(
                 api_key=self.rxn4chem_api_key, base_url=RXN4Chem.base_url
             )
-            RXN4Chem.rxn4chem_chemistry_wrapper.create_project('ChemMTK')
+            RXN4Chem.rxn4chem_chemistry_wrapper.create_project('ChemMCP')
         self.rxn4chem = RXN4Chem.rxn4chem_chemistry_wrapper
         if init:
             if self.rxn4chem.project_id is None:

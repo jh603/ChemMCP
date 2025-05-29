@@ -186,3 +186,4 @@ site/static/data/tool_envs/*
 
 **/.DS_Store
 
+*.yaml
