@@ -30,7 +30,7 @@ class MoleculeVisualizer(BaseTool):
         {'text_input': {'smiles': 'C1=CC=CC=C1'}, 'code_input': {'smiles': 'C1=CC=CC=C1'}, 'output': {'result': '[Image]'}},
     ]
 
-    def _run_base(self, smiles: str) -> tuple[str, Image, str]:
+    def _run_base(self, smiles: str) -> Image:
         if not is_smiles(smiles):
             raise ChemMCPInputError("Invalid SMILES string.")
 
@@ -41,14 +41,12 @@ class MoleculeVisualizer(BaseTool):
         img.save(buf, format="PNG")
         png_bytes = buf.getvalue()
 
-        text = f"The visualization of `{smiles}` is shown below."
-
         img = Image(
             data=png_bytes,
             format="png"
         )
 
-        return (text, img, "above")
+        return img
 
 
 if __name__ == "__main__":
