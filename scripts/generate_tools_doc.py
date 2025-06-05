@@ -334,7 +334,7 @@ def get_tool_implementation_details(tool_cls: type):
 
     services_and_software = tool_cls.services_and_software
     if len(services_and_software) > 0:
-        services_and_software_txt = "- **Hosted services and software (required for running the tool):**\n"
+        services_and_software_txt = "- **Hosted services and software** (required for running the tool):\n"
         for service in services_and_software:
             if service[1] is None:
                 services_and_software_txt += f"  - {service[0]}\n"
@@ -342,7 +342,7 @@ def get_tool_implementation_details(tool_cls: type):
                 services_and_software_txt += f"  - [{service[0]}]({service[1]})\n"
         txt += services_and_software_txt
     else:
-        txt += "- **Hosted services and software (required for running the tool):** None\n"
+        txt += "- **Hosted services and software** (required for running the tool): None\n"
     return txt
 
 def generate_tool_doc(tool_name: str, save_dir: str='site/content/tools/'):
