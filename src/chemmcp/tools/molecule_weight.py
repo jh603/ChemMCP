@@ -12,6 +12,7 @@ class MoleculeWeight(BaseTool):
     func_name = 'cal_molecular_weight'
     description = "Calculate molecular weight."
     implementation_description = "Uses RDKit's rdMolDescriptors to calculate the exact molecular weight of a molecule from its SMILES representation. The calculation takes into account the atomic masses of all atoms in the molecule."
+    oss_dependencies = []
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "RDKit", "SMILES"]
     required_envs = []

@@ -23,6 +23,10 @@ class BbbpPredictor(PropertyPredictor):
     examples = [
         {'code_input': {'smiles': 'CCNC(=O)/C=C/C1=CC=CC(Br)=C1'}, 'text_input': {'smiles': 'CCNC(=O)/C=C/C1=CC=CC(Br)=C1'}, 'output': {'bbbp': 'The probability of the compound to penetrate the blood-brain barrier is 99.90%, which means it\'s likely to happen.\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'}},
     ]
+    oss_dependencies = [
+        ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
+        ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
+    ]
 
     def __init__(
         self, 

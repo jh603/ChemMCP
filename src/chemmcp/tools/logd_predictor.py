@@ -23,6 +23,10 @@ class LogDPredictor(PropertyPredictor):
     examples = [
         {'code_input': {'smiles': 'NC(=O)C1=CC=CC=C1O'}, 'text_input': {'smiles': 'NC(=O)C1=CC=CC=C1O'}, 'output': {'logd': 'The octanol/water distribution coefficient logD under the circumstance of pH 7.4 is 1.090.\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'}},
     ]
+    oss_dependencies = [
+        ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
+        ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
+    ]
 
     def __init__(
         self, 

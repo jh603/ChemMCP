@@ -62,6 +62,9 @@ class FunctionalGroups(BaseTool):
     func_name = 'identify_functional_groups'
     description = "Identify functional groups in a molecule."
     implementation_description = "Uses RDKit's SMARTS patterns to identify functional groups in a molecule. The tool checks for a comprehensive list of common functional groups including alcohols, aldehydes, ketones, carboxylic acids, and many others."
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
+    ]
     categories = ["Molecule"]
     tags = ["Molecular Information", "RDKit", "SMILES"]
     required_envs = []

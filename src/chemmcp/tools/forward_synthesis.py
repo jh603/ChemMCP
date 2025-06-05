@@ -26,6 +26,10 @@ class ForwardSynthesis(RXN4Chem):
     examples = [
         {'code_input': {'reactants_and_reagents_smiles': 'CCN.CN1C=CC=C1C=O'}, 'text_input': {'reactants_and_reagents_smiles': 'CCN.CN1C=CC=C1C=O'}, 'output': {'product_smiles': 'CCNCc1cccn1C'}},
     ]
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT"),
+        ("rxn4chemistry", "https://github.com/rxn4chemistry/rxn4chemistry", "MIT")
+    ]
 
     def _run_text(self, reactants_and_reagents_smiles: str) -> str:
         return self._run_base(reactants_and_reagents_smiles)

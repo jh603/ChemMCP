@@ -25,6 +25,9 @@ class Name2Smiles(BaseTool):
     examples = [
         {'code_input': {'name': 'aspirin'}, 'text_input': {'name': 'aspirin'}, 'output': {'smiles': 'CC(=O)OC1=CC=CC=C1C(=O)O'}},
     ]
+    oss_dependencies = [
+        ("PubChemPy", "https://github.com/mcs07/PubChemPy", "MIT")
+    ]
 
     def _run_base(self, name: str) -> str:
         try:

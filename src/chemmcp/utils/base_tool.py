@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import logging
 import inspect
-from typing import Dict, List, Tuple, Literal, Any
+from typing import Dict, List, Tuple, Literal, Any, Optional
 from pydantic import BaseModel, Field, field_validator, ConfigDict, ValidationError, ValidationInfo
 
 from .errors import ChemMCPToolMetadataError
@@ -15,10 +15,11 @@ class ToolMeta(BaseModel):
     name: str = Field(..., description="The name of the tool.", min_length=1)
     func_name: str = Field(..., description="The function name of the tool.", min_length=1)
     description: str = Field(..., description="The description of the tool.", min_length=1)
+    implementation_description: str = Field(..., description="The implementation description of the tool.", min_length=1)
+    oss_dependencies: List[Tuple[str, str, Optional[str]]] = Field(..., description="The implementation sources of the tool. For example, if the code is borrowed from another project, then it should be listed here. Each element is a tuple of (source_name, source_url, source license (None if unknown)).")
     categories: List[Literal["Molecule", "Reaction", "General"]] = Field(..., description="The categories of the tool.", min_length=1)
     tags: List[str] = Field(..., description="The tags of the tool.", min_length=1)
     required_envs: List[Tuple[str, str]] = Field(..., description="The required environment variables for the tool.")
-    implementation_description: str = Field(..., description="The implementation description of the tool.", min_length=1)
     text_input_sig: List[Tuple[str, str, str, str]] = Field(..., description="The text input signature of the tool. Each element is a tuple of (arg_name, arg_type, arg_default, arg_description).")
     code_input_sig: List[Tuple[str, str, str, str]] = Field(..., description="The code input signature of the tool. Each element is a tuple of (arg_name, arg_type, arg_default, arg_description).")
     output_sig: List[Tuple[str, str, str]] = Field(..., description="The output signature of the tool. Each element is a tuple of (output_name, output_type, output_description).")

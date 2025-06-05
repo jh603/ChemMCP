@@ -21,6 +21,9 @@ class Selfies2Smiles(BaseTool):
     examples = [
         {'code_input': {'selfies': '[C][C][O]'}, 'text_input': {'selfies': '[C][C][O]'}, 'output': {'smiles': 'CCO'}},
     ]
+    oss_dependencies = [
+        ("selfies", "https://github.com/aspuru-guzik-group/selfies", "Apache License 2.0")
+    ]
 
     def _run_base(self, selfies: str) -> str:
         try:

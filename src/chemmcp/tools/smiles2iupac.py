@@ -26,6 +26,9 @@ class Smiles2Iupac(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'iupac': 'ethanol'}},
     ]
+    oss_dependencies = [
+        ("PubChemPy", "https://github.com/mcs07/PubChemPy", "MIT")
+    ]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

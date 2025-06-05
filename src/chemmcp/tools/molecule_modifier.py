@@ -28,6 +28,9 @@ class MoleculeModifier(BaseTool):
     examples = [
         {'text_input': {'smiles': 'CCO'}, 'code_input': {'smiles': 'CCO'}, 'output': {'smiles': 'The molecule leads to the following modified molecule(s):\n- C[CH]O: Obtained by a retro Mitsunobu phenole reaction.\n- C[CH]OCCCC1(O)CC1: Obtained by a retro Mitsunobu phenole;Williamson ether reaction.\n'}},
     ]
+    oss_dependencies = [
+        ("synspace", "https://github.com/whitead/synspace", "MIT")
+    ]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

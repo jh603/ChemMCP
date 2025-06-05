@@ -29,6 +29,9 @@ class PythonExecutor(BaseTool):
     examples = [
         {'text_input': {'code': 'print("Hello, world!")'}, 'code_input': {'code': 'print("Hello, world!")'}, 'output': {'result': 'Hello, world!'}},
     ]
+    oss_dependencies = [
+        ("Jupyter Notebook", "https://github.com/jupyter/notebook", "BSD 3-Clause")
+    ]
 
     def __init__(self, kernel_url: Optional[str] = None, init=True, interface='code'):
         kernel_url = kernel_url or os.getenv("JUPYTER_KERNEL_GATEWAY_URL", None)

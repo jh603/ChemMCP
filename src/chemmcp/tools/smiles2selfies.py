@@ -22,6 +22,9 @@ class Smiles2Selfies(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'selfies': '[C][C][O]'}},
     ]
+    oss_dependencies = [
+        ("selfies", "https://github.com/aspuru-guzik-group/selfies", "Apache License 2.0")
+    ]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

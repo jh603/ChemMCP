@@ -18,6 +18,7 @@ class PubchemSearchQA(BaseTool):
     func_name = 'search_pubchem_qa'
     description = "Answer questions about molecules/compounds based on the information from PubChem, one of the most comprehensive database of chemical molecules and their activities. You can get authoritative answers about molecular names, properties, activities, and more."
     implementation_description = "Uses the PubchemSearch tool to get the document of a molecule/compound from [PubChem](https://pubchem.ncbi.nlm.nih.gov/), and prompts an LLM to answer the related question."
+    oss_dependencies = []
     categories = ["Molecule"]
     tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecular Names", "APIs", "QA", "LLMs"]
     required_envs = [("__llms__", "LiteLLM Envs.")]

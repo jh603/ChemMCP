@@ -20,6 +20,9 @@ class MoleculeGenerator(BaseTool):
     examples = [
         {'code_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'text_input': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.'}, 'output': {'smiles': 'CCO\n\nNote: This is a generated SMILES and may not be accurate. Please double check the result.'}},
     ]
+    oss_dependencies = [
+        ("MolT5", "https://github.com/blender-nlp/MolT5", "BSD 3-Clause")
+    ]
 
     def __init__(self, init=True, interface='text') -> None:
         self.tokenizer, self.model = None, None

@@ -14,6 +14,10 @@ class HivInhibitorPredictor(PropertyPredictor):
     func_name = 'predict_hiv_inhibitor'
     description = "Predict the HIV inhibition of a molecule given its SMILES representation."
     implementation_description = "Uses the [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) model fine-tuned on [SmolInstruct](https://huggingface.co/datasets/osunlp/SMolInstruct) PP-HIV data to predict the probability of HIV inhibition, and uses a text template to construct textual output."
+    oss_dependencies = [
+        ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
+        ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
+    ]
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

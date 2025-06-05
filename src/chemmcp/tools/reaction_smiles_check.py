@@ -15,6 +15,7 @@ class ReactionSmilesCheck(BaseTool):
     func_name = 'check_reaction_smiles'
     description = "Check the syntactical validity of a reaction SMILES string ([reactant SMILES]>[reagent SMILES]>[product SMILES])."
     implementation_description = "Validates a reaction SMILES string by checking its format (reactants > reagents > products) and verifying that each component is a valid SMILES string. Provides detailed feedback about which parts of the reaction are invalid if any."
+    oss_dependencies = []
     categories = ["Molecule", "Reaction"]
     tags = ["SMILES", "SMARTS", "RDKit", "Molecular Information", "Reaction Information"]
     required_envs = []

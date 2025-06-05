@@ -22,6 +22,9 @@ class MoleculeCaptioner(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'description': 'The molecule is an ether in which the oxygen atom is linked to two ethyl groups. It has a role as an inhalation anaesthetic, a non-polar solvent and a refrigerant. It is a volatile organic compound and an ether.\n\nNote: This is a generated description and may not be accurate. Please double check the result.'}},
     ]
+    oss_dependencies = [
+        ("MolT5", "https://github.com/blender-nlp/MolT5", "BSD 3-Clause")
+    ]
 
     def __init__(self, init=True, interface='text') -> None:
         self.tokenizer, self.model = None, None

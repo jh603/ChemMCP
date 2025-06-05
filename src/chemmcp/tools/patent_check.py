@@ -22,6 +22,9 @@ class PatentCheck(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'patent_status': 'not patented'}},
     ]
+    oss_dependencies = [
+        ("molbloom", "https://github.com/whitead/molbloom", "MIT")
+    ]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

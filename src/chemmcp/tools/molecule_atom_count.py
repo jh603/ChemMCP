@@ -21,6 +21,9 @@ class MoleculeAtomCount(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'atom_counts': 'There are altogether 3 atoms (omitting hydrogen atoms). The types and corresponding numbers are: {\'C\': 2, \'O\': 1}'}},
     ]
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
+    ]
 
     def _run_base(self, smiles: str) -> str:
         mol = Chem.MolFromSmiles(smiles)

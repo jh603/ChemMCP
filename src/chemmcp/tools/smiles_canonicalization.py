@@ -20,6 +20,9 @@ class SmilesCanonicalization(BaseTool):
     examples = [
         {'code_input': {'smiles': 'C(O)C', 'isomeric': True, 'kekulization': True, 'keep_atom_map': False}, 'text_input': {'smiles': 'C(O)C'}, 'output': {'canonical_smiles': 'CCO'}},
     ]
+    oss_dependencies = [
+        ("LlaSMol", "https://github.com/OSU-NLP-Group/LLM4Chem", "MIT")
+    ]
 
     def _run_base(self, smiles: str, isomeric: bool = True, kekulization: bool = True, keep_atom_map: bool = True) -> str:
         smiles = canonicalize_molecule_smiles(smiles, isomeric=isomeric, kekulization=kekulization, keep_atom_map=keep_atom_map)

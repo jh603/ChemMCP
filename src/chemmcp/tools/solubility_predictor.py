@@ -23,6 +23,10 @@ class SolubilityPredictor(PropertyPredictor):
     examples = [
         {'code_input': {'smiles': 'CC(C)Cl'}, 'text_input': {'smiles': 'CC(C)Cl'}, 'output': {'solubility': 'The log solubility in mol/L is -1.410.\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'}},
     ]
+    oss_dependencies = [
+        ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
+        ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
+    ]
 
     def __init__(
         self, 

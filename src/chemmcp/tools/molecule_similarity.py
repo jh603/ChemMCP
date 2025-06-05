@@ -21,6 +21,9 @@ class MoleculeSimilarity(BaseTool):
         {'code_input': {'smiles1': 'CCO', 'smiles2': 'CCN'}, 'text_input': {'smiles_pair': 'CCO;CCN'}, 'output': {'similarity': 'The Tanimoto similarity between CCO and CCN is 0.3333, indicating that the two molecules are not similar.'}},
         {'code_input': {'smiles1': 'CCO', 'smiles2': 'C(O)C'}, 'text_input': {'smiles_pair': 'CCO;C(O)C'}, 'output': {'similarity': 'Input Molecules Are Identical'}},
     ]
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
+    ]
 
     def _run_base(self, smiles1: str, smiles2: str) -> str:
         if not is_smiles(smiles1):

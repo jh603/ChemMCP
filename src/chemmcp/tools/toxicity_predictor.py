@@ -23,6 +23,10 @@ class ToxicityPredictor(PropertyPredictor):
     examples = [
         {'code_input': {'smiles': 'COC[C@@H](NC(C)=O)C(=O)NCC1=CC=CC=C1'}, 'text_input': {'smiles': 'COC[C@@H](NC(C)=O)C(=O)NCC1=CC=CC=C1'}, 'output': {'toxicity': 'The probability of the compound to be toxic is 6.04%, which means it\'s unlikely to happen.\nNote that the result is predicted by a neural network model and may not be accurate. You may use other tools or resources to obtain more reliable results if needed.'}},
     ]
+    oss_dependencies = [
+        ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
+        ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
+    ]
 
     def __init__(
         self, 

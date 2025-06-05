@@ -48,6 +48,9 @@ class SafetyCheck(BaseTool):
     examples = [
         {'text_input': {'representation_name_and_representation': 'SMILES: CCO'}, 'code_input': {'representation_name': 'SMILES', 'representation': 'CCO'}, 'output': {'safety_summary': '**Name: Operator Safety**: Ethanol is highly flammable and can cause eye and skin irritation upon contact. It is recommended to use personal protective equipment, ensure good ventilation, and avoid any ignition sources when handling ethanol. \n\n**Name: GHS Information**: Ethanol has the GHS signal word "Danger" and is classified as Flammable Liquid Category 2 and Eye Irritation Category 2. These classifications mean that ethanol requires precautions to prevent fires and protect the eyes from irritation, such as using flame-resistant containers and eyewear protection.\n\n**Name: Environmental Risks**: Ethanol is moderately harmful to aquatic life with long-term exposure, suggesting caution to prevent its release into waterways. \n\n**Name: Societal Impact**: Ethanol is not a controlled substance but is widely used in alcoholic beverages, regulated for consumption due to its psychoactive effects. It is not considered a chemical weapon or illegal in terms of chemical safety.'}},
     ]
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
+    ]
 
     def __init__(self, llm_model: Optional[str] = None, init=True, interface='code'):
         super().__init__(init, interface=interface)

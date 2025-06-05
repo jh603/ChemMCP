@@ -24,6 +24,9 @@ class MoleculePrice(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'price': '25g of this molecule cost 143 USD and can be purchased at A2B Chem.'}},
     ]
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
+    ]
 
     def __init__(self, chemspace_api_key: Optional[str] = None, init=True, interface='code') -> None:
         chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)

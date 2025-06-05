@@ -26,6 +26,9 @@ class Smiles2Cas(BaseTool):
     examples = [
         {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'cas': '64-17-5'}},
     ]
+    oss_dependencies = [
+        ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
+    ]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):
