@@ -12,8 +12,8 @@ ChemMCP is **a continuously updated collection of chemistry tools for LLMs and A
 
 Specifically, ChemMCP provides the following key features:
 
-- **🔌 Plug-and-Play Chemistry for AI Assistants**: ChemMCP can be integrated into any [MCP-enabled LLM clients](https://github.com/punkpeye/awesome-mcp-clients) in just minutes, allowing researchers to augment LLMs with chemistry capabilities without additional training.
-- **🛠️ Standalone Toolkit for Custom Workflows**: With its decoupled design and unified interfaces, [ChemMCP tools](https://osu-nlp-group.github.io/ChemMCP/tools) can be easily imported into your workflow, to process data, assemble pipeline steps, or build bespoke agentic applications — via MCP or Python, whichever you prefer.
+- **🔌 Plug-and-Play Chemistry Tools for AI Assistants**: ChemMCP tools can be integrated into any [MCP-enabled LLM clients](https://github.com/punkpeye/awesome-mcp-clients) in just minutes, allowing researchers to augment LLMs with chemistry capabilities without additional training.
+- **🛠️ Standalone Toolkit for Custom Workflows**: With its decoupled design and unified interfaces, ChemMCP tools can be easily imported into your workflow, to process data, assemble pipeline steps, or build bespoke agentic applications — via MCP or Python, whichever you prefer.
 - **🤖 Native RL Agent Framework**: ChemMCP natively supports multi-turn interactive loops between agents and tool, providing an ideal infrastructure and testbed for scientific tool-using agents.
 - **📦 Modular and Extensible Design**: Adding a new tool is as simple as writing a Python file (see [here](https://osu-nlp-group.github.io/ChemMCP/dev-guide/)). All tools follow a consistent schema, ensuring clear interfaces, easy maintenance, and automatic documentation.
 
@@ -134,7 +134,8 @@ ChemMCP is distributed under the [Apache License 2.0](https://choosealicense.com
 | ToxicityPredictor     | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |       |
 | WebSearch            | [tavily-python](https://github.com/tavily-ai/tavily-python) (MIT) | [Tavily](https://www.tavily.com/) |
 
-**Notes**:
+**Disclaimer**:
 
 - Any open-source software dependency not explicitly identified in the table above—including any indirect or transitive dependencies introduced by packages such as RDKit or PyTorch—remains subject to the terms of its own license. For a complete inventory of all dependencies and their corresponding license obligations, users should consult the project’s requirements.txt file or employ a license-compliance utility (for example, pip-licenses).
 - Hosted services and application programming interfaces (APIs) referenced herein—for instance, IBM RXN for Chemistry, PubChem, or externally hosted language models—are each governed by their own Terms of Service, Acceptable Use Policies, or equivalent contractual agreements. Users are responsible for reviewing and adhering to all applicable terms and conditions imposed by the providers of these external services.
+- Our software is constructed based on open-source code and data, and we respect their creators' ownership and intellectual property. Additionally, many tools are also based on some hosted services and software, and we believe their terms for use are compatible with our research purpose. In the above table, we have made our best effort to list the repositories/websites and provide their licenses. We welcome requests from the original authors or developers to modify or remove relevant tools if needed.
