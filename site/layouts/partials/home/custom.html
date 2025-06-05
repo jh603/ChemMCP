@@ -6,7 +6,30 @@
       <div class="relative sm:overflow-hidden">
         <div class="fixed inset-x-0 top-0" style="z-index:-10">
           {{ $bubbleBg := resources.Get "img/bubble_background.svg" }}
-          <img class="w-full h-[1000px] object-cover m-0 nozoom" src="{{ $bubbleBg.RelPermalink }}" role="presentation" style="margin: 0; opacity: 0.5;">
+          {{ $staticBg := resources.Get "img/background.svg" }}
+          
+          <script>
+            // Check if the browser is Firefox or Firefox-based
+            const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ||
+                            navigator.userAgent.toLowerCase().indexOf('librewolf') > -1;
+            
+            document.addEventListener('DOMContentLoaded', function() {
+              if (isFirefox) {
+                document.getElementById('dynamic-background').style.display = 'none';
+                document.getElementById('static-background').style.display = 'block';
+              } else {
+                document.getElementById('dynamic-background').style.display = 'block';
+                document.getElementById('static-background').style.display = 'none';
+              }
+            });
+          </script>
+          
+          <!-- Dynamic background for Chrome/Safari -->
+          <img id="dynamic-background" class="w-full h-[1000px] object-cover m-0 nozoom" src="{{ $bubbleBg.RelPermalink }}" role="presentation" style="margin: 0; opacity: 0.5;">
+          
+          <!-- Static background for Firefox/LibreWolf -->
+          <img id="static-background" class="w-full h-[1000px] object-cover m-0 nozoom firefox-bg" src="{{ $staticBg.RelPermalink }}" role="presentation" style="margin: 0; opacity: 0.7; display: none;">
+          
           <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral dark:from-neutral-800 to-transparent mix-blend-normal"></div>
           <div class="opacity-60 absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral dark:from-neutral-800 to-neutral-100 dark:to-neutral-800 mix-blend-normal"></div>
         </div>
@@ -199,10 +222,67 @@
 {{ if .Site.Params.homepage.layoutBackgroundBlur | default false }}
 <div id="background-blur" class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl"></div>
 <script>
-    window.addEventListener('scroll', function (e) {
-        var scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-        var background_blur = document.getElementById('background-blur');
-        background_blur.style.opacity = (scroll / 130)
-    });
+    // Check if the browser is Firefox or Firefox-based
+    const isFirefoxBrowser = navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ||
+                     navigator.userAgent.toLowerCase().indexOf('librewolf') > -1;
+    
+    // For Firefox/LibreWolf, don't use dynamic effects
+    if (isFirefoxBrowser) {
+        // Apply static styling without animations
+        const background_blur = document.getElementById('background-blur');
+        if (background_blur) {
+            background_blur.style.backdropFilter = 'none';
+            background_blur.classList.add('firefox-optimized');
+        }
+    } else {
+        // Only use scroll effects for non-Firefox browsers
+        function throttle(callback, limit) {
+            let wait = false;
+            return function() {
+                if (!wait) {
+                    callback.apply(null, arguments);
+                    wait = true;
+                    setTimeout(function() {
+                        wait = false;
+                    }, limit);
+                }
+            };
+        }
+
+        // Add scroll event only for non-Firefox browsers
+        window.addEventListener('scroll', throttle(function(e) {
+            var scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            var background_blur = document.getElementById('background-blur');
+            
+            requestAnimationFrame(function() {
+                background_blur.style.opacity = (scroll / 130);
+            });
+        }, 16));
+    }
 </script>
+
+<style>
+    /* Styles for Firefox static background */
+    .firefox-bg {
+        opacity: 0.8 !important;
+    }
+    
+    /* Optimized styles for Firefox - static effect without animations */
+    .firefox-optimized {
+        background-color: rgba(245, 245, 245, 0.7);
+        backdrop-filter: none !important;
+        opacity: 0.7 !important; /* Static opacity */
+    }
+    
+    .firefox-static-effect {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .firefox-optimized {
+            background-color: rgba(38, 38, 38, 0.7);
+        }
+    }
+</style>
 {{ end }}
