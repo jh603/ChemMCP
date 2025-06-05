@@ -27,6 +27,7 @@ class MoleculePrice(BaseTool):
     oss_dependencies = [
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
     ]
+    services_and_software = [("ChemSpace", "https://chem-space.com/")]
 
     def __init__(self, chemspace_api_key: Optional[str] = None, init=True, interface='code') -> None:
         chemspace_api_key = os.getenv("CHEMSPACE_API_KEY", None)

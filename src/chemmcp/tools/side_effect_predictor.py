@@ -29,6 +29,7 @@ class SideEffectPredictor(PropertyPredictor):
         ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
         ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
     ]
+    services_and_software = []
 
     def __init__(
         self, 

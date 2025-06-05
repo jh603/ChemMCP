@@ -30,6 +30,7 @@ class ForwardSynthesis(RXN4Chem):
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT"),
         ("rxn4chemistry", "https://github.com/rxn4chemistry/rxn4chemistry", "MIT")
     ]
+    services_and_software = [("IBM RXN for Chemistry", "https://rxn.app.accelerate.science/")]
 
     def _run_text(self, reactants_and_reagents_smiles: str) -> str:
         return self._run_base(reactants_and_reagents_smiles)

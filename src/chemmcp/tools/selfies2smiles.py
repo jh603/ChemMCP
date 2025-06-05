@@ -24,6 +24,7 @@ class Selfies2Smiles(BaseTool):
     oss_dependencies = [
         ("selfies", "https://github.com/aspuru-guzik-group/selfies", "Apache License 2.0")
     ]
+    services_and_software = []
 
     def _run_base(self, selfies: str) -> str:
         try:

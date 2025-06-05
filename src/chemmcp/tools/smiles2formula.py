@@ -18,6 +18,7 @@ class Smiles2Formula(BaseTool):
     description = "Convert SMILES to molecular formula."
     implementation_description = "Uses RDKit to parse the SMILES string and generate the corresponding molecular formula. The formula is calculated by counting atoms and their occurrences in the molecule."
     oss_dependencies = []
+    services_and_software = [("PubChem", "https://pubchem.ncbi.nlm.nih.gov/")]
     categories = ["Molecule"]
     tags = ["Name Conversion", "Molecular Formulas", "SMILES", "RDKit"]
     required_envs = []

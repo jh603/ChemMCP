@@ -29,6 +29,7 @@ class ReactionSmilesCheck(BaseTool):
             'output': {'result': 'The reaction SMILES string is valid.'}
         },
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str) -> str:
         parts = smiles.split('>')

@@ -29,6 +29,7 @@ class Smiles2Cas(BaseTool):
     oss_dependencies = [
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
     ]
+    services_and_software = [("PubChem", "https://pubchem.ncbi.nlm.nih.gov/")]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

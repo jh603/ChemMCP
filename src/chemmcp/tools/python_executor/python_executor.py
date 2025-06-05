@@ -32,6 +32,7 @@ class PythonExecutor(BaseTool):
     oss_dependencies = [
         ("Jupyter Notebook", "https://github.com/jupyter/notebook", "BSD 3-Clause")
     ]
+    services_and_software = [("docker", "https://www.docker.com/")]
 
     def __init__(self, kernel_url: Optional[str] = None, init=True, interface='code'):
         kernel_url = kernel_url or os.getenv("JUPYTER_KERNEL_GATEWAY_URL", None)

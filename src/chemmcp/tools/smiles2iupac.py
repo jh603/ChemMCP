@@ -29,6 +29,7 @@ class Smiles2Iupac(BaseTool):
     oss_dependencies = [
         ("PubChemPy", "https://github.com/mcs07/PubChemPy", "MIT")
     ]
+    services_and_software = [("PubChem", "https://pubchem.ncbi.nlm.nih.gov/")]
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

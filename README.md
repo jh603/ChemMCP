@@ -98,7 +98,7 @@ ChemMCP is an open-source toolkit that integrates language models and agents wit
 
 ChemMCP is distributed under the [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/). The toolkit’s implementation depends heavily on open-source projects—most notably [RDKit](https://github.com/rdkit/rdkit) (BSD 3-Clause) and the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) (MIT). Additional main open-source dependencies (whose code is used in whole or in part) and any required hosted services or software are listed in the table below. By using ChemMCP and its tools, you agree to comply with all referenced licenses and terms of service.
 
-| Tool Name               | **Primary Open-Source Dependencies** | Hosted Service / Software |
+| **Tool Name**               | **Primary Open-Source Dependencies** | **Hosted Service / Software** |
 |-------------------------|-------|-------|
 | BbbpPredictor          | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
 | ForwardSynthesis       | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT), [rxn4chemistry](https://github.com/rxn4chemistry/rxn4chemistry) (MIT) | [IBM RXN for Chemistry](https://rxn.app.accelerate.science/) |

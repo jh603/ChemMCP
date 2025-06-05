@@ -65,6 +65,7 @@ class FunctionalGroups(BaseTool):
     oss_dependencies = [
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
     ]
+    services_and_software = []
     categories = ["Molecule"]
     tags = ["Molecular Information", "RDKit", "SMILES"]
     required_envs = []

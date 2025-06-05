@@ -31,6 +31,7 @@ class MoleculeVisualizer(BaseTool):
     examples = [
         {'text_input': {'smiles': 'C1=CC=CC=C1'}, 'code_input': {'smiles': 'C1=CC=CC=C1'}, 'output': {'result': '[Image]'}},
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str) -> Image:
         if not is_smiles(smiles):

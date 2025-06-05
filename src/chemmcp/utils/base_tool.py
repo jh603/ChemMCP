@@ -17,6 +17,7 @@ class ToolMeta(BaseModel):
     description: str = Field(..., description="The description of the tool.", min_length=1)
     implementation_description: str = Field(..., description="The implementation description of the tool.", min_length=1)
     oss_dependencies: List[Tuple[str, str, Optional[str]]] = Field(..., description="The implementation sources of the tool. For example, if the code is borrowed from another project, then it should be listed here. Each element is a tuple of (source_name, source_url, source license (None if unknown)).")
+    services_and_software: List[Tuple[str, Optional[str]]] = Field(..., description="The services and software that the tool depends on. Each element is a tuple of (service_name, service_url).")
     categories: List[Literal["Molecule", "Reaction", "General"]] = Field(..., description="The categories of the tool.", min_length=1)
     tags: List[str] = Field(..., description="The tags of the tool.", min_length=1)
     required_envs: List[Tuple[str, str]] = Field(..., description="The required environment variables for the tool.")

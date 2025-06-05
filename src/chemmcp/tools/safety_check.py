@@ -51,6 +51,7 @@ class SafetyCheck(BaseTool):
     oss_dependencies = [
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
     ]
+    services_and_software = [("PubChem", "https://pubchem.ncbi.nlm.nih.gov/"), ("Custom LLMs", None)]
 
     def __init__(self, llm_model: Optional[str] = None, init=True, interface='code'):
         super().__init__(init, interface=interface)

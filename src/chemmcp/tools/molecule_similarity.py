@@ -24,6 +24,7 @@ class MoleculeSimilarity(BaseTool):
     oss_dependencies = [
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
     ]
+    services_and_software = []
 
     def _run_base(self, smiles1: str, smiles2: str) -> str:
         if not is_smiles(smiles1):

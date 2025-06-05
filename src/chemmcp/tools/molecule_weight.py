@@ -20,8 +20,9 @@ class MoleculeWeight(BaseTool):
     text_input_sig = [('smiles', 'str', 'N/A', 'SMILES string of the molecule')]
     output_sig = [('weight', 'float', 'Molecular weight of the molecule')]
     examples = [
-        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'weight': 46.041864812}},
+        {'code_input': {'smiles': 'CCO'}, 'text_input': {'smiles': 'CCO'}, 'output': {'weight': '46.07'}},
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str) -> float:
         mol = Chem.MolFromSmiles(smiles)

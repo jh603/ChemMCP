@@ -323,6 +323,26 @@ def get_tool_implementation_details(tool_cls: type):
 
 - **Implementation Description**: {tool_cls.implementation_description}
 """
+    oss_dependencies = tool_cls.oss_dependencies
+    if len(oss_dependencies) > 0:
+        oss_dependencies_txt = "- **Open-source dependencies** (code source or required libraries):\n"
+        for dependency in oss_dependencies:
+            oss_dependencies_txt += f"  - [{dependency[0]}]({dependency[1]}) ({'Unknown license' if dependency[2] is None else dependency[2]})\n"
+        txt += oss_dependencies_txt
+    else:
+        txt += "- **Open-source dependencies** (code source or required libraries): None\n"
+
+    services_and_software = tool_cls.services_and_software
+    if len(services_and_software) > 0:
+        services_and_software_txt = "- **Hosted services and software (required for running the tool):**\n"
+        for service in services_and_software:
+            if service[1] is None:
+                services_and_software_txt += f"  - {service[0]}\n"
+            else:
+                services_and_software_txt += f"  - [{service[0]}]({service[1]})\n"
+        txt += services_and_software_txt
+    else:
+        txt += "- **Hosted services and software (required for running the tool):** None\n"
     return txt
 
 def generate_tool_doc(tool_name: str, save_dir: str='site/content/tools/'):

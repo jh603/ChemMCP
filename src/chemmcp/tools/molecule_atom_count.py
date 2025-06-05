@@ -24,6 +24,7 @@ class MoleculeAtomCount(BaseTool):
     oss_dependencies = [
         ("ChemCrow", "https://github.com/ur-whitelab/chemcrow-public", "MIT")
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str) -> str:
         mol = Chem.MolFromSmiles(smiles)

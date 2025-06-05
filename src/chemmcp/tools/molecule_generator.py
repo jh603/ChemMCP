@@ -23,6 +23,7 @@ class MoleculeGenerator(BaseTool):
     oss_dependencies = [
         ("MolT5", "https://github.com/blender-nlp/MolT5", "BSD 3-Clause")
     ]
+    services_and_software = []
 
     def __init__(self, init=True, interface='text') -> None:
         self.tokenizer, self.model = None, None

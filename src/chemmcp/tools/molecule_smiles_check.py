@@ -17,6 +17,7 @@ class MoleculeSmilesCheck(BaseTool):
     description = "Check the syntactical validity of a molecular SMILES string."
     implementation_description = "Uses the [RDKit](https://www.rdkit.org/) library to check the syntactical validity of a molecular SMILES string. Uses a text template to construct textual output."
     oss_dependencies = []
+    services_and_software = []
     categories = ["Molecule"]
     tags = ["SMILES", "RDKit", "Molecular Information"]
     required_envs = []

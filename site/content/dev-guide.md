@@ -66,6 +66,13 @@ class MyNewTool(BaseTool):  # Class name must match the tool name
     name             = "MyNewTool"        # must match class name
     func_name        = "do_something"     # snake-case verb phrase
     description      = "Brief description of what MyNewTool does."
+    implementation_description = "Brief description of how the tool works, e.g., with what models/packages."
+    oss_dependencies = [                  # leave empty if no direct open source software dependencies
+        ("Dependency name", "Depenendency URL", "Dependency license (None if not found)")
+    ]
+    services_and_software = [             # leave empty if no external hosted services and software required
+        ("Service or software name", "URL (None if no specific URL)"),
+    ]
     categories       = ["General"]        # choose from Molecule | Reaction | General
     tags             = ["API", "Neural Networks", "Molecular Properties", "LLMs"]  # keywords for this tool
     required_envs    = [                  # if this tool needs users to set API keys or any environment variables; otherwise, leave it an empty list

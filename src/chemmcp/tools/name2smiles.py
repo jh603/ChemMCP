@@ -28,6 +28,7 @@ class Name2Smiles(BaseTool):
     oss_dependencies = [
         ("PubChemPy", "https://github.com/mcs07/PubChemPy", "MIT")
     ]
+    services_and_software = []
 
     def _run_base(self, name: str) -> str:
         try:

@@ -25,6 +25,7 @@ class PatentCheck(BaseTool):
     oss_dependencies = [
         ("molbloom", "https://github.com/whitead/molbloom", "MIT")
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

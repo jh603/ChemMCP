@@ -31,6 +31,7 @@ class MoleculeModifier(BaseTool):
     oss_dependencies = [
         ("synspace", "https://github.com/whitead/synspace", "MIT")
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str) -> str:
         if not is_smiles(smiles):

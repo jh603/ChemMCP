@@ -18,6 +18,7 @@ class HivInhibitorPredictor(PropertyPredictor):
         ("Uni-Mol", "https://github.com/deepmodeling/Uni-Mol", "MIT"),
         ("Uni-Core", "https://github.com/dptech-corp/Uni-Core", "MIT")
     ]
+    services_and_software = []
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

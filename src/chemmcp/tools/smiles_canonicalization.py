@@ -23,6 +23,7 @@ class SmilesCanonicalization(BaseTool):
     oss_dependencies = [
         ("LlaSMol", "https://github.com/OSU-NLP-Group/LLM4Chem", "MIT")
     ]
+    services_and_software = []
 
     def _run_base(self, smiles: str, isomeric: bool = True, kekulization: bool = True, keep_atom_map: bool = True) -> str:
         smiles = canonicalize_molecule_smiles(smiles, isomeric=isomeric, kekulization=kekulization, keep_atom_map=keep_atom_map)
