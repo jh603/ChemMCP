@@ -6,7 +6,7 @@ See our website and document at [osu-nlp-group.github.io/ChemMCP](https://osu-nl
 
 ## What is this?
 
-ChemMCP is **a continuously updated collection of chemistry tools for LLMs and AI assistants**, compatible with the [Model Context Protocol (MCP)](https://modelcontextprotocol.org/). By integrating **powerful chemistry tools**, ChemMCP **transforms general AI models into chemistry coscientists** capable of performing complex molecular analysis, property prediction, and reaction synthesis tasks without requiring domain-specific training.
+ChemMCP is **an easy-to-use and extensible chemistry toolkit for LLMs and AI assistants**, compatible with the [Model Context Protocol (MCP)](https://modelcontextprotocol.org/). By integrating **powerful chemistry tools**, ChemMCP can **make general AI models capable of chemistry capabilities**, performing molecular analysis, property prediction, and reaction synthesis tasks, without requiring domain-specific training. ChemMCP can also be easily integrated in your research for data processing, agentic applications, and more.
 
 [MCP (Model Context Protocol)](https://modelcontextprotocol.io/introduction) is a framework that allows AI models to access external tools and resources through a standardized interface. ChemMCP leverages this architecture to bridge the gap between general-purpose AI models and specialized chemistry tools, enabling seamless integration of chemistry expertise into AI workflows.
 
