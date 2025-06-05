@@ -40,9 +40,9 @@ If ChemMCP is valuable to your research or development, please kindly cite our w
 ```
 @misc{yu2025chemmcp,
   author       = {Botao Yu and Huan Sun},
-  title        = {ChemMCP: A Chemistry MCP Toolkit},
+  title        = {ChemMCP: Build Your Chemistry Co-Scientist},
   year         = {2025},
-  url          = {https://github.com/OSU-NLP-Group/ChemMCP},
+  url          = {https://osu-nlp-group.github.io/ChemMCP/},
   note         = {2025-04-28-01},
 }
 
@@ -100,42 +100,46 @@ ChemMCP is distributed under the [Apache License 2.0](https://choosealicense.com
 
 | Tool Name               | **Primary Open-Source Dependencies** | Hosted Service / Software |
 |-------------------------|-------|-------|
-| BbbpPredictor          | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |  |
+| BbbpPredictor          | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
 | ForwardSynthesis       | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT), [rxn4chemistry](https://github.com/rxn4chemistry/rxn4chemistry) (MIT) | [IBM RXN for Chemistry](https://rxn.app.accelerate.science/) |
-| FunctionalGroups       | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) |       |
-| HivInhibitorPredictor  | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |       |
+| FunctionalGroups       | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) | - |
+| HivInhibitorPredictor  | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
 | Iupac2Smiles           | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT), [molbloom](https://github.com/whitead/molbloom) (MIT), [PubChemPy](https://github.com/mcs07/PubChemPy) (MIT) | [PubChem](https://pubchem.ncbi.nlm.nih.gov/), [ChemSpace](https://chem-space.com/) |
-| LogDPredictor          | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |       |
-| MoleculeAtomCount      | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) |       |
-| MoleculeCaptioner      | [MolT5](https://github.com/blender-nlp/MolT5) (BSD 3-Clause) |       |
-| MoleculeGenerator      | [MolT5](https://github.com/blender-nlp/MolT5) (BSD 3-Clause) |       |
-| MoleculeModifier       | [synspace](https://github.com/whitead/synspace) (MIT) |       |
+| LogDPredictor          | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
+| MoleculeAtomCount      | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) | - |
+| MoleculeCaptioner      | [MolT5](https://github.com/blender-nlp/MolT5) (BSD 3-Clause) | - |
+| MoleculeGenerator      | [MolT5](https://github.com/blender-nlp/MolT5) (BSD 3-Clause) | - |
+| MoleculeModifier       | [synspace](https://github.com/whitead/synspace) (MIT) | - |
 | MoleculePrice          | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) | [ChemSpace](https://chem-space.com/) |
-| MoleculeSimilarity     | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) |       |
-| MoleculeSmilesCheck    |       |       |
-| MoleculeVisualizer     |       |       |
-| MoleculeWeight         |       |       |
-| Name2Smiles            | [PubChemPy](https://github.com/mcs07/PubChemPy) (MIT) |       |
-| PatentCheck           | [molbloom](https://github.com/whitead/molbloom) (MIT) |       |
-| PubchemSearch         |       | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
-| PubchemSearchQA       |       | [PubChem](https://pubchem.ncbi.nlm.nih.gov/), Custom LLMs |
+| MoleculeSimilarity     | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) | - |
+| MoleculeSmilesCheck    | - | - |
+| MoleculeVisualizer     | - | - |
+| MoleculeWeight         | - | - |
+| Name2Smiles            | [PubChemPy](https://github.com/mcs07/PubChemPy) (MIT) | - |
+| PatentCheck           | [molbloom](https://github.com/whitead/molbloom) (MIT) | - |
+| PubchemSearch         | - | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
+| PubchemSearchQA       | - | [PubChem](https://pubchem.ncbi.nlm.nih.gov/), Custom LLMs |
 | PythonExecutor        | [Jupyter Notebook](https://github.com/jupyter/notebook) (BSD 3-Clause) | [docker](https://www.docker.com/) |
-| ReactionSmilesCheck   |       |       |
+| ReactionSmilesCheck   | - | - |
 | Retrosynthesis        | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT), [rxn4chemistry](https://github.com/rxn4chemistry/rxn4chemistry) (MIT) | [IBM RXN for Chemistry](https://rxn.app.accelerate.science/) |
 | SafetyCheck           | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) | [PubChem](https://pubchem.ncbi.nlm.nih.gov/), Custom LLMs |
-| Selfies2Smiles        | [selfies](https://github.com/aspuru-guzik-group/selfies) (Apache License 2.0) |       |
-| SideEffectPredictor   | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |       |
+| Selfies2Smiles        | [selfies](https://github.com/aspuru-guzik-group/selfies) (Apache License 2.0) | - |
+| SideEffectPredictor   | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
 | Smiles2Cas            | [ChemCrow](https://github.com/ur-whitelab/chemcrow-public) (MIT) | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
-| Smiles2Formula        |       | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
+| Smiles2Formula        | - | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
 | Smiles2Iupac          | [PubChemPy](https://github.com/mcs07/PubChemPy) (MIT) | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
-| Smiles2Selfies        | [selfies](https://github.com/aspuru-guzik-group/selfies) (Apache License 2.0) |       |
-| SmilesCanonicalization| [LlaSMol](https://github.com/OSU-NLP-Group/LLM4Chem) (MIT) |       |
-| SolubilityPredictor   | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |       |
-| ToxicityPredictor     | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) |       |
+| Smiles2Selfies        | [selfies](https://github.com/aspuru-guzik-group/selfies) (Apache License 2.0) | - |
+| SmilesCanonicalization| [LlaSMol](https://github.com/OSU-NLP-Group/LLM4Chem) (MIT) | - |
+| SolubilityPredictor   | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
+| ToxicityPredictor     | [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (MIT), [Uni-Core](https://github.com/dptech-corp/Uni-Core) (MIT) | - |
 | WebSearch            | [tavily-python](https://github.com/tavily-ai/tavily-python) (MIT) | [Tavily](https://www.tavily.com/) |
+
+Note: The cells with `-` indicate that this tool is originally created by us and does not directly rely on OSS other than RDKit and MCP, or does not use external hosted services and software.
+
+
 
 **Disclaimer**:
 
 - Any open-source software dependency not explicitly identified in the table above—including any indirect or transitive dependencies introduced by packages such as RDKit or PyTorch—remains subject to the terms of its own license. For a complete inventory of all dependencies and their corresponding license obligations, users should consult the project’s requirements.txt file or employ a license-compliance utility (for example, pip-licenses).
 - Hosted services and application programming interfaces (APIs) referenced herein—for instance, IBM RXN for Chemistry, PubChem, or externally hosted language models—are each governed by their own Terms of Service, Acceptable Use Policies, or equivalent contractual agreements. Users are responsible for reviewing and adhering to all applicable terms and conditions imposed by the providers of these external services.
-- Our software is constructed based on open-source code and data, and we respect their creators' ownership and intellectual property. Additionally, many tools are also based on some hosted services and software, and we believe their terms for use are compatible with our research purpose. In the above table, we have made our best effort to list the repositories/websites and provide their licenses. We welcome requests from the original authors or developers to modify or remove relevant tools if needed.
+- Our software is constructed based on open-source code and data, and we respect their creators' ownership and intellectual property. Additionally, many tools are also based on some hosted services and software, and we believe their terms for use are compatible with our research purpose. In the above table, we have made our best effort to list their repositories/websites and provide their licenses. We welcome requests from the original authors or developers to modify or remove relevant tools if needed.
