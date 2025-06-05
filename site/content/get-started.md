@@ -66,6 +66,9 @@ This guide will help you quickly set up and start using ChemMCP.
    pip install -e --no-build-isolation
    ```
 
+4. **Install docker**
+
+   If you are to use the [PythonExecutor](/tools/python_executor/) tool, which relies on docker, please follow [its official doc](/tools/python_executor/) to install it. Otherwise, please exclude it from the tools to run, using [QuickConfig](/quick-config), or the MCP server would not successfully start.
 
 ## Usage
 

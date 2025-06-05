@@ -18,7 +18,7 @@
                 <span style="font-size: 84px; font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif;">
                     ChemMCP
                 </span>
-                <p class="text-2xl font-medium mt-2 mb-20 text-neutral-700 dark:text-neutral-200 max-w-3xl mx-auto leading-tight">Build your own AI chemistry co-scientist.</p>
+                <p class="text-2xl font-medium mt-2 mb-20 text-neutral-700 dark:text-neutral-200 max-w-3xl mx-auto" style="letter-spacing: 0.1em; padding: 0 20px; padding-top: 8px; padding-bottom: 8px; font-family: 'Arial', sans-serif; transform: scale(1, 1.03);">Build Your Chemistry Co-Scientist</p>
 
                 <div class="flex justify-center gap-4 mb-16">
                   <a href="/tools/" target="_self" role="button" class="!rounded-md bg-primary-600 px-4 py-2 !text-neutral !no-underline hover:!bg-primary-500 dark:bg-primary-800 dark:hover:!bg-primary-700">
@@ -44,29 +44,41 @@
       chemistry tools for LLMs and AI assistants, compatible with the <a href="https://modelcontextprotocol.org/"
         target="_blank"
         class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500">Model Context
-        Protocol (MCP)</a>. ChemMCP provides:</p>
-  </div>
+        Protocol (MCP)</a>.</p>
+    
+    <div class="mx-auto mb-12 rounded-lg overflow-hidden shadow-xl">
+      <video controls class="w-full h-auto" preload="metadata">
+        <source src="/ChemMCP-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
 
-  <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16">
-    <div class="flex flex-col items-center text-center">
-      <span class="text-4xl mb-4">🔬</span>
-      <h3 class="text-xl font-semibold mb-2">Professional Chemistry Tools</h3>
-      <p class="text-neutral-600 dark:text-neutral-300 text-sm max-w-xs break-words whitespace-normal mx-auto px-2"
-        style="text-align: justify;">ChemMCP equips you and your AI assistants with advanced tools to predict molecules and reactions, analyze chemical data, and explore scientific knowledge. Discover the full range in our <a href="/tools/" target="_blank"
-          class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500">tool
-          directory</a>.</p>
-    </div>
-    <div class="flex flex-col items-center text-center">
-      <span class="text-4xl mb-4">🔗</span>
-      <h3 class="text-xl font-semibold mb-2">Effortless Integration with AI</h3>
-      <p class="text-neutral-600 dark:text-neutral-300 text-sm max-w-xs break-words whitespace-normal mx-auto px-2"
-        style="text-align: justify;">Easily supercharge your LLM clients—such as Claude, GPT, and more—using ChemMCP. With MCP, integrating powerful chemistry tools into your workflow takes just minutes via a simple JSON configuration.</p>
-    </div>
-    <div class="flex flex-col items-center text-center">
-      <span class="text-4xl mb-4">🐍</span>
-      <h3 class="text-xl font-semibold mb-2">Seamless Support for Python</h3>
-      <p class="text-neutral-600 dark:text-neutral-300 text-sm max-w-xs break-words whitespace-normal mx-auto px-2"
-        style="text-align: justify;">ChemMCP is also available as a Python package, enabling seamless integration into your projects for data analysis, agent development, or custom applications—ideal for researchers, developers, and innovators.</p>
+    <h3 class="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">Key features</h3>
+    
+    <div class="space-y-8">
+      <div class="flex items-start py-2">
+        <div class="flex-1">
+          <p class="text-md font-medium text-neutral-800 dark:text-neutral-200"><strong>🔌 Plug-and-Play Chemistry for AI Assistants</strong>: ChemMCP can be integrated into any <a href="https://github.com/punkpeye/awesome-mcp-clients" target="_blank" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500">MCP-enabled LLM clients</a> in just minutes, allowing researchers to augment LLMs with chemistry capabilities without additional training.</p>
+        </div>
+      </div>
+      
+      <div class="flex items-start py-2">
+        <div class="flex-1">
+          <p class="text-md font-medium text-neutral-800 dark:text-neutral-200"><strong>🛠️ Standalone Toolkit for Custom Workflows</strong>: With its decoupled design and unified interfaces, <a href="https://osu-nlp-group.github.io/ChemMCP/tools" target="_blank" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500">ChemMCP tools</a> can be easily imported into your workflow, to process data, assemble pipeline steps, or build bespoke agentic applications — via MCP or Python, whichever you prefer.</p>
+        </div>
+      </div>
+      
+      <div class="flex items-start py-2">
+        <div class="flex-1">
+          <p class="text-md font-medium text-neutral-800 dark:text-neutral-200"><strong>🤖 Native RL Agent Framework</strong>: ChemMCP natively supports multi-turn interactive loops between agents and tool, providing an ideal infrastructure and testbed for scientific tool-using agents.</p>
+        </div>
+      </div>
+      
+      <div class="flex items-start py-2">
+        <div class="flex-1">
+          <p class="text-md font-medium text-neutral-800 dark:text-neutral-200"><strong>📦 Modular and Extensible Design</strong>: Adding a new tool is as simple as writing a Python file (see <a href="https://osu-nlp-group.github.io/ChemMCP/dev-guide/" target="_blank" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500">here</a>). All tools follow a consistent schema, ensuring clear interfaces, easy maintenance, and automatic documentation.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
