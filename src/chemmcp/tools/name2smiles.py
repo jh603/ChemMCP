@@ -15,6 +15,7 @@ class Name2Smiles(BaseTool):
     name = "Name2Smiles"
     func_name = 'convert_chemical_name_to_smiles'
     description = "Convert chemical name to SMILES string."
+    implementation_description = "Uses PubChem's API to convert a chemical name to its corresponding SMILES representation. The conversion is performed by searching PubChem's database for the molecule and retrieving its SMILES string."
     categories = ["Molecule"]
     tags = ["Name Conversion", "SMILES", "Molecular Names", "PubChem", "APIs"]
     required_envs = []

@@ -18,6 +18,7 @@ class MoleculeModifier(BaseTool):
     name = "MoleculeModifier"
     func_name = 'modify_molecule'
     description = "Proposes small, chemically accessible modifications to a compound using well-established medicinal chemistry reactions and purchasable building blocks. Important: This tool cannot be used more than 3 times in a row or more than 10 times in the entire trajectory."
+    implementation_description = "Uses the [synspace](https://github.com/whitead/synspace) package to propose small, chemically accessible modifications to a compound."
     categories = ["Molecule"]
     tags = ["Molecule Modification"]
     required_envs = []

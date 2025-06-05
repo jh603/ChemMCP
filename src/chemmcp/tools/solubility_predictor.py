@@ -13,6 +13,7 @@ class SolubilityPredictor(PropertyPredictor):
     name = "SolubilityPredictor"
     func_name = 'predict_solubility'
     description = "Predict the solubility of a molecule given its SMILES representation."
+    implementation_description = "Uses the [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) model fine-tuned on [SmolInstruct](https://huggingface.co/datasets/osunlp/SMolInstruct) PP-ESOL data to predict the solubility of a molecule, and uses a text template to construct textual output."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

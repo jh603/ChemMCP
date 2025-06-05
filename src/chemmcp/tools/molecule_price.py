@@ -14,6 +14,7 @@ class MoleculePrice(BaseTool):
     name = "MoleculePrice"
     func_name = 'get_molecule_price'
     description = "Check the purchasability and get the cheapest available price of a molecule."
+    implementation_description = "Uses the [ChemSpace](https://www.chemspek.com/chemspek-api/) API to check the purchasability and get the cheapest available price of a molecule."
     categories = ["Molecule"]
     tags = ["Molecular Information", "ChemSpace", "APIs", "SMILES"]
     required_envs = [("CHEMSPACE_API_KEY", "The API key for ChemSpace.")]

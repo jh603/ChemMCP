@@ -38,6 +38,7 @@ class SafetyCheck(BaseTool):
     name = "SafetyCheck"
     func_name = 'check_safety'
     description = "Check online and generate a summary covering its safety information, including its GHS classification, health and laboratory safety, and societal concerns."
+    implementation_description = "Uses PubChem's safety data to provide comprehensive safety information about a molecule, including hazard statements, precautionary statements, and other safety-related data. Also compares the molecule with a database of controlled chemicals to check if it is a controlled chemical or similar to a controlled chemical."
     categories = ["Molecule"]
     tags = ["Safety Checking", "LLMs", "Neural Networks", "APIs", "PubChem"]
     required_envs = [("__llms__", "LiteLLM Envs.")]

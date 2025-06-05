@@ -12,6 +12,7 @@ class PatentCheck(BaseTool):
     name = "PatentCheck"
     func_name = 'check_molecule_if_patented'
     description = "Get whether a molecule is patented or not."
+    implementation_description = "Uses the [molbloom](https://github.com/whitead/molbloom) package to check whether a molecule is patented or not."
     categories = ["Molecule"]
     tags = ["Molecular Information", "SMILES", "APIs"]
     required_envs = []

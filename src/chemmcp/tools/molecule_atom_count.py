@@ -11,6 +11,7 @@ class MoleculeAtomCount(BaseTool):
     name = "MoleculeAtomCount"
     func_name = 'count_molecule_atoms'
     description = "Count the number of atoms of each type in a molecule."
+    implementation_description = "Uses RDKit to parse the SMILES string and count the occurrences of each atom type in the molecule. Returns a detailed description of the atom counts, excluding hydrogen atoms."
     categories = ["Molecule"]
     tags = ["Molecular Information", "RDKit", "SMILES"]
     required_envs = []

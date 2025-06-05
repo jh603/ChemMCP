@@ -59,8 +59,9 @@ DICT_FGS = {
 class FunctionalGroups(BaseTool):
     __version__ = "0.1.0"
     name = "FunctionalGroups"
-    func_name = 'get_functional_groups'
-    description = "Get the functional groups in a molecule."
+    func_name = 'identify_functional_groups'
+    description = "Identify functional groups in a molecule."
+    implementation_description = "Uses RDKit's SMARTS patterns to identify functional groups in a molecule. The tool checks for a comprehensive list of common functional groups including alcohols, aldehydes, ketones, carboxylic acids, and many others."
     categories = ["Molecule"]
     tags = ["Molecular Information", "RDKit", "SMILES"]
     required_envs = []

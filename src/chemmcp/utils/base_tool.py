@@ -18,6 +18,7 @@ class ToolMeta(BaseModel):
     categories: List[Literal["Molecule", "Reaction", "General"]] = Field(..., description="The categories of the tool.", min_length=1)
     tags: List[str] = Field(..., description="The tags of the tool.", min_length=1)
     required_envs: List[Tuple[str, str]] = Field(..., description="The required environment variables for the tool.")
+    implementation_description: str = Field(..., description="The implementation description of the tool.", min_length=1)
     text_input_sig: List[Tuple[str, str, str, str]] = Field(..., description="The text input signature of the tool. Each element is a tuple of (arg_name, arg_type, arg_default, arg_description).")
     code_input_sig: List[Tuple[str, str, str, str]] = Field(..., description="The code input signature of the tool. Each element is a tuple of (arg_name, arg_type, arg_default, arg_description).")
     output_sig: List[Tuple[str, str, str]] = Field(..., description="The output signature of the tool. Each element is a tuple of (output_name, output_type, output_description).")

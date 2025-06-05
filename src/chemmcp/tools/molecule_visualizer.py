@@ -20,6 +20,7 @@ class MoleculeVisualizer(BaseTool):
     name = "MoleculeVisualizer"
     func_name = 'visualize_molecule'
     description = "Visualize a molecule with RDKit."
+    implementation_description = "Uses RDKit's drawing functionality to generate a 2D visualization of a molecule from its SMILES representation. The visualization is returned as a PNG image with the molecule's structure clearly displayed."
     categories = ["Molecule"]
     tags = ["Molecular Information", "RDKit", "Visualization"]
     required_envs = []

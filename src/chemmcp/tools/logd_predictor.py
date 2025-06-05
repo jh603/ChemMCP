@@ -12,7 +12,8 @@ class LogDPredictor(PropertyPredictor):
     __version__ = "0.1.0"
     name = "LogDPredictor"
     func_name = 'predict_logd'
-    description = 'Predict the logD of a molecule given its SMILES representation.'
+    description = 'Predict the logD under pH 7.4 of a molecule given its SMILES representation.'
+    implementation_description = "Uses the [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) model fine-tuned on [SmolInstruct](https://huggingface.co/datasets/osunlp/SMolInstruct) PP-LIPO data to predict the octanol/water distribution coefficient logD under the circumstance of pH 7.4, and uses a text template to construct textual output."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

@@ -10,6 +10,7 @@ class SmilesCanonicalization(BaseTool):
     name = "SmilesCanonicalization"
     func_name = 'canonicalize_smiles'
     description = "Canonicalize a molecular SMILES string."
+    implementation_description = "Uses a customized version of RDKit's SMILES canonicalization functionality to convert a SMILES string into its canonical form."
     categories = ["Molecule"]
     tags = ["SMILES", "RDKit", "Molecular Operations"]
     required_envs = []

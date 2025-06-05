@@ -16,6 +16,7 @@ class Smiles2Iupac(BaseTool):
     name = "Smiles2Iupac"
     func_name = 'convert_smiles_to_iupac'
     description = "Convert SMILES to IUPAC name."
+    implementation_description = "Uses PubChem's API to convert a SMILES string to its corresponding IUPAC name. The conversion is performed by searching PubChem's database for the molecule and retrieving its IUPAC name."
     categories = ["Molecule"]
     tags = ["Name Conversion", "SMILES", "IUPAC", "PubChem", "APIs"]
     required_envs = []

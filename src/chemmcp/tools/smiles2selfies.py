@@ -12,6 +12,7 @@ class Smiles2Selfies(BaseTool):
     name = "Smiles2Selfies"
     func_name = 'convert_smiles_to_selfies'
     description = "Convert SMILES to SELFIES string."
+    implementation_description = "Uses the SELFIES library to convert a SMILES string to its SELFIES representation."
     categories = ["Molecule"]
     tags = ["Name Conversion", "SMILES", "SELFIES"]
     required_envs = []

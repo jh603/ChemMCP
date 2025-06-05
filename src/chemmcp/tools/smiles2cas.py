@@ -16,6 +16,7 @@ class Smiles2Cas(BaseTool):
     name = "Smiles2Cas"
     func_name = 'convert_smiles_to_cas'
     description = "Convert SMILES to CAS number based on PubChem."
+    implementation_description = "Searches PubChem for the molecule and returns the CAS number."
     categories = ["Molecule"]
     tags = ["Name Conversion", "SMILES", "CAS", "PubChem", "APIs"]
     required_envs = []

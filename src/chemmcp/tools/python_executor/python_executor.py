@@ -19,6 +19,7 @@ class PythonExecutor(BaseTool):
     name = "PythonExecutor"
     func_name = 'run_code'
     description = "Execute Python code in a Jupyter notebook. New packages can be installed by running `!pip install <package_name>`."
+    implementation_description = "Uses a Jupyter kernel to execute Python code and return the results. Supports text output, images (PNG/SVG), and error messages. The kernel is managed through a JupyterBackbone class that handles the communication with the Jupyter kernel gateway."
     categories = ["General"]
     tags = ["Code Execution"]
     required_envs = []

@@ -10,6 +10,7 @@ class MoleculeGenerator(BaseTool):
     name = "MoleculeGenerator"
     func_name = "generate_molecule_from_description"
     description = "Generate a molecule represented in SMILES with MolT5 that matches the given textual description."
+    implementation_description = "Uses [the MolT5-large model](laituan245/molt5-large-caption2smiles), a transformer-based neural network trained on molecule-text pairs, to generate SMILES representations from natural language descriptions."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Text", "Neural Networks", "SMILES"]
     required_envs = []

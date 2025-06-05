@@ -189,6 +189,7 @@ class PubchemSearch(BaseTool):
     name = "PubchemSearch"
     func_name = 'search_pubchem'
     description = "Search for molecule/compound information on PubChem, one of the most comprehensive database of chemical molecules and their activities. You can get authoritative information about molecular names, properties, activities, and more."
+    implementation_description = "Uses the PubChem API to search for molecular information using various identifiers (SMILES, IUPAC name, or common name). Filters out unuseful sections and returns markdown formatted information about the molecule including properties, safety data, and other relevant information."
     categories = ["Molecule"]
     tags = ["PubChem", "Molecular Information", "Molecular Properties", "SMILES", "IUPAC", "Molecular Names", "APIs"]
     required_envs = []

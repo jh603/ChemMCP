@@ -12,6 +12,7 @@ class MoleculeCaptioner(BaseTool):
     name = "MoleculeCaptioner"
     func_name = "generate_molecule_caption"
     description = "Generate a textual description of the molecule from its SMILES representation with MolT5. This tool uses neural networks to generate descriptions, which may not be accurate or correct. Please first try other tools that provide accurate and authoritative information, and only use this one as the last resort."
+    implementation_description = "Uses [the MolT5-large model](laituan245/molt5-large-smiles2caption), a transformer-based neural network trained on molecule-text pairs, to generate natural language descriptions of molecules from their SMILES representations."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Text", "Neural Networks", "SMILES"]
     required_envs = []

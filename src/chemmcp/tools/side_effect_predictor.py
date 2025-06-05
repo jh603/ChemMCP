@@ -15,6 +15,7 @@ class SideEffectPredictor(PropertyPredictor):
     name = "SideEffectPredictor"
     func_name = 'predict_side_effect'
     description = "Predict whether a molecule can cause 20 different side effects, along with the probabilities of each side effect. The side effects are: " + '; '.join(['(%d) %s' % (idx, subtask) for idx, subtask in enumerate(subtask_list, start=1)]) + "."
+    implementation_description = "Uses the [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) model fine-tuned on [SmolInstruct](https://huggingface.co/datasets/osunlp/SMolInstruct) PP-SIDER data to predict the probabilities of the compound to cause different side effects, and uses a text template to construct textual output."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

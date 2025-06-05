@@ -13,6 +13,7 @@ class BbbpPredictor(PropertyPredictor):
     name = "BbbpPredictor"
     func_name = 'predict_bbbp'
     description = 'Predict the blood-brain barrier penetration of a molecule given its SMILES representation.'
+    implementation_description = "Use the [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) model fine-tuned on [SmolInstruct](https://huggingface.co/datasets/osunlp/SMolInstruct) PP-BBBP data to predict the BBBP probability, and use a text template to construct textual output."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

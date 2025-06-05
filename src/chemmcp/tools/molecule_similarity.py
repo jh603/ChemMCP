@@ -10,6 +10,7 @@ class MoleculeSimilarity(BaseTool):
     name = "MoleculeSimilarity"
     func_name = 'cal_molecule_similarity'
     description = "Get the Tanimoto similarity of two molecules. It Can also be used to check if two molecules are identical."
+    implementation_description = "Uses the [RDKit](https://www.rdkit.org/) library to calculate the Tanimoto similarity of two molecules. Uses a text template to construct textual output."
     categories = ["Molecule"]
     tags = ["Molecular Information", "RDKit", "SMILES", "Molecular Operations"]
     required_envs = []

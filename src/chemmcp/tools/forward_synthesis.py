@@ -16,6 +16,7 @@ class ForwardSynthesis(RXN4Chem):
     name = "ForwardSynthesis"
     func_name = "do_forward_synthesis"
     description = "Given reactants and reagents, predict the product(s) of a chemical reaction."
+    implementation_description = "Uses the [IBM RXN for Chem](https://rxn.app.accelerate.science/) API to predict the product(s) of a chemical reaction. Outputs the top 1 prediction."
     categories = ["Reaction"]
     tags = ["Reaction Prediction", "Neural Networks", "APIs", "SMILES"]
     required_envs = [("RXN4CHEM_API_KEY", "The API key for IBM RXN4Chem.")]

@@ -318,6 +318,13 @@ The output is the same in both input cases.
 """.format(input_table=input_table, text_input_table=text_input_table, output_table=output_table, envs_table=envs_table)
     return signature_txt
 
+def get_tool_implementation_details(tool_cls: type):
+    txt = f"""## Implementation Details
+
+- **Implementation Description**: {tool_cls.implementation_description}
+"""
+    return txt
+
 def generate_tool_doc(tool_name: str, save_dir: str='site/content/tools/'):
     tool_cls = getattr(chemmcp.tools, tool_name)
     tool_file_path = get_class_file_path(tool_cls)
@@ -331,7 +338,8 @@ def generate_tool_doc(tool_name: str, save_dir: str='site/content/tools/'):
     doc += get_tool_examples(tool_cls)
     doc += get_tool_usage(tool_cls)
     doc += get_tool_signature(tool_cls)
-
+    doc += get_tool_implementation_details(tool_cls)
+    
     os.makedirs(save_dir, exist_ok=True)
     doc_file_path = os.path.join(save_dir, tool_file_name + '.md')
     with open(doc_file_path, 'w') as f:

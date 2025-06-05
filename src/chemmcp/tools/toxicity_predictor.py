@@ -13,6 +13,7 @@ class ToxicityPredictor(PropertyPredictor):
     name = "ToxicityPredictor"
     func_name = 'predict_toxicity'
     description = "Predict the toxicity of a molecule given its SMILES representation."
+    implementation_description = "Uses the [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) model fine-tuned on [SmolInstruct](https://huggingface.co/datasets/osunlp/SMolInstruct) PP-ClinTox data to predict the probability of toxicity, and uses a text template to construct textual output."
     categories = ["Molecule"]
     tags = ["Molecular Information", "Molecular Properties", "SMILES", "Neural Networks"]
     required_envs = []

@@ -19,6 +19,7 @@ class Retrosynthesis(RXN4Chem):
     name = "Retrosynthesis"
     func_name = "do_retrosynthesis"
     description = "Conduct single-step retrosynthesis. Given the product(s), predict multiple sets of potential reactants, along with their confidence."
+    implementation_description = "Uses the [IBM RXN for Chem](https://rxn.app.accelerate.science/) API to do single-step retrosynthesis. Outputs all possible reactants and their confidence, sorted by confidence in descending order."
     categories = ["Reaction"]
     tags =["Reaction Prediction", "Neural Networks", "APIs", "SMILES"]
     required_envs = [("RXN4CHEM_API_KEY", "The API key for IBM RXN4Chem.")]
