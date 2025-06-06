@@ -53,6 +53,11 @@
   url = "https://github.com/OSU-NLP-Group/ChemMCP"
   weight = 400
 
+[[main]]
+  identifier = "discord"
+  pre = "discord"
+  url = "https://discord.gg/sfZ26Qt3"
+  weight = 401
 
 # -- Footer Menu --
 # The footer menu is displayed at the bottom of the page, just before

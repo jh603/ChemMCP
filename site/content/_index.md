@@ -1,5 +1,5 @@
 ---
-title: "ChemMCP - Build your own AI chemistry co-scientist."
+title: "ChemMCP - Build Your Chemistry Co-Scientist"
 description: "ChemMCP is an MCP-compatible chemistry toolkit that enhances AI assistants with advanced chemical capabilities."
 ---
 

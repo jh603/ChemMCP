@@ -4,6 +4,8 @@
 
 See our website and document at [osu-nlp-group.github.io/ChemMCP](https://osu-nlp-group.github.io/ChemMCP/).
 
+Join our [Discord community](https://discord.gg/sfZ26Qt3) to discuss ChemMCP, get help, and connect with other users!
+
 ## What is this?
 
 ChemMCP is **an easy-to-use and extensible chemistry toolkit for LLMs and AI assistants**, compatible with the [Model Context Protocol (MCP)](https://modelcontextprotocol.org/). By integrating **powerful chemistry tools**, ChemMCP can **make general AI models capable of chemistry capabilities**, performing molecular analysis, property prediction, and reaction synthesis tasks, without requiring domain-specific training. ChemMCP can also be easily integrated in your research for data processing, agentic applications, and more.
@@ -75,13 +77,13 @@ ChemMCP is an open-source toolkit that integrates language models and agents wit
 
 3. **Limitations and Disclaimer**
 
-   ChemMCP does not guarantee the accuracy, completeness, or safety of its outputs. All computations and inferences are provided “as is,” without warranties of any kind.
+   ChemMCP does not guarantee the accuracy, completeness, or safety of its outputs. All computations and inferences are provided "as is," without warranties of any kind.
 
    We are not liable for any direct or indirect consequences—financial, legal, or otherwise—that arise from using ChemMCP. Users should independently validate results before applying them in critical or hazardous contexts.
 
 4. **Contributions and Safeguards**
 
-   We encourage community contributions that enhance ChemMCP’s safety features and promote responsible use. Contributors must document any identified risks, potential failure modes, and mitigation strategies when introducing new tools or data sources.
+   We encourage community contributions that enhance ChemMCP's safety features and promote responsible use. Contributors must document any identified risks, potential failure modes, and mitigation strategies when introducing new tools or data sources.
 
    Before merging new functionality, maintainers should review proposed changes for possible misuse scenarios and update documentation accordingly.
 
@@ -96,7 +98,7 @@ ChemMCP is an open-source toolkit that integrates language models and agents wit
 
 ## License
 
-ChemMCP is distributed under the [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/). The toolkit’s implementation depends heavily on open-source projects—most notably [RDKit](https://github.com/rdkit/rdkit) (BSD 3-Clause) and the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) (MIT). Additional main open-source dependencies (whose code is used in whole or in part) and any required hosted services or software are listed in the table below. By using ChemMCP and its tools, you agree to comply with all referenced licenses and terms of service.
+ChemMCP is distributed under the [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/). The toolkit's implementation depends heavily on open-source projects—most notably [RDKit](https://github.com/rdkit/rdkit) (BSD 3-Clause) and the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) (MIT). Additional main open-source dependencies (whose code is used in whole or in part) and any required hosted services or software are listed in the table below. By using ChemMCP and its tools, you agree to comply with all referenced licenses and terms of service.
 
 | **Tool Name**               | **Primary Open-Source Dependencies** | **Hosted Service / Software** |
 |-------------------------|-------|-------|
@@ -140,6 +142,6 @@ Note: The cells with `-` indicate that this tool is originally created by us and
 
 **Disclaimer**:
 
-- Any open-source software dependency not explicitly identified in the table above—including any indirect or transitive dependencies introduced by packages such as RDKit or PyTorch—remains subject to the terms of its own license. For a complete inventory of all dependencies and their corresponding license obligations, users should consult the project’s requirements.txt file or employ a license-compliance utility (for example, pip-licenses).
+- Any open-source software dependency not explicitly identified in the table above—including any indirect or transitive dependencies introduced by packages such as RDKit or PyTorch—remains subject to the terms of its own license. For a complete inventory of all dependencies and their corresponding license obligations, users should consult the project's requirements.txt file or employ a license-compliance utility (for example, pip-licenses).
 - Hosted services and application programming interfaces (APIs) referenced herein—for instance, IBM RXN for Chemistry, PubChem, or externally hosted language models—are each governed by their own Terms of Service, Acceptable Use Policies, or equivalent contractual agreements. Users are responsible for reviewing and adhering to all applicable terms and conditions imposed by the providers of these external services.
 - Our software is constructed based on open-source code and data, and we respect their creators' ownership and intellectual property. Additionally, many tools are also based on some hosted services and software, and we believe their terms for use are compatible with our research purpose. In the above table, we have made our best effort to list their repositories/websites and provide their licenses. We welcome requests from the original authors or developers to modify or remove relevant tools if needed.
