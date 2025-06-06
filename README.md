@@ -40,10 +40,10 @@ If ChemMCP is valuable to your research or development, please kindly cite our w
 ```
 @misc{yu2025chemmcp,
   author       = {Botao Yu and Huan Sun},
-  title        = {ChemMCP: Build Your Chemistry Co-Scientist},
+  title        = {ChemMCP: An Easy-to-Use and Extensible Toolkit for Chemistry Agents},
   year         = {2025},
   url          = {https://osu-nlp-group.github.io/ChemMCP/},
-  note         = {2025-04-28-01},
+  note         = {2025-06-05-01},
 }
 
 @article{yu2024chemtoolagent,
