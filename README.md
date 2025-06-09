@@ -4,7 +4,9 @@
 
 See our website and document at [osu-nlp-group.github.io/ChemMCP](https://osu-nlp-group.github.io/ChemMCP/).
 
-Join our [Discord community](https://discord.gg/sfZ26Qt3) to discuss ChemMCP, get help, and connect with other users!
+Join our [Discord community](https://discord.gg/sfZ26Qt3) to discuss ChemMCP, get help, and build together!
+
+The current ChemMCP tools are mostly extended and updated from our prior work [ChemToolAgent](https://osu-nlp-group.github.io/ChemToolAgent/). Please check it for the tools' benefits in chemistry tasks.
 
 ## What is this?
 

@@ -35,6 +35,23 @@
   pageRef = "dev-guide"
   weight = 15
 
+[[main]]
+  name = "Related Research"
+  identifier = "related-research"
+  weight = 20
+
+[[main]]
+  name = "ChemToolAgent"
+  parent = "related-research"
+  url = "https://osu-nlp-group.github.io/ChemToolAgent/"
+  weight = 21
+
+[[main]]
+  name = "LlaSMol"
+  parent = "related-research"
+  url = "https://osu-nlp-group.github.io/LLM4Chem/"
+  weight = 22
+
 # [[main]]
 #   identifier = "twitter"
 #   pre = "x-twitter"
