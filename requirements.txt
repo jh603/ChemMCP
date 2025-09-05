@@ -13,8 +13,8 @@ scikit-learn>=1.6.1
 selfies>=2.2.0
 sentencepiece>=0.2.0
 tavily-python>=0.7.0
-torch==2.5
+torch==2.8.0
 transformers>=4.51.3
-git+https://github.com/btyu/Uni-Core.git@ea7db06540c007158a216156d77595799e42ae0c#egg=uni_core
+git+https://github.com/btyu/Uni-Core.git@ea7db06540c007158a216156d77595799e42ae0c#egg=unicore
 docker>=7.1.0
 synspace>=1.0.0
